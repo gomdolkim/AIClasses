@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vercel로 홈페이지 세상에 공개하기</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+html,body{height:100%;overflow-x:hidden;margin:0;padding:0}
+html{scroll-snap-type:y mandatory;scroll-behavior:smooth}
+*{box-sizing:border-box;margin:0;padding:0}
+.slide{width:100vw;height:100vh;height:100dvh;overflow:hidden;scroll-snap-align:start;display:flex;flex-direction:column;position:relative;font-family:'Plus Jakarta Sans',sans-serif}
+.slide-content{flex:1;display:flex;flex-direction:column;justify-content:center;max-height:100%;overflow:hidden;padding:var(--slide-padding)}
+:root{
+    --title-size:clamp(1.5rem,5vw,4rem);--h2-size:clamp(1.25rem,3.5vw,2.5rem);
+    --h3-size:clamp(1rem,2.5vw,1.75rem);--body-size:clamp(0.75rem,1.5vw,1.125rem);
+    --small-size:clamp(0.65rem,1vw,0.875rem);--slide-padding:clamp(1rem,4vw,4rem);
+    --content-gap:clamp(0.5rem,2vw,2rem);--element-gap:clamp(0.25rem,1vw,1rem);
+    --bg-main:#EDF2FB;--card-bg:#FFFBF0;--card-shadow:rgba(0,0,0,0.06);
+    --accent-pink:#F4A7BB;--accent-mint:#A8E6CF;--accent-lavender:#C3B1E1;
+    --accent-sky:#89CFF0;--accent-peach:#FFDAB9;--accent-coral:#F08080;
+    --accent-teal:#5BB5A2;--accent-indigo:#7B8CDE;
+    --vercel-black:#000;--vercel-white:#fff;
+    --text-dark:#2D3142;--text-mid:#4F5D75;--text-light:#8D99AE;
+    --code-bg:#1E1E2E;--code-text:#CDD6F4;--code-green:#A6E3A1;
+    --code-blue:#89B4FA;--code-pink:#F5C2E7;--code-orange:#FAB387;
+}
+h1{font-size:var(--title-size);font-weight:800;color:var(--text-dark);line-height:1.2}
+h2{font-size:var(--h2-size);font-weight:700;color:var(--text-dark);line-height:1.3}
+h3{font-size:var(--h3-size);font-weight:600;color:var(--text-dark);line-height:1.3}
+p,li{font-size:var(--body-size);color:var(--text-mid);line-height:1.6}
+.small{font-size:var(--small-size);color:var(--text-light)}
+.pill{display:inline-block;padding:clamp(0.2rem,0.5vw,0.4rem) clamp(0.5rem,1.2vw,1rem);border-radius:50px;font-size:var(--small-size);font-weight:600;letter-spacing:0.03em}
+.pill-pink{background:var(--accent-pink);color:#fff}
+.pill-mint{background:var(--accent-mint);color:var(--text-dark)}
+.pill-lavender{background:var(--accent-lavender);color:#fff}
+.pill-sky{background:var(--accent-sky);color:var(--text-dark)}
+.pill-coral{background:var(--accent-coral);color:#fff}
+.pill-teal{background:var(--accent-teal);color:#fff}
+.pill-dark{background:#2D3142;color:#fff}
+.card{background:var(--card-bg);border-radius:clamp(12px,2vw,24px);padding:clamp(0.75rem,2vw,1.5rem);box-shadow:0 4px 20px var(--card-shadow)}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:clamp(0.5rem,1.5vw,1rem)}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(0.5rem,1.5vw,1rem)}
+.term-card{background:var(--card-bg);border-radius:clamp(12px,2vw,24px);padding:clamp(0.75rem,2vw,1.5rem);box-shadow:0 4px 20px var(--card-shadow);text-align:left}
+.term-word{font-size:var(--h3-size);font-weight:800;margin-bottom:clamp(0.2rem,0.5vw,0.4rem)}
+.term-eng{font-size:var(--small-size);color:var(--text-light);font-weight:500;margin-bottom:clamp(0.3rem,0.8vw,0.6rem)}
+.highlight-box{background:linear-gradient(135deg,rgba(137,207,240,0.15),rgba(195,177,225,0.15));border-left:4px solid var(--accent-sky);border-radius:0 clamp(8px,1vw,12px) clamp(8px,1vw,12px) 0;padding:clamp(0.6rem,1.2vw,1rem)}
+.warn-box{background:linear-gradient(135deg,rgba(240,128,128,0.1),rgba(255,218,185,0.15));border-left:4px solid var(--accent-coral);border-radius:0 clamp(8px,1vw,12px) clamp(8px,1vw,12px) 0;padding:clamp(0.6rem,1.2vw,1rem)}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:clamp(1rem,3vw,3rem);align-items:center;max-width:min(90vw,1000px);margin:0 auto;width:100%}
+.left-content{max-width:min(90vw,900px);margin:0 auto;width:100%}
+.centered{align-items:center;text-align:center}
+.step{display:flex;align-items:flex-start;gap:clamp(0.5rem,1.5vw,1rem)}
+.step-num{width:clamp(28px,3.5vw,44px);height:clamp(28px,3.5vw,44px);min-width:clamp(28px,3.5vw,44px);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:var(--body-size);color:#fff}
+.code-block{background:var(--code-bg);border-radius:clamp(8px,1.2vw,16px);padding:clamp(0.75rem,2vw,1.5rem);font-family:'Courier New',monospace;font-size:clamp(0.6rem,1.2vw,0.95rem);line-height:1.6;color:var(--code-text);overflow:hidden;max-width:min(90vw,900px)}
+.code-block .tag{color:var(--code-blue)}.code-block .str{color:var(--code-green)}.code-block .comment{color:#6C7086;font-style:italic}.code-block .prop{color:var(--code-pink)}.code-block .cmd{color:var(--code-orange)}
+.diagram-box{border:2px solid;border-radius:clamp(8px,1.2vw,14px);padding:clamp(0.4rem,1vw,0.8rem);text-align:center;font-size:var(--small-size);font-weight:600}
+.diagram-arrow{color:var(--text-light);font-size:clamp(1rem,2vw,1.5rem)}
+.flow-row{display:flex;align-items:center;justify-content:center;gap:clamp(0.3rem,1vw,0.8rem);flex-wrap:wrap}
+.deco-circle{position:absolute;border-radius:50%;opacity:0.15;z-index:0}
+.deco-pill-shape{position:absolute;border-radius:50px;opacity:0.12;z-index:0}
+.slide-number{position:absolute;bottom:clamp(0.75rem,2vw,1.5rem);right:clamp(0.75rem,2vw,1.5rem);font-size:var(--small-size);color:var(--text-light);font-weight:600;z-index:10}
+.section-label{position:absolute;top:clamp(0.75rem,2vw,1.5rem);left:clamp(0.75rem,2vw,1.5rem);z-index:10}
+.reveal{opacity:0;transform:translateY(20px);transition:all 0.6s cubic-bezier(0.22,1,0.36,1)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-delay-1{transition-delay:0.1s}.reveal-delay-2{transition-delay:0.2s}
+.reveal-delay-3{transition-delay:0.3s}.reveal-delay-4{transition-delay:0.4s}
+#progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,#000,var(--accent-sky),var(--accent-mint));z-index:1000;transition:width 0.3s ease}
+.nav-dots{position:fixed;right:clamp(0.5rem,1.5vw,1rem);top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:5px;z-index:1000}
+.nav-dot{width:7px;height:7px;border-radius:50%;background:var(--text-light);opacity:0.3;cursor:pointer;transition:all 0.3s;border:none;padding:0}
+.nav-dot.active{opacity:1;background:#2D3142;transform:scale(1.3)}
+/* Vercel triangle logo CSS */
+.vercel-logo{display:inline-block;width:0;height:0;border-left:clamp(12px,1.5vw,18px) solid transparent;border-right:clamp(12px,1.5vw,18px) solid transparent;border-bottom:clamp(20px,2.5vw,30px) solid currentColor;vertical-align:middle;margin-right:0.3rem}
+@media(max-height:700px){:root{--slide-padding:clamp(0.75rem,3vw,2rem);--content-gap:clamp(0.4rem,1.5vw,1rem);--title-size:clamp(1.25rem,4.5vw,2.5rem);--h2-size:clamp(1rem,3vw,1.75rem)}}
+@media(max-height:600px){:root{--slide-padding:clamp(0.5rem,2.5vw,1.5rem);--content-gap:clamp(0.3rem,1vw,0.75rem);--title-size:clamp(1.1rem,4vw,2rem);--body-size:clamp(0.7rem,1.2vw,0.95rem)}.nav-dots{display:none}}
+@media(max-height:500px){:root{--slide-padding:clamp(0.4rem,2vw,1rem);--title-size:clamp(1rem,3.5vw,1.5rem);--h2-size:clamp(0.9rem,2.5vw,1.25rem);--body-size:clamp(0.65rem,1vw,0.85rem)}}
+@media(max-width:600px){:root{--title-size:clamp(1.25rem,7vw,2.5rem)}.grid-3,.grid-2{grid-template-columns:1fr}.two-col{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:0.01ms!important;transition-duration:0.2s!important}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<div id="progress" style="width:0%"></div>
+<nav class="nav-dots" id="navDots" aria-label="Slide navigation"></nav>
+
+<!-- ===== SLIDE 1: TITLE ===== -->
+<section class="slide centered" style="background:linear-gradient(135deg,#EDF2FB 0%,#E8F4FD 50%,#E8FFE8 100%);">
+    <div class="deco-circle" style="width:clamp(200px,30vw,500px);height:clamp(200px,30vw,500px);background:#2D3142;top:-8%;right:-5%;opacity:0.08;"></div>
+    <div class="deco-circle" style="width:clamp(150px,20vw,350px);height:clamp(150px,20vw,350px);background:var(--accent-mint);bottom:5%;left:-3%;"></div>
+    <div class="deco-pill-shape" style="width:clamp(80px,12vw,180px);height:clamp(30px,4vw,60px);background:var(--accent-sky);top:22%;left:10%;transform:rotate(-12deg);"></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <div class="reveal"><span class="pill pill-dark" style="margin-bottom:clamp(0.5rem,1.5vw,1rem);display:inline-block;">강의 5 / 배포 실전</span></div>
+        <h1 class="reveal reveal-delay-1" style="margin-bottom:clamp(0.5rem,1.5vw,1rem);">
+            <span class="vercel-logo" style="color:var(--text-dark);"></span>Vercel로<br>홈페이지 세상에 공개하기
+        </h1>
+        <p class="reveal reveal-delay-2" style="font-size:var(--h3-size);color:var(--text-mid);margin-bottom:clamp(1rem,2vw,2rem);">GitHub 연동부터 나만의 도메인까지</p>
+        <p class="reveal reveal-delay-3 small">⌨️ 방향키 또는 스크롤로 이동</p>
+    </div>
+    <div class="slide-number">1 / 28</div>
+</section>
+
+<!-- ===== SLIDE 2: RECAP ===== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-sky">지난 시간</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <h2 class="reveal" style="margin-bottom:var(--content-gap);">지금까지의 여정</h2>
+        <div class="flow-row reveal reveal-delay-1" style="margin-bottom:var(--element-gap);">
+            <span class="pill pill-pink">1강 홈페이지</span>
+            <span class="pill pill-lavender">2강 AI 용어</span>
+            <span class="pill pill-teal">3강 플러그인</span>
+            <span class="pill pill-indigo">4강 개발 기초</span>
+        </div>
+        <div class="card reveal reveal-delay-2" style="max-width:min(90vw,700px);margin:0 auto;text-align:center;">
+            <p style="font-size:var(--h3-size);">지금까지 만든 홈페이지는<br><strong style="color:var(--accent-coral);">내 컴퓨터에서만</strong> 볼 수 있었습니다</p>
+            <p style="margin-top:var(--element-gap);">오늘은 <strong style="color:var(--accent-teal);">전 세계 누구나</strong> 볼 수 있게 공개합니다! 🌍</p>
+        </div>
+    </div>
+    <div class="slide-number">2 / 28</div>
+</section>
+
+<!-- ===== SLIDE 3: AGENDA ===== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-dark">오늘의 여정</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <h2 class="reveal" style="margin-bottom:var(--content-gap);">오늘 배울 내용</h2>
+        <div class="grid-2 reveal reveal-delay-1" style="max-width:min(90vw,800px);margin:0 auto;">
+            <div class="card" style="text-align:left;border-left:4px solid var(--text-dark);">
+                <h3 style="font-size:var(--body-size);margin-bottom:0.2rem;">🐙 Part 1: GitHub</h3>
+                <p class="small">코드를 인터넷에 올리기</p>
+            </div>
+            <div class="card" style="text-align:left;border-left:4px solid var(--accent-teal);">
+                <h3 style="font-size:var(--body-size);margin-bottom:0.2rem;">🚀 Part 2: Vercel 배포</h3>
+                <p class="small">클릭 몇 번으로 웹사이트 공개</p>
+            </div>
+            <div class="card" style="text-align:left;border-left:4px solid var(--accent-sky);">
+                <h3 style="font-size:var(--body-size);margin-bottom:0.2rem;">🔗 Part 3: GitHub + Vercel</h3>
+                <p class="small">자동 배포 연동 설정</p>
+            </div>
+            <div class="card" style="text-align:left;border-left:4px solid var(--accent-pink);">
+                <h3 style="font-size:var(--body-size);margin-bottom:0.2rem;">🌐 Part 4: 도메인 설정</h3>
+                <p class="small">나만의 주소 연결하기</p>
+            </div>
+        </div>
+    </div>
+    <div class="slide-number">3 / 28</div>
+</section>
+
+<!-- ===== SLIDE 4: BIG PICTURE ===== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-dark">전체 흐름</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <h2 class="reveal" style="margin-bottom:var(--content-gap);">배포의 전체 흐름</h2>
+        <div class="card reveal reveal-delay-1" style="max-width:min(90vw,850px);margin:0 auto;">
+            <div class="flow-row" style="gap:clamp(0.4rem,1.2vw,1rem);">
+                <div class="diagram-box" style="border-color:var(--accent-lavender);color:var(--accent-lavender);">
+                    💻<br>내 컴퓨터<br><span class="small">코드 작성</span>
+                </div>
+                <span class="diagram-arrow">→</span>
+                <div class="diagram-box" style="border-color:var(--text-dark);color:var(--text-dark);">
+                    🐙<br>GitHub<br><span class="small">코드 저장소</span>
+                </div>
+                <span class="diagram-arrow">→</span>
+                <div class="diagram-box" style="border-color:var(--accent-teal);color:var(--accent-teal);">
+                    <span class="vercel-logo" style="color:var(--accent-teal);border-left-width:8px;border-right-width:8px;border-bottom-width:14px;"></span><br>Vercel<br><span class="small">자동 배포</span>
+                </div>
+                <span class="diagram-arrow">→</span>
+                <div class="diagram-box" style="border-color:var(--accent-mint);color:var(--accent-mint);">
+                    🌐<br>인터넷<br><span class="small">누구나 접속!</span>
+                </div>
+            </div>
+        </div>
+        <div class="highlight-box reveal reveal-delay-2" style="max-width:min(90vw,600px);margin:var(--element-gap) auto 0;">
+            <p class="small">💡 한 번 연결하면, GitHub에 코드를 올릴 때마다 <strong>자동으로 업데이트</strong>됩니다!</p>
+        </div>
+    </div>
+    <div class="slide-number">4 / 28</div>
+</section>
+
+<!-- ===== SLIDE 5: SECTION - GITHUB ===== -->
+<section class="slide centered" style="background:linear-gradient(135deg,#EDF2FB,#F3E8FF);">
+    <div class="deco-circle" style="width:clamp(160px,22vw,350px);height:clamp(160px,22vw,350px);background:var(--text-dark);top:-5%;right:-5%;opacity:0.06;"></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <div class="reveal"><span class="pill pill-dark" style="margin-bottom:var(--element-gap);display:inline-block;">PART 1</span></div>
+        <h1 class="reveal reveal-delay-1">🐙 GitHub에<br>코드 올리기</h1>
+        <p class="reveal reveal-delay-2" style="font-size:var(--h3-size);color:var(--text-mid);">코드의 온라인 저장소 만들기</p>
+    </div>
+    <div class="slide-number">5 / 28</div>
+</section>
+
+<!-- ===== SLIDE 6: GITHUB WHAT ===== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-dark">GitHub</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <div class="term-card reveal" style="max-width:min(90vw,800px);margin:0 auto;border-top:4px solid var(--text-dark);">
+            <div class="term-word" style="color:var(--text-dark);">GitHub란?</div>
+            <div class="term-eng">github.com</div>
+            <div style="font-size:var(--body-size);color:var(--text-mid);margin-bottom:var(--element-gap);">
+                코드를 인터넷에 저장하고 관리하는 <strong>무료 서비스</strong>
+            </div>
+            <div class="grid-3" style="text-align:center;">
+                <div>
+                    <div style="font-size:clamp(1.5rem,2.5vw,2rem);">☁️</div>
+                    <p class="small"><strong>온라인 저장</strong></p>
+                    <p class="small" style="color:var(--text-light);">컴퓨터가 고장나도<br>코드는 안전</p>
+                </div>
+                <div>
+                    <div style="font-size:clamp(1.5rem,2.5vw,2rem);">📝</div>
+                    <p class="small"><strong>변경 기록</strong></p>
+                    <p class="small" style="color:var(--text-light);">언제 뭘 바꿨는지<br>전부 기록</p>
+                </div>
+                <div>
+                    <div style="font-size:clamp(1.5rem,2.5vw,2rem);">👥</div>
+                    <p class="small"><strong>협업</strong></p>
+                    <p class="small" style="color:var(--text-light);">여러 사람이 함께<br>코드 작업 가능</p>
+                </div>
+            </div>
+        </div>
+        <div class="highlight-box reveal reveal-delay-1" style="max-width:min(90vw,600px);margin:var(--element-gap) auto 0;">
+            <p class="small">💡 비유: <strong>Google Drive</strong>가 문서용이라면, <strong>GitHub</strong>은 코드용입니다</p>
+        </div>
+    </div>
+    <div class="slide-number">6 / 28</div>
+</section>
+
+<!-- ===== SLIDE 7: GITHUB SIGNUP ===== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-dark">GitHub 실습</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <h2 class="reveal" style="margin-bottom:var(--content-gap);">실습: GitHub 회원가입</h2>
+        <div class="left-content" style="display:flex;flex-direction:column;gap:var(--element-gap);">
+            <div class="step reveal reveal-delay-1">
+                <div class="step-num" style="background:var(--text-dark);">1</div>
+                <div>
+                    <h3>github.com 접속</h3>
+                    <p class="small">브라우저에서 <strong>github.com</strong> 입력</p>
+                </div>
+            </div>
+            <div class="step reveal reveal-delay-2">
+                <div class="step-num" style="background:var(--accent-teal);">2</div>
+                <div>
+                    <h3>Sign Up 클릭</h3>
+                    <p class="small">이메일, 비밀번호, 사용자 이름 입력</p>
+                </div>
+            </div>
+            <div class="step reveal reveal-delay-3">
+                <div class="step-num" style="background:var(--accent-sky);">3</div>
+                <div>
+                    <h3>이메일 인증</h3>
+                    <p class="small">받은 이메일에서 인증 링크 클릭</p>
+                </div>
+            </div>
+        </div>
+        <div class="highlight-box reveal reveal-delay-4" style="max-width:min(90vw,600px);margin:var(--element-gap) auto 0;">
+            <p class="small">⏱️ <strong>3분간</strong> 함께 진행합니다. 이미 계정이 있다면 로그인해주세요!</p>
+        </div>
+    </div>
+    <div class="slide-number">7 / 28</div>
+</section>
+
+<!-- ===== SLIDE 8: CREATE REPO ===== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-dark">GitHub 실습</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <h2 class="reveal" style="margin-bottom:var(--content-gap);">실습: 저장소(Repository) 만들기</h2>
+        <div class="left-content" style="display:flex;flex-direction:column;gap:var(--element-gap);">
+            <div class="step reveal reveal-delay-1">
+                <div class="step-num" style="background:var(--text-dark);">1</div>
+                <div>
+                    <h3>+ 버튼 → "New repository"</h3>
+                    <p class="small">오른쪽 상단의 <strong>+</strong> 아이콘 클릭</p>
+                </div>
+            </div>
+            <div class="step reveal reveal-delay-2">
+                <div class="step-num" style="background:var(--accent-teal);">2</div>
+                <div>
+                    <h3>이름 입력</h3>
+                    <p class="small">Repository name: <strong>my-website</strong> (영문, 소문자, 하이픈)</p>
+                </div>
+            </div>
+            <div class="step reveal reveal-delay-3">
+                <div class="step-num" style="background:var(--accent-sky);">3</div>
+                <div>
+                    <h3>Public 선택 → Create</h3>
+                    <p class="small"><strong>Public</strong> (공개) 선택 → "Create repository" 클릭</p>
+                </div>
+            </div>
+        </div>
+        <div class="highlight-box reveal reveal-delay-4" style="max-width:min(90vw,600px);margin:var(--element-gap) auto 0;">
+            <p class="small">💡 저장소(Repository) = <strong>프로젝트 폴더</strong>. 줄여서 "레포(repo)"라고 부릅니다</p>
+        </div>
+    </div>
+    <div class="slide-number">8 / 28</div>
+</section>
+
+<!-- ===== SLIDE 9: UPLOAD CODE ===== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-dark">GitHub 실습</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <h2 class="reveal" style="margin-bottom:var(--content-gap);">실습: HTML 파일 올리기</h2>
+        <div class="left-content" style="display:flex;flex-direction:column;gap:var(--element-gap);">
+            <div class="step reveal reveal-delay-1">
+                <div class="step-num" style="background:var(--text-dark);">1</div>
+                <div>
+                    <h3>"uploading an existing file" 클릭</h3>
+                    <p class="small">레포 생성 직후 나오는 링크, 또는 "Add file" → "Upload files"</p>
+                </div>
+            </div>
+            <div class="step reveal reveal-delay-2">
+                <div class="step-num" style="background:var(--accent-teal);">2</div>
+                <div>
+                    <h3>파일 드래그 & 드롭</h3>
+                    <p class="small">1강에서 만든 <strong>index.html</strong> 파일을 끌어다 놓기</p>
+                </div>
+            </div>
+            <div class="step reveal reveal-delay-3">
+                <div class="step-num" style="background:var(--accent-sky);">3</div>
+                <div>
+                    <h3>"Commit changes" 클릭</h3>
+                    <p class="small">하단의 초록색 버튼 클릭 → 업로드 완료!</p>
+                </div>
+            </div>
+        </div>
+        <div class="warn-box reveal reveal-delay-4" style="max-width:min(90vw,600px);margin:var(--element-gap) auto 0;">
+            <p class="small">⚠️ 메인 파일은 반드시 <strong>index.html</strong>이어야 합니다! (대소문자 주의)</p>
+        </div>
+    </div>
+    <div class="slide-number">9 / 28</div>
+</section>
+
+<!-- ===== SLIDE 10: SECTION - VERCEL ===== -->
+<section class="slide centered" style="background:linear-gradient(135deg,#E8F4FD,#E8FFE8);">
+    <div class="deco-circle" style="width:clamp(160px,22vw,350px);height:clamp(160px,22vw,350px);background:var(--accent-teal);top:-5%;left:-5%;opacity:0.15;"></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <div class="reveal"><span class="pill pill-teal" style="margin-bottom:var(--element-gap);display:inline-block;">PART 2</span></div>
+        <h1 class="reveal reveal-delay-1">🚀 Vercel로<br>배포하기</h1>
+        <p class="reveal reveal-delay-2" style="font-size:var(--h3-size);color:var(--text-mid);">클릭 몇 번으로 세상에 공개!</p>
+    </div>
+    <div class="slide-number">10 / 28</div>
+</section>
+
+<!-- ===== SLIDE 11: WHAT IS VERCEL ===== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-teal">Vercel</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <div class="term-card reveal" style="max-width:min(90vw,800px);margin:0 auto;border-top:4px solid var(--accent-teal);">
+            <div class="term-word" style="color:var(--accent-teal);"><span class="vercel-logo" style="color:var(--accent-teal);"></span> Vercel이란?</div>
+            <div class="term-eng">vercel.com</div>
+            <div style="font-size:var(--body-size);color:var(--text-mid);margin-bottom:var(--element-gap);">
+                웹사이트를 인터넷에 <strong>무료로 올려주는</strong> 호스팅 서비스
+            </div>
+        </div>
+        <div class="card reveal reveal-delay-1" style="max-width:min(90vw,800px);margin:var(--element-gap) auto 0;">
+            <h3 style="font-size:var(--body-size);margin-bottom:var(--element-gap);text-align:center;">왜 Vercel을 쓰나요?</h3>
+            <div class="grid-3" style="text-align:center;">
+                <div>
+                    <div style="font-size:clamp(1.5rem,2.5vw,2rem);">💰</div>
+                    <p class="small"><strong>무료</strong></p>
+                    <p class="small" style="color:var(--text-light);">개인 프로젝트는<br>완전 무료</p>
+                </div>
+                <div>
+                    <div style="font-size:clamp(1.5rem,2.5vw,2rem);">⚡</div>
+                    <p class="small"><strong>초간단</strong></p>
+                    <p class="small" style="color:var(--text-light);">GitHub 연결하면<br>자동 배포</p>
+                </div>
+                <div>
+                    <div style="font-size:clamp(1.5rem,2.5vw,2rem);">🌍</div>
+                    <p class="small"><strong>글로벌</strong></p>
+                    <p class="small" style="color:var(--text-light);">전 세계 어디서나<br>빠르게 접속</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="slide-number">11 / 28</div>
+</section>
+
+<!-- ===== SLIDE 12: VERCEL SIGNUP ===== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-teal">Vercel 실습</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <h2 class="reveal" style="margin-bottom:var(--content-gap);">실습: Vercel 가입하기</h2>
+        <div class="left-content" style="display:flex;flex-direction:column;gap:var(--element-gap);">
+            <div class="step reveal reveal-delay-1">
+                <div class="step-num" style="background:var(--accent-teal);">1</div>
+                <div>
+                    <h3>vercel.com 접속</h3>
+                    <p class="small">브라우저에서 <strong>vercel.com</strong> 입력</p>
+                </div>
+            </div>
+            <div class="step reveal reveal-delay-2">
+                <div class="step-num" style="background:var(--text-dark);">2</div>
+                <div>
+                    <h3>"Sign Up" → "Continue with GitHub"</h3>
+                    <p class="small">GitHub 계정으로 가입하면 <strong>자동 연동</strong>됩니다!</p>
+                </div>
+            </div>
+            <div class="step reveal reveal-delay-3">
+                <div class="step-num" style="background:var(--accent-sky);">3</div>
+                <div>
+                    <h3>GitHub 권한 허용</h3>
+                    <p class="small">"Authorize Vercel" 클릭 → Vercel이 GitHub 레포에 접근 가능</p>
+                </div>
+            </div>
+        </div>
+        <div class="highlight-box reveal reveal-delay-4" style="max-width:min(90vw,600px);margin:var(--element-gap) auto 0;">
+            <p class="small">💡 <strong>반드시 GitHub 계정으로 가입하세요!</strong> 이메일 가입하면 연동이 복잡해집니다</p>
+        </div>
+    </div>
+    <div class="slide-number">12 / 28</div>
+</section>
+
+<!-- ===== SLIDE 13: DEPLOY FROM GITHUB ===== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-teal">Vercel 실습</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <h2 class="reveal" style="margin-bottom:var(--content-gap);">실습: GitHub 레포 배포하기</h2>
+        <div class="left-content" style="display:flex;flex-direction:column;gap:var(--element-gap);">
+            <div class="step reveal reveal-delay-1">
+                <div class="step-num" style="background:var(--accent-teal);">1</div>
+                <div>
+                    <h3>"Add New Project" 클릭</h3>
+                    <p class="small">대시보드에서 <strong>"Add New..."</strong> → <strong>"Project"</strong></p>
+                </div>
+            </div>
+            <div class="step reveal reveal-delay-2">
+                <div class="step-num" style="background:var(--text-dark);">2</div>
+                <div>
+                    <h3>GitHub 레포 선택</h3>
+                    <p class="small">방금 만든 <strong>my-website</strong> 레포 옆의 <strong>"Import"</strong> 클릭</p>
+                </div>
+            </div>
+            <div class="step reveal reveal-delay-3">
+                <div class="step-num" style="background:var(--accent-sky);">3</div>
+                <div>
+                    <h3>"Deploy" 클릭</h3>
+                    <p class="small">설정은 건드리지 않고 그냥 <strong>"Deploy"</strong> 버튼 클릭!</p>
+                </div>
+            </div>
+            <div class="step reveal reveal-delay-4">
+                <div class="step-num" style="background:var(--accent-mint);">4</div>
+                <div>
+                    <h3>🎉 완료! URL 확인</h3>
+                    <p class="small">배포 완료 후 <strong>my-website-xxxx.vercel.app</strong> 주소 생성!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="slide-number">13 / 28</div>
+</section>
+
+<!-- ===== SLIDE 14: SUCCESS ===== -->
+<section class="slide centered" style="background:linear-gradient(135deg,#E8FFE8,#EDF2FB);">
+    <div class="slide-content centered" style="z-index:1;">
+        <div class="reveal" style="font-size:clamp(3rem,6vw,5rem);margin-bottom:var(--element-gap);">🎉</div>
+        <h2 class="reveal reveal-delay-1" style="margin-bottom:var(--content-gap);">축하합니다!</h2>
+        <div class="card reveal reveal-delay-2" style="max-width:min(90vw,600px);margin:0 auto;">
+            <p style="font-size:var(--h3-size);margin-bottom:var(--element-gap);">
+                여러분의 홈페이지가<br><strong style="color:var(--accent-teal);">전 세계에 공개</strong>되었습니다!
+            </p>
+            <div class="code-block" style="text-align:center;margin:0 auto;">
+                https://<span class="str">my-website-xxxx</span>.vercel.app
+            </div>
+            <p class="small" style="margin-top:var(--element-gap);">이 주소를 친구에게 보내보세요! 핸드폰으로도 접속됩니다 📱</p>
+        </div>
+    </div>
+    <div class="slide-number">14 / 28</div>
+</section>
+
+<!-- ===== SLIDE 15: SECTION - AUTO DEPLOY ===== -->
+<section class="slide centered" style="background:linear-gradient(135deg,#F3E8FF,#EDF2FB);">
+    <div class="deco-circle" style="width:clamp(160px,22vw,350px);height:clamp(160px,22vw,350px);background:var(--accent-sky);bottom:-5%;right:-5%;opacity:0.15;"></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <div class="reveal"><span class="pill pill-sky" style="margin-bottom:var(--element-gap);display:inline-block;">PART 3</span></div>
+        <h1 class="reveal reveal-delay-1">🔗 자동 배포<br>연동의 마법</h1>
+        <p class="reveal reveal-delay-2" style="font-size:var(--h3-size);color:var(--text-mid);">코드를 수정하면 자동으로 반영!</p>
+    </div>
+    <div class="slide-number">15 / 28</div>
+</section>
+
+<!-- ===== SLIDE 16: HOW AUTO DEPLOY WORKS ===== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-sky">자동 배포</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <h2 class="reveal" style="margin-bottom:var(--content-gap);">자동 배포의 원리</h2>
+        <div class="card reveal reveal-delay-1" style="max-width:min(90vw,850px);margin:0 auto;">
+            <div class="flow-row" style="gap:clamp(0.3rem,0.8vw,0.6rem);">
+                <div class="diagram-box" style="border-color:var(--accent-lavender);color:var(--accent-lavender);font-size:var(--small-size);">
+                    ✏️ GitHub에서<br>코드 수정
+                </div>
+                <span class="diagram-arrow">→</span>
+                <div class="diagram-box" style="border-color:var(--accent-sky);color:var(--accent-sky);font-size:var(--small-size);">
+                    📡 Vercel이<br>변경 감지
+                </div>
+                <span class="diagram-arrow">→</span>
+                <div class="diagram-box" style="border-color:var(--accent-teal);color:var(--accent-teal);font-size:var(--small-size);">
+                    🔨 자동으로<br>새 버전 빌드
+                </div>
+                <span class="diagram-arrow">→</span>
+                <div class="diagram-box" style="border-color:var(--accent-mint);color:var(--accent-mint);font-size:var(--small-size);">
+                    🌐 사이트<br>자동 업데이트
+                </div>
+            </div>
+        </div>
+        <div class="highlight-box reveal reveal-delay-2" style="max-width:min(90vw,600px);margin:var(--element-gap) auto 0;">
+            <p class="small">💡 GitHub에 코드를 올리기만 하면 <strong>1~2분 내에</strong> 사이트가 자동 업데이트됩니다!</p>
+        </div>
+    </div>
+    <div class="slide-number">16 / 28</div>
+</section>
+
+<!-- ===== SLIDE 17: PRACTICE UPDATE ===== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-sky">자동 배포 실습</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <h2 class="reveal" style="margin-bottom:var(--content-gap);">실습: 코드 수정 → 자동 반영 확인</h2>
+        <div class="left-content" style="display:flex;flex-direction:column;gap:var(--element-gap);">
+            <div class="step reveal reveal-delay-1">
+                <div class="step-num" style="background:var(--text-dark);">1</div>
+                <div>
+                    <h3>GitHub에서 파일 수정</h3>
+                    <p class="small">레포 → index.html 클릭 → <strong>✏️ 연필 아이콘</strong> (Edit) 클릭</p>
+                </div>
+            </div>
+            <div class="step reveal reveal-delay-2">
+                <div class="step-num" style="background:var(--accent-teal);">2</div>
+                <div>
+                    <h3>제목이나 내용 변경</h3>
+                    <p class="small">&lt;h1&gt; 태그 안의 텍스트를 <strong>다른 내용</strong>으로 변경</p>
+                </div>
+            </div>
+            <div class="step reveal reveal-delay-3">
+                <div class="step-num" style="background:var(--accent-sky);">3</div>
+                <div>
+                    <h3>"Commit changes" 클릭</h3>
+                    <p class="small">초록색 버튼 클릭으로 저장</p>
+                </div>
+            </div>
+            <div class="step reveal reveal-delay-4">
+                <div class="step-num" style="background:var(--accent-mint);">4</div>
+                <div>
+                    <h3>1~2분 후 사이트 새로고침</h3>
+                    <p class="small">Vercel 사이트에서 <strong>자동으로 변경 반영</strong> 확인!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="slide-number">17 / 28</div>
+</section>
+
+<!-- ===== SLIDE 18: CLAUDE + GITHUB WORKFLOW ===== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-sky">워크플로우</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <h2 class="reveal" style="margin-bottom:var(--content-gap);">실전 워크플로우: Claude + GitHub + Vercel</h2>
+        <div class="card reveal reveal-delay-1" style="max-width:min(90vw,800px);margin:0 auto;">
+            <div style="display:flex;flex-direction:column;gap:clamp(0.3rem,0.8vw,0.6rem);">
+                <div style="display:flex;align-items:center;gap:0.5rem;">
+                    <span class="pill pill-lavender" style="min-width:fit-content;">Step 1</span>
+                    <p class="small">Claude에게 홈페이지 만들어달라고 요청</p>
+                </div>
+                <div style="display:flex;align-items:center;gap:0.5rem;">
+                    <span class="pill pill-sky" style="min-width:fit-content;">Step 2</span>
+                    <p class="small">받은 코드를 GitHub에 업로드</p>
+                </div>
+                <div style="display:flex;align-items:center;gap:0.5rem;">
+                    <span class="pill pill-teal" style="min-width:fit-content;">Step 3</span>
+                    <p class="small">Vercel이 자동으로 배포 → 사이트 공개!</p>
+                </div>
+                <div style="display:flex;align-items:center;gap:0.5rem;">
+                    <span class="pill pill-pink" style="min-width:fit-content;">Step 4</span>
+                    <p class="small">수정이 필요하면 Claude에게 다시 요청 → GitHub 업데이트 → 자동 반영</p>
+                </div>
+            </div>
+        </div>
+        <div class="highlight-box reveal reveal-delay-2" style="max-width:min(90vw,600px);margin:var(--element-gap) auto 0;">
+            <p class="small">🚀 코딩 없이도 <strong>전문 웹사이트 운영</strong>이 가능한 워크플로우!</p>
+        </div>
+    </div>
+    <div class="slide-number">18 / 28</div>
+</section>
+
+<!-- ===== SLIDE 19: SECTION - DOMAIN ===== -->
+<section class="slide centered" style="background:linear-gradient(135deg,#FDE8EE,#EDF2FB);">
+    <div class="deco-circle" style="width:clamp(160px,22vw,350px);height:clamp(160px,22vw,350px);background:var(--accent-pink);top:-5%;right:-5%;opacity:0.15;"></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <div class="reveal"><span class="pill pill-pink" style="margin-bottom:var(--element-gap);display:inline-block;">PART 4</span></div>
+        <h1 class="reveal reveal-delay-1">🌐 나만의 도메인<br>연결하기</h1>
+        <p class="reveal reveal-delay-2" style="font-size:var(--h3-size);color:var(--text-mid);">my-website-xxxx.vercel.app → 내이름.com</p>
+    </div>
+    <div class="slide-number">19 / 28</div>
+</section>
+
+<!-- ===== SLIDE 20: DOMAIN CONCEPTS ===== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-pink">도메인</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <h2 class="reveal" style="margin-bottom:var(--content-gap);">도메인 기본 개념</h2>
+        <div class="two-col reveal reveal-delay-1" style="max-width:min(90vw,800px);">
+            <div class="card" style="text-align:center;">
+                <div style="font-size:clamp(1.5rem,2.5vw,2rem);margin-bottom:0.3rem;">🏷️</div>
+                <p class="small"><strong>무료 도메인 (기본)</strong></p>
+                <div class="code-block" style="margin-top:0.3rem;font-size:clamp(0.5rem,0.9vw,0.75rem);">
+                    my-website.vercel.app
+                </div>
+                <p class="small" style="margin-top:0.3rem;color:var(--text-light);">Vercel이 자동 제공<br>비용: 무료</p>
+            </div>
+            <div class="card" style="text-align:center;">
+                <div style="font-size:clamp(1.5rem,2.5vw,2rem);margin-bottom:0.3rem;">✨</div>
+                <p class="small"><strong>커스텀 도메인</strong></p>
+                <div class="code-block" style="margin-top:0.3rem;font-size:clamp(0.5rem,0.9vw,0.75rem);">
+                    <span class="str">내이름.com</span>
+                </div>
+                <p class="small" style="margin-top:0.3rem;color:var(--text-light);">직접 구매 필요<br>비용: 연 1~2만원</p>
+            </div>
+        </div>
+        <div class="highlight-box reveal reveal-delay-2" style="max-width:min(90vw,600px);margin:var(--element-gap) auto 0;">
+            <p class="small">💡 무료 도메인으로도 충분합니다! 커스텀 도메인은 <strong>나중에 필요할 때</strong> 설정해도 됩니다</p>
+        </div>
+    </div>
+    <div class="slide-number">20 / 28</div>
+</section>
+
+<!-- ===== SLIDE 21: WHERE TO BUY DOMAIN ===== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-pink">도메인 구매</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <h2 class="reveal" style="margin-bottom:var(--content-gap);">도메인은 어디서 사나요?</h2>
+        <div class="grid-3 reveal reveal-delay-1" style="max-width:min(90vw,850px);margin:0 auto;">
+            <div class="card" style="text-align:center;border-top:4px solid var(--accent-teal);">
+                <div style="font-size:clamp(1.3rem,2vw,1.8rem);margin-bottom:0.3rem;">▲</div>
+                <h3 style="font-size:var(--body-size);">Vercel 도메인</h3>
+                <p class="small" style="margin-top:0.2rem;">Vercel에서 직접 구매<br>설정이 가장 간단!</p>
+                <p class="small" style="color:var(--accent-teal);font-weight:600;">추천!</p>
+            </div>
+            <div class="card" style="text-align:center;border-top:4px solid var(--accent-sky);">
+                <div style="font-size:clamp(1.3rem,2vw,1.8rem);margin-bottom:0.3rem;">🌐</div>
+                <h3 style="font-size:var(--body-size);">Namecheap</h3>
+                <p class="small" style="margin-top:0.2rem;">해외 도메인 업체<br>가격이 저렴</p>
+            </div>
+            <div class="card" style="text-align:center;border-top:4px solid var(--accent-lavender);">
+                <div style="font-size:clamp(1.3rem,2vw,1.8rem);margin-bottom:0.3rem;">🇰🇷</div>
+                <h3 style="font-size:var(--body-size);">가비아 / 호스팅KR</h3>
+                <p class="small" style="margin-top:0.2rem;">한국 도메인 업체<br>.kr 도메인 가능</p>
+            </div>
+        </div>
+        <div class="highlight-box reveal reveal-delay-2" style="max-width:min(90vw,600px);margin:var(--element-gap) auto 0;">
+            <p class="small">💡 <strong>.com</strong> 도메인은 보통 연 $10~15 (약 1.3~2만원)</p>
+        </div>
+    </div>
+    <div class="slide-number">21 / 28</div>
+</section>
+
+<!-- ===== SLIDE 22: VERCEL DOMAIN SETUP STEP 1 ===== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-pink">도메인 설정</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <h2 class="reveal" style="margin-bottom:var(--content-gap);">Vercel에서 도메인 설정하기 (1/2)</h2>
+        <div class="left-content" style="display:flex;flex-direction:column;gap:var(--element-gap);">
+            <div class="step reveal reveal-delay-1">
+                <div class="step-num" style="background:var(--accent-teal);">1</div>
+                <div>
+                    <h3>프로젝트 대시보드 열기</h3>
+                    <p class="small">Vercel 대시보드 → 배포한 프로젝트 클릭</p>
+                </div>
+            </div>
+            <div class="step reveal reveal-delay-2">
+                <div class="step-num" style="background:var(--text-dark);">2</div>
+                <div>
+                    <h3>Settings 탭 → Domains</h3>
+                    <p class="small">상단 메뉴에서 <strong>"Settings"</strong> → 왼쪽 메뉴에서 <strong>"Domains"</strong></p>
+                </div>
+            </div>
+            <div class="step reveal reveal-delay-3">
+                <div class="step-num" style="background:var(--accent-sky);">3</div>
+                <div>
+                    <h3>도메인 입력</h3>
+                    <p class="small">구매한 도메인 주소 입력 (예: <strong>내이름.com</strong>) → <strong>"Add"</strong></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="slide-number">22 / 28</div>
+</section>
+
+<!-- ===== SLIDE 23: VERCEL DOMAIN SETUP STEP 2 ===== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-pink">도메인 설정</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <h2 class="reveal" style="margin-bottom:var(--content-gap);">Vercel에서 도메인 설정하기 (2/2)</h2>
+        <div class="left-content" style="display:flex;flex-direction:column;gap:var(--element-gap);">
+            <div class="step reveal reveal-delay-1">
+                <div class="step-num" style="background:var(--accent-pink);">4</div>
+                <div>
+                    <h3>DNS 설정 확인</h3>
+                    <p class="small">Vercel이 보여주는 <strong>DNS 레코드</strong>를 확인합니다</p>
+                </div>
+            </div>
+            <div class="card reveal reveal-delay-2" style="text-align:left;">
+                <p class="small" style="font-weight:700;margin-bottom:0.3rem;">Vercel이 알려주는 DNS 정보 예시:</p>
+                <div class="code-block" style="font-size:clamp(0.5rem,0.9vw,0.8rem);">
+                    <span class="comment"># A 레코드</span><br>
+                    Type: <span class="cmd">A</span> &nbsp;&nbsp; Value: <span class="str">76.76.21.21</span><br><br>
+                    <span class="comment"># CNAME 레코드 (www용)</span><br>
+                    Type: <span class="cmd">CNAME</span> &nbsp;&nbsp; Value: <span class="str">cname.vercel-dns.com</span>
+                </div>
+            </div>
+            <div class="step reveal reveal-delay-3">
+                <div class="step-num" style="background:var(--accent-mint);">5</div>
+                <div>
+                    <h3>도메인 업체에서 DNS 설정</h3>
+                    <p class="small">도메인을 산 곳(가비아, Namecheap 등)에서 위 정보를 <strong>DNS 설정</strong>에 입력</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="slide-number">23 / 28</div>
+</section>
+
+<!-- ===== SLIDE 24: DNS EXPLAINED ===== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-pink">도메인</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <div class="term-card reveal" style="max-width:min(90vw,800px);margin:0 auto;border-top:4px solid var(--accent-lavender);">
+            <div class="term-word" style="color:var(--accent-lavender);">DNS란?</div>
+            <div class="term-eng">Domain Name System</div>
+            <div style="font-size:var(--body-size);color:var(--text-mid);margin-bottom:var(--element-gap);">
+                도메인 이름을 실제 서버 주소로 <strong>변환하는 전화번호부</strong>
+            </div>
+        </div>
+        <div class="card reveal reveal-delay-1" style="max-width:min(90vw,800px);margin:var(--element-gap) auto 0;">
+            <div class="flow-row">
+                <div class="diagram-box" style="border-color:var(--accent-pink);color:var(--accent-pink);font-size:var(--small-size);">
+                    👤 사용자<br>"내이름.com"
+                </div>
+                <span class="diagram-arrow">→</span>
+                <div class="diagram-box" style="border-color:var(--accent-lavender);color:var(--accent-lavender);font-size:var(--small-size);">
+                    📖 DNS<br>"76.76.21.21이네!"
+                </div>
+                <span class="diagram-arrow">→</span>
+                <div class="diagram-box" style="border-color:var(--accent-teal);color:var(--accent-teal);font-size:var(--small-size);">
+                    🖥️ Vercel 서버<br>홈페이지 전달
+                </div>
+            </div>
+        </div>
+        <div class="highlight-box reveal reveal-delay-2" style="max-width:min(90vw,600px);margin:var(--element-gap) auto 0;">
+            <p class="small">💡 비유: 전화번호부에서 <strong>"김민수"</strong>를 찾으면 <strong>"010-xxxx-xxxx"</strong>가 나오는 것과 같아요</p>
+        </div>
+    </div>
+    <div class="slide-number">24 / 28</div>
+</section>
+
+<!-- ===== SLIDE 25: SSL / HTTPS ===== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-pink">보너스</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <div class="term-card reveal" style="max-width:min(90vw,800px);margin:0 auto;border-top:4px solid var(--accent-mint);">
+            <div class="term-word" style="color:var(--accent-mint);">🔒 HTTPS / SSL</div>
+            <div class="term-eng">SSL Certificate</div>
+            <div style="font-size:var(--body-size);color:var(--text-mid);margin-bottom:var(--element-gap);">
+                웹사이트와 사용자 사이의 통신을 <strong>암호화</strong>하는 보안 장치
+            </div>
+        </div>
+        <div class="two-col reveal reveal-delay-1" style="margin-top:var(--element-gap);">
+            <div class="card" style="text-align:center;border:2px solid var(--accent-coral);">
+                <p class="small" style="color:var(--accent-coral);font-weight:700;">❌ http://</p>
+                <p class="small">암호화 없음<br>브라우저에 "안전하지 않음" 경고</p>
+            </div>
+            <div class="card" style="text-align:center;border:2px solid var(--accent-mint);">
+                <p class="small" style="color:var(--accent-mint);font-weight:700;">✅ https://</p>
+                <p class="small">암호화됨<br>🔒 자물쇠 아이콘 표시</p>
+            </div>
+        </div>
+        <div class="highlight-box reveal reveal-delay-2" style="max-width:min(90vw,600px);margin:var(--element-gap) auto 0;">
+            <p class="small">💡 Vercel은 <strong>자동으로 무료 SSL 인증서</strong>를 제공합니다! 설정할 것이 없어요</p>
+        </div>
+    </div>
+    <div class="slide-number">25 / 28</div>
+</section>
+
+<!-- ===== SLIDE 26: TROUBLESHOOTING ===== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-coral">문제 해결</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <h2 class="reveal" style="margin-bottom:var(--content-gap);">자주 겪는 문제 & 해결법</h2>
+        <div style="display:flex;flex-direction:column;gap:var(--element-gap);max-width:min(90vw,800px);margin:0 auto;">
+            <div class="card reveal reveal-delay-1" style="text-align:left;">
+                <h3 style="font-size:var(--body-size);color:var(--accent-coral);">😱 404 페이지가 나와요!</h3>
+                <p class="small">→ 파일 이름이 <strong>index.html</strong>인지 확인. Index.html, INDEX.HTML은 안 됩니다.</p>
+            </div>
+            <div class="card reveal reveal-delay-2" style="text-align:left;">
+                <h3 style="font-size:var(--body-size);color:var(--accent-lavender);">😕 GitHub 레포가 안 보여요!</h3>
+                <p class="small">→ Vercel 설정에서 <strong>"Adjust GitHub App Permissions"</strong> 클릭 → 레포 접근 권한 허용</p>
+            </div>
+            <div class="card reveal reveal-delay-3" style="text-align:left;">
+                <h3 style="font-size:var(--body-size);color:var(--accent-sky);">🤔 도메인 연결했는데 안 돼요!</h3>
+                <p class="small">→ DNS 변경은 <strong>최대 48시간</strong> 걸릴 수 있어요. 보통 10분~1시간이면 됩니다.</p>
+            </div>
+            <div class="card reveal reveal-delay-4" style="text-align:left;">
+                <h3 style="font-size:var(--body-size);color:var(--accent-mint);">📋 수정했는데 반영이 안 돼요!</h3>
+                <p class="small">→ Vercel 대시보드에서 배포 상태 확인. <strong>브라우저 캐시 삭제</strong>(Ctrl+Shift+R)도 시도하세요.</p>
+            </div>
+        </div>
+    </div>
+    <div class="slide-number">26 / 28</div>
+</section>
+
+<!-- ===== SLIDE 27: CHEAT SHEET ===== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-dark">정리</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <h2 class="reveal" style="margin-bottom:var(--content-gap);">오늘의 핵심 정리</h2>
+        <div class="grid-2 reveal reveal-delay-1" style="max-width:min(90vw,900px);margin:0 auto;">
+            <div class="card" style="text-align:left;padding:clamp(0.5rem,1.2vw,1rem);">
+                <p class="small" style="font-weight:700;color:var(--text-dark);margin-bottom:0.2rem;">배포 흐름</p>
+                <p style="font-size:var(--small-size);">1. Claude로 코드 생성</p>
+                <p style="font-size:var(--small-size);">2. GitHub에 업로드</p>
+                <p style="font-size:var(--small-size);">3. Vercel에서 Import</p>
+                <p style="font-size:var(--small-size);">4. 자동 배포 완료!</p>
+                <p style="font-size:var(--small-size);">5. (선택) 커스텀 도메인 연결</p>
+            </div>
+            <div class="card" style="text-align:left;padding:clamp(0.5rem,1.2vw,1rem);">
+                <p class="small" style="font-weight:700;color:var(--text-dark);margin-bottom:0.2rem;">핵심 용어</p>
+                <p style="font-size:var(--small-size);"><strong style="color:var(--text-dark);">Repository</strong> — GitHub 프로젝트 폴더</p>
+                <p style="font-size:var(--small-size);"><strong style="color:var(--accent-teal);">Deploy</strong> — 배포 (서버에 올리기)</p>
+                <p style="font-size:var(--small-size);"><strong style="color:var(--accent-pink);">Domain</strong> — 인터넷 주소</p>
+                <p style="font-size:var(--small-size);"><strong style="color:var(--accent-lavender);">DNS</strong> — 도메인 ↔ 서버 연결</p>
+                <p style="font-size:var(--small-size);"><strong style="color:var(--accent-mint);">SSL</strong> — 보안 암호화 (https)</p>
+            </div>
+        </div>
+        <p class="reveal reveal-delay-2 small" style="margin-top:var(--element-gap);">📸 스크린샷 찍어두세요!</p>
+    </div>
+    <div class="slide-number">27 / 28</div>
+</section>
+
+<!-- ===== SLIDE 28: CLOSING ===== -->
+<section class="slide centered" style="background:linear-gradient(135deg,#E8FFE8 0%,#EDF2FB 40%,#F3E8FF 100%);">
+    <div class="deco-circle" style="width:clamp(200px,28vw,450px);height:clamp(200px,28vw,450px);background:var(--accent-teal);top:-8%;right:-5%;"></div>
+    <div class="deco-circle" style="width:clamp(150px,18vw,300px);height:clamp(150px,18vw,300px);background:var(--accent-pink);bottom:5%;left:-3%;"></div>
+    <div class="deco-pill-shape" style="width:clamp(80px,10vw,150px);height:clamp(30px,3vw,50px);background:var(--accent-sky);bottom:30%;right:10%;transform:rotate(-8deg);"></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <div class="reveal"><div style="font-size:clamp(3rem,6vw,5rem);margin-bottom:var(--element-gap);">🚀</div></div>
+        <h1 class="reveal reveal-delay-1" style="margin-bottom:var(--element-gap);">수고하셨습니다!</h1>
+        <p class="reveal reveal-delay-2" style="font-size:var(--h3-size);color:var(--text-mid);margin-bottom:var(--content-gap);">
+            여러분의 홈페이지가<br><strong>인터넷에 살아 숨쉬고 있습니다</strong> 🌍
+        </p>
+        <div class="card reveal reveal-delay-3" style="margin:0 auto;display:inline-block;">
+            <p>친구에게 주소를 보내고 자랑해보세요! 🎉</p>
+        </div>
+    </div>
+    <div class="slide-number">28 / 28</div>
+</section>
+
+<script>
+(function(){
+    'use strict';
+    const s=document.querySelectorAll('.slide'),t=s.length,p=document.getElementById('progress'),n=document.getElementById('navDots');
+    let c=0;
+    s.forEach((_,i)=>{const d=document.createElement('button');d.className='nav-dot'+(i===0?' active':'');d.setAttribute('aria-label','Slide '+(i+1));d.addEventListener('click',()=>g(i));n.appendChild(d)});
+    const dots=n.querySelectorAll('.nav-dot');
+    function u(i){c=i;p.style.width=((i+1)/t*100)+'%';dots.forEach((d,j)=>d.classList.toggle('active',j===i))}
+    function g(i){if(i<0||i>=t)return;s[i].scrollIntoView({behavior:'smooth'});u(i)}
+    document.addEventListener('keydown',e=>{if(['ArrowDown','ArrowRight',' ','PageDown'].includes(e.key)){e.preventDefault();g(Math.min(c+1,t-1))}else if(['ArrowUp','ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();g(Math.max(c-1,0))}else if(e.key==='Home'){e.preventDefault();g(0)}else if(e.key==='End'){e.preventDefault();g(t-1)}});
+    let ty=0;
+    document.addEventListener('touchstart',e=>{ty=e.touches[0].clientY},{passive:true});
+    document.addEventListener('touchend',e=>{const d=ty-e.changedTouches[0].clientY;if(Math.abs(d)>50)g(d>0?Math.min(c+1,t-1):Math.max(c-1,0))},{passive:true});
+    new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){const i=Array.from(s).indexOf(e.target);if(i!==-1)u(i)}})},{threshold:0.6}).observe&&s.forEach(x=>new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){const i=Array.from(s).indexOf(e.target);if(i!==-1)u(i)}})},{threshold:0.6}).observe(x));
+    const ro=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')})},{threshold:0.15});
+    document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
+    u(0);
+})();
+</script>
+
+</body>
+</html>

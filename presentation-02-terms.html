@@ -1,0 +1,1198 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude 활용을 위한 AI 용어 사전</title>
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+/* ===========================================
+   VIEWPORT FITTING: MANDATORY BASE STYLES
+   =========================================== */
+html, body {
+    height: 100%;
+    overflow-x: hidden;
+    margin: 0;
+    padding: 0;
+}
+html {
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+.slide {
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    overflow: hidden;
+    scroll-snap-align: start;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+}
+.slide-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    max-height: 100%;
+    overflow: hidden;
+    padding: var(--slide-padding);
+}
+
+:root {
+    --title-size: clamp(1.5rem, 5vw, 4rem);
+    --h2-size: clamp(1.25rem, 3.5vw, 2.5rem);
+    --h3-size: clamp(1rem, 2.5vw, 1.75rem);
+    --body-size: clamp(0.75rem, 1.5vw, 1.125rem);
+    --small-size: clamp(0.65rem, 1vw, 0.875rem);
+    --slide-padding: clamp(1rem, 4vw, 4rem);
+    --content-gap: clamp(0.5rem, 2vw, 2rem);
+    --element-gap: clamp(0.25rem, 1vw, 1rem);
+
+    /* Pastel Geometry Palette — consistent with lecture 1 */
+    --bg-main: #EDF2FB;
+    --card-bg: #FFFBF0;
+    --card-shadow: rgba(0,0,0,0.06);
+    --accent-pink: #F4A7BB;
+    --accent-mint: #A8E6CF;
+    --accent-lavender: #C3B1E1;
+    --accent-sky: #89CFF0;
+    --accent-peach: #FFDAB9;
+    --accent-coral: #F08080;
+    --accent-gold: #F0D060;
+    --text-dark: #2D3142;
+    --text-mid: #4F5D75;
+    --text-light: #8D99AE;
+    --code-bg: #1E1E2E;
+    --code-text: #CDD6F4;
+    --code-green: #A6E3A1;
+    --code-blue: #89B4FA;
+    --code-pink: #F5C2E7;
+    --code-orange: #FAB387;
+}
+
+/* =========== GENERAL =========== */
+h1 { font-size: var(--title-size); font-weight: 800; color: var(--text-dark); line-height: 1.2; }
+h2 { font-size: var(--h2-size); font-weight: 700; color: var(--text-dark); line-height: 1.3; }
+h3 { font-size: var(--h3-size); font-weight: 600; color: var(--text-dark); line-height: 1.3; }
+p, li { font-size: var(--body-size); color: var(--text-mid); line-height: 1.6; }
+.small { font-size: var(--small-size); color: var(--text-light); }
+
+.pill {
+    display: inline-block;
+    padding: clamp(0.2rem, 0.5vw, 0.4rem) clamp(0.5rem, 1.2vw, 1rem);
+    border-radius: 50px;
+    font-size: var(--small-size);
+    font-weight: 600;
+    letter-spacing: 0.03em;
+}
+.pill-pink { background: var(--accent-pink); color: #fff; }
+.pill-mint { background: var(--accent-mint); color: var(--text-dark); }
+.pill-lavender { background: var(--accent-lavender); color: #fff; }
+.pill-sky { background: var(--accent-sky); color: var(--text-dark); }
+.pill-coral { background: var(--accent-coral); color: #fff; }
+
+.card {
+    background: var(--card-bg);
+    border-radius: clamp(12px, 2vw, 24px);
+    padding: clamp(0.75rem, 2vw, 1.5rem);
+    box-shadow: 0 4px 20px var(--card-shadow);
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
+    gap: clamp(0.5rem, 1.5vw, 1rem);
+}
+.grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(0.5rem, 1.5vw, 1rem);
+}
+.grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(0.5rem, 1.5vw, 1rem);
+}
+
+/* Term definition card */
+.term-card {
+    background: var(--card-bg);
+    border-radius: clamp(12px, 2vw, 24px);
+    padding: clamp(0.75rem, 2vw, 1.5rem);
+    box-shadow: 0 4px 20px var(--card-shadow);
+    text-align: left;
+}
+.term-card .term-word {
+    font-size: var(--h3-size);
+    font-weight: 800;
+    margin-bottom: clamp(0.2rem, 0.5vw, 0.4rem);
+}
+.term-card .term-eng {
+    font-size: var(--small-size);
+    color: var(--text-light);
+    font-weight: 500;
+    margin-bottom: clamp(0.3rem, 0.8vw, 0.6rem);
+}
+.term-card .term-def {
+    font-size: var(--body-size);
+    color: var(--text-mid);
+    line-height: 1.5;
+}
+
+/* Chat bubble */
+.chat-bubble {
+    border-radius: clamp(12px, 2vw, 20px);
+    padding: clamp(0.6rem, 1.5vw, 1rem) clamp(0.8rem, 2vw, 1.2rem);
+    max-width: min(80%, 500px);
+    font-size: var(--body-size);
+    line-height: 1.5;
+    position: relative;
+}
+.chat-user {
+    background: var(--accent-sky);
+    color: var(--text-dark);
+    align-self: flex-end;
+    border-bottom-right-radius: 4px;
+}
+.chat-ai {
+    background: var(--card-bg);
+    color: var(--text-mid);
+    align-self: flex-start;
+    border-bottom-left-radius: 4px;
+    border: 1px solid rgba(0,0,0,0.06);
+}
+.chat-label {
+    font-size: var(--small-size);
+    font-weight: 700;
+    margin-bottom: 0.15rem;
+}
+
+/* Comparison */
+.vs-box {
+    display: flex;
+    align-items: center;
+    gap: clamp(0.5rem, 1.5vw, 1rem);
+    max-width: min(90vw, 800px);
+    margin: 0 auto;
+}
+.vs-divider {
+    font-size: var(--h3-size);
+    font-weight: 800;
+    color: var(--text-light);
+    flex-shrink: 0;
+}
+
+.code-block {
+    background: var(--code-bg);
+    border-radius: clamp(8px, 1.2vw, 16px);
+    padding: clamp(0.75rem, 2vw, 1.5rem);
+    font-family: 'Courier New', monospace;
+    font-size: clamp(0.6rem, 1.2vw, 0.95rem);
+    line-height: 1.6;
+    color: var(--code-text);
+    overflow: hidden;
+    max-width: min(90vw, 900px);
+}
+
+.highlight-box {
+    background: linear-gradient(135deg, rgba(137,207,240,0.15), rgba(195,177,225,0.15));
+    border-left: 4px solid var(--accent-sky);
+    border-radius: 0 clamp(8px,1vw,12px) clamp(8px,1vw,12px) 0;
+    padding: clamp(0.6rem, 1.2vw, 1rem);
+}
+
+.two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(1rem, 3vw, 3rem);
+    align-items: center;
+    max-width: min(90vw, 1000px);
+    margin: 0 auto;
+    width: 100%;
+}
+
+.left-content {
+    max-width: min(90vw, 900px);
+    margin: 0 auto;
+    width: 100%;
+}
+
+.centered { align-items: center; text-align: center; }
+
+/* Decorative shapes */
+.deco-circle {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.15;
+    z-index: 0;
+}
+.deco-pill-shape {
+    position: absolute;
+    border-radius: 50px;
+    opacity: 0.12;
+    z-index: 0;
+}
+
+/* Slide number */
+.slide-number {
+    position: absolute;
+    bottom: clamp(0.75rem, 2vw, 1.5rem);
+    right: clamp(0.75rem, 2vw, 1.5rem);
+    font-size: var(--small-size);
+    color: var(--text-light);
+    font-weight: 600;
+    z-index: 10;
+}
+.section-label {
+    position: absolute;
+    top: clamp(0.75rem, 2vw, 1.5rem);
+    left: clamp(0.75rem, 2vw, 1.5rem);
+    z-index: 10;
+}
+
+/* Reveal animations */
+.reveal { opacity: 0; transform: translateY(20px); transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1); }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+.reveal-delay-4 { transition-delay: 0.4s; }
+.reveal-delay-5 { transition-delay: 0.5s; }
+
+/* Progress bar */
+#progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent-mint), var(--accent-sky), var(--accent-lavender));
+    z-index: 1000;
+    transition: width 0.3s ease;
+}
+
+/* Nav dots */
+.nav-dots {
+    position: fixed;
+    right: clamp(0.5rem, 1.5vw, 1rem);
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    z-index: 1000;
+}
+.nav-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--text-light);
+    opacity: 0.3;
+    cursor: pointer;
+    transition: all 0.3s;
+    border: none;
+    padding: 0;
+}
+.nav-dot.active {
+    opacity: 1;
+    background: var(--accent-sky);
+    transform: scale(1.3);
+}
+
+/* Responsive */
+@media (max-height: 700px) {
+    :root {
+        --slide-padding: clamp(0.75rem, 3vw, 2rem);
+        --content-gap: clamp(0.4rem, 1.5vw, 1rem);
+        --title-size: clamp(1.25rem, 4.5vw, 2.5rem);
+        --h2-size: clamp(1rem, 3vw, 1.75rem);
+    }
+}
+@media (max-height: 600px) {
+    :root {
+        --slide-padding: clamp(0.5rem, 2.5vw, 1.5rem);
+        --content-gap: clamp(0.3rem, 1vw, 0.75rem);
+        --title-size: clamp(1.1rem, 4vw, 2rem);
+        --body-size: clamp(0.7rem, 1.2vw, 0.95rem);
+    }
+    .nav-dots, .decorative { display: none; }
+}
+@media (max-height: 500px) {
+    :root {
+        --slide-padding: clamp(0.4rem, 2vw, 1rem);
+        --title-size: clamp(1rem, 3.5vw, 1.5rem);
+        --h2-size: clamp(0.9rem, 2.5vw, 1.25rem);
+        --body-size: clamp(0.65rem, 1vw, 0.85rem);
+    }
+}
+@media (max-width: 600px) {
+    :root { --title-size: clamp(1.25rem, 7vw, 2.5rem); }
+    .grid-3, .grid-2 { grid-template-columns: 1fr; }
+    .two-col { grid-template-columns: 1fr; }
+}
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.2s !important;
+    }
+    html { scroll-behavior: auto; }
+}
+</style>
+</head>
+<body>
+
+<div id="progress" style="width:0%"></div>
+<nav class="nav-dots" id="navDots" aria-label="Slide navigation"></nav>
+
+<!-- =====================================================
+     SLIDE 1: TITLE
+     ===================================================== -->
+<section class="slide centered" style="background:linear-gradient(135deg, #EDF2FB 0%, #E8FFE8 40%, #F3E8FF 100%);">
+    <div class="deco-circle" style="width:clamp(200px,30vw,500px);height:clamp(200px,30vw,500px);background:var(--accent-sky);top:-8%;left:-5%;"></div>
+    <div class="deco-circle" style="width:clamp(150px,20vw,350px);height:clamp(150px,20vw,350px);background:var(--accent-peach);bottom:5%;right:-3%;"></div>
+    <div class="deco-pill-shape" style="width:clamp(80px,12vw,180px);height:clamp(30px,4vw,60px);background:var(--accent-mint);top:25%;right:10%;transform:rotate(-12deg);"></div>
+    <div class="deco-pill-shape" style="width:clamp(60px,8vw,120px);height:clamp(24px,3vw,40px);background:var(--accent-pink);bottom:30%;left:8%;transform:rotate(8deg);"></div>
+
+    <div class="slide-content centered" style="z-index:1;">
+        <div class="reveal">
+            <span class="pill pill-mint" style="margin-bottom:clamp(0.5rem,1.5vw,1rem);display:inline-block;">강의 2 / AI 용어</span>
+        </div>
+        <h1 class="reveal reveal-delay-1" style="margin-bottom:clamp(0.5rem,1.5vw,1rem);">
+            Claude와 대화하기 위한<br>AI 용어 사전
+        </h1>
+        <p class="reveal reveal-delay-2" style="font-size:var(--h3-size);color:var(--text-mid);margin-bottom:clamp(1rem,2vw,2rem);">
+            알면 10배 잘 쓸 수 있는 핵심 개념들
+        </p>
+        <p class="reveal reveal-delay-3 small">⌨️ 방향키 또는 스크롤로 이동</p>
+    </div>
+    <div class="slide-number">1 / 25</div>
+</section>
+
+<!-- =====================================================
+     SLIDE 2: RECAP
+     ===================================================== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-sky">지난 시간</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <h2 class="reveal" style="margin-bottom:var(--content-gap);">지난 시간에 배운 것</h2>
+        <div class="grid-3 reveal reveal-delay-1" style="max-width:min(90vw,850px);margin:0 auto;">
+            <div class="card" style="text-align:center;border-top:4px solid var(--accent-pink);">
+                <div style="font-size:clamp(1.8rem,3vw,2.5rem);">🦴</div>
+                <h3 style="font-size:var(--body-size);">HTML / CSS</h3>
+                <p class="small">홈페이지의 뼈대와 디자인</p>
+            </div>
+            <div class="card" style="text-align:center;border-top:4px solid var(--accent-mint);">
+                <div style="font-size:clamp(1.8rem,3vw,2.5rem);">🤖</div>
+                <h3 style="font-size:var(--body-size);">Claude</h3>
+                <p class="small">AI에게 코드를 요청하기</p>
+            </div>
+            <div class="card" style="text-align:center;border-top:4px solid var(--accent-lavender);">
+                <div style="font-size:clamp(1.8rem,3vw,2.5rem);">🌐</div>
+                <h3 style="font-size:var(--body-size);">실습</h3>
+                <p class="small">직접 홈페이지 만들기</p>
+            </div>
+        </div>
+        <div class="highlight-box reveal reveal-delay-2" style="max-width:min(90vw,600px);margin:var(--content-gap) auto 0;">
+            <p>오늘은 Claude를 <strong>더 잘 쓰기 위한 용어</strong>들을 배웁니다!</p>
+        </div>
+    </div>
+    <div class="slide-number">2 / 25</div>
+</section>
+
+<!-- =====================================================
+     SLIDE 3: AGENDA
+     ===================================================== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-sky">오늘의 여정</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <h2 class="reveal" style="margin-bottom:var(--content-gap);">오늘 배울 용어들</h2>
+        <div class="grid-2 reveal reveal-delay-1" style="max-width:min(90vw,800px);margin:0 auto;">
+            <div class="card" style="text-align:left;border-left:4px solid var(--accent-pink);">
+                <h3 style="font-size:var(--body-size);margin-bottom:0.2rem;">🧠 기본 개념</h3>
+                <p class="small">AI, LLM, 챗봇</p>
+            </div>
+            <div class="card" style="text-align:left;border-left:4px solid var(--accent-mint);">
+                <h3 style="font-size:var(--body-size);margin-bottom:0.2rem;">💬 대화 용어</h3>
+                <p class="small">프롬프트, 컨텍스트, 토큰</p>
+            </div>
+            <div class="card" style="text-align:left;border-left:4px solid var(--accent-lavender);">
+                <h3 style="font-size:var(--body-size);margin-bottom:0.2rem;">⚙️ 동작 원리</h3>
+                <p class="small">모델, 할루시네이션, 온도</p>
+            </div>
+            <div class="card" style="text-align:left;border-left:4px solid var(--accent-sky);">
+                <h3 style="font-size:var(--body-size);margin-bottom:0.2rem;">🛠️ 활용 기술</h3>
+                <p class="small">프롬프트 엔지니어링, 역할 부여, 아티팩트</p>
+            </div>
+        </div>
+        <p class="reveal reveal-delay-2 small" style="margin-top:var(--element-gap);">각 용어마다 <strong>쉬운 비유</strong>와 <strong>실습 예시</strong>가 함께합니다</p>
+    </div>
+    <div class="slide-number">3 / 25</div>
+</section>
+
+<!-- =====================================================
+     SLIDE 4: AI
+     ===================================================== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-pink">기본 개념</span></div>
+    <div class="deco-circle" style="width:clamp(120px,15vw,250px);height:clamp(120px,15vw,250px);background:var(--accent-peach);bottom:8%;right:5%;"></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <div class="term-card reveal" style="max-width:min(90vw,800px);margin:0 auto;border-top:4px solid var(--accent-pink);">
+            <div class="term-word" style="color:var(--accent-pink);">AI (인공지능)</div>
+            <div class="term-eng">Artificial Intelligence</div>
+            <div class="term-def" style="margin-bottom:var(--element-gap);">
+                사람처럼 <strong>생각하고, 배우고, 판단</strong>할 수 있도록 만든 컴퓨터 프로그램
+            </div>
+            <div class="two-col" style="gap:var(--element-gap);">
+                <div style="text-align:center;">
+                    <div style="font-size:clamp(2rem,4vw,3rem);margin-bottom:0.3rem;">🧑</div>
+                    <p class="small"><strong>사람</strong></p>
+                    <p class="small">경험으로 배움<br>직접 판단</p>
+                </div>
+                <div style="text-align:center;">
+                    <div style="font-size:clamp(2rem,4vw,3rem);margin-bottom:0.3rem;">🤖</div>
+                    <p class="small"><strong>AI</strong></p>
+                    <p class="small">데이터로 배움<br>패턴으로 판단</p>
+                </div>
+            </div>
+        </div>
+        <div class="highlight-box reveal reveal-delay-1" style="max-width:min(90vw,700px);margin:var(--element-gap) auto 0;">
+            <p class="small">💡 Claude, ChatGPT, Gemini, Copilot — 모두 AI의 한 종류입니다</p>
+        </div>
+    </div>
+    <div class="slide-number">4 / 25</div>
+</section>
+
+<!-- =====================================================
+     SLIDE 5: LLM
+     ===================================================== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-pink">기본 개념</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <div class="term-card reveal" style="max-width:min(90vw,800px);margin:0 auto;border-top:4px solid var(--accent-lavender);">
+            <div class="term-word" style="color:var(--accent-lavender);">LLM (대규모 언어 모델)</div>
+            <div class="term-eng">Large Language Model</div>
+            <div class="term-def" style="margin-bottom:var(--element-gap);">
+                수많은 글을 읽고 학습해서 <strong>사람처럼 글을 쓸 수 있는</strong> AI
+            </div>
+        </div>
+        <div class="card reveal reveal-delay-1" style="max-width:min(90vw,800px);margin:var(--element-gap) auto 0;text-align:left;">
+            <h3 style="font-size:var(--body-size);margin-bottom:var(--element-gap);">📚 비유: 엄청나게 많이 읽은 사람</h3>
+            <div class="grid-3" style="text-align:center;">
+                <div>
+                    <div style="font-size:clamp(1.5rem,2.5vw,2rem);">📖</div>
+                    <p class="small"><strong>책, 논문, 뉴스,<br>웹사이트...</strong></p>
+                    <p class="small" style="color:var(--text-light);">수조 개의 단어</p>
+                </div>
+                <div>
+                    <div style="font-size:clamp(1.5rem,2.5vw,2rem);">→ 🧠 →</div>
+                    <p class="small"><strong>패턴 학습</strong></p>
+                    <p class="small" style="color:var(--text-light);">언어의 규칙 이해</p>
+                </div>
+                <div>
+                    <div style="font-size:clamp(1.5rem,2.5vw,2rem);">✍️</div>
+                    <p class="small"><strong>새 글 작성</strong></p>
+                    <p class="small" style="color:var(--text-light);">질문에 답변 생성</p>
+                </div>
+            </div>
+        </div>
+        <p class="reveal reveal-delay-2 small" style="margin-top:var(--element-gap);">Claude = Anthropic이 만든 LLM</p>
+    </div>
+    <div class="slide-number">5 / 25</div>
+</section>
+
+<!-- =====================================================
+     SLIDE 6: CHATBOT
+     ===================================================== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-pink">기본 개념</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <div class="term-card reveal" style="max-width:min(90vw,800px);margin:0 auto;border-top:4px solid var(--accent-mint);">
+            <div class="term-word" style="color:var(--accent-mint);">챗봇</div>
+            <div class="term-eng">Chatbot</div>
+            <div class="term-def">
+                채팅(대화) 형태로 사용하는 AI 프로그램
+            </div>
+        </div>
+        <div class="card reveal reveal-delay-1" style="max-width:min(90vw,700px);margin:var(--element-gap) auto 0;">
+            <div style="display:flex;flex-direction:column;gap:clamp(0.4rem,1vw,0.8rem);padding:clamp(0.3rem,0.8vw,0.5rem) 0;">
+                <div style="display:flex;flex-direction:column;gap:clamp(0.3rem,0.6vw,0.5rem);">
+                    <div class="chat-bubble chat-user" style="margin-left:auto;">
+                        <div class="chat-label" style="color:var(--text-dark);">나</div>
+                        파이썬이 뭐야?
+                    </div>
+                    <div class="chat-bubble chat-ai">
+                        <div class="chat-label" style="color:var(--accent-lavender);">Claude</div>
+                        파이썬은 프로그래밍 언어예요. 간결하고 읽기 쉬워서 초보자에게 인기가 많아요! 🐍
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="highlight-box reveal reveal-delay-2" style="max-width:min(90vw,600px);margin:var(--element-gap) auto 0;">
+            <p class="small">Claude는 <strong>채팅 형태</strong>로 쓸 수 있는 LLM 기반 챗봇입니다</p>
+        </div>
+    </div>
+    <div class="slide-number">6 / 25</div>
+</section>
+
+<!-- =====================================================
+     SLIDE 7: SECTION BREAK - CONVERSATION
+     ===================================================== -->
+<section class="slide centered" style="background:linear-gradient(135deg,#E8FFE8,#EDF2FB);">
+    <div class="deco-circle" style="width:clamp(160px,22vw,350px);height:clamp(160px,22vw,350px);background:var(--accent-mint);top:-5%;right:-5%;opacity:0.2;"></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <div class="reveal">
+            <span class="pill pill-mint" style="margin-bottom:var(--element-gap);display:inline-block;">PART 2</span>
+        </div>
+        <h1 class="reveal reveal-delay-1">대화 용어</h1>
+        <p class="reveal reveal-delay-2" style="font-size:var(--h3-size);color:var(--text-mid);">
+            Claude와 대화할 때 쓰는 말들 💬
+        </p>
+    </div>
+    <div class="slide-number">7 / 25</div>
+</section>
+
+<!-- =====================================================
+     SLIDE 8: PROMPT
+     ===================================================== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-mint">대화 용어</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <div class="term-card reveal" style="max-width:min(90vw,800px);margin:0 auto;border-top:4px solid var(--accent-sky);">
+            <div class="term-word" style="color:var(--accent-sky);">프롬프트</div>
+            <div class="term-eng">Prompt</div>
+            <div class="term-def">
+                AI에게 보내는 <strong>질문이나 요청</strong>. 내가 입력하는 모든 메시지가 프롬프트입니다.
+            </div>
+        </div>
+        <div class="two-col reveal reveal-delay-1" style="margin-top:var(--element-gap);">
+            <div class="card" style="text-align:left;border-left:4px solid #FF6B6B;">
+                <p class="small" style="color:#FF6B6B;font-weight:700;">❌ 막연한 프롬프트</p>
+                <p class="small" style="margin-top:0.2rem;">"홈페이지 만들어줘"</p>
+            </div>
+            <div class="card" style="text-align:left;border-left:4px solid var(--accent-mint);">
+                <p class="small" style="color:var(--accent-mint);font-weight:700;">✅ 구체적인 프롬프트</p>
+                <p class="small" style="margin-top:0.2rem;">"카페 소개 페이지를 만들어줘. 메뉴, 위치, 영업시간 포함. 따뜻한 갈색 톤으로."</p>
+            </div>
+        </div>
+        <div class="highlight-box reveal reveal-delay-2" style="max-width:min(90vw,600px);margin:var(--element-gap) auto 0;">
+            <p class="small">💡 <strong>프롬프트가 구체적일수록 결과가 좋습니다</strong> — 주문서처럼 상세하게!</p>
+        </div>
+    </div>
+    <div class="slide-number">8 / 25</div>
+</section>
+
+<!-- =====================================================
+     SLIDE 9: CONTEXT
+     ===================================================== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-mint">대화 용어</span></div>
+    <div class="deco-pill-shape" style="width:clamp(80px,12vw,160px);height:clamp(28px,3.5vw,50px);background:var(--accent-lavender);top:15%;right:8%;transform:rotate(-10deg);"></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <div class="term-card reveal" style="max-width:min(90vw,800px);margin:0 auto;border-top:4px solid var(--accent-lavender);">
+            <div class="term-word" style="color:var(--accent-lavender);">컨텍스트 (맥락)</div>
+            <div class="term-eng">Context</div>
+            <div class="term-def">
+                AI가 대화를 이해하기 위해 참고하는 <strong>앞뒤 내용</strong>
+            </div>
+        </div>
+        <div class="card reveal reveal-delay-1" style="max-width:min(90vw,800px);margin:var(--element-gap) auto 0;text-align:left;">
+            <h3 style="font-size:var(--body-size);margin-bottom:var(--element-gap);">📖 비유: 대화의 기억력</h3>
+            <div class="grid-2" style="text-align:center;">
+                <div>
+                    <div style="font-size:clamp(1.5rem,2.5vw,2rem);margin-bottom:0.3rem;">👫</div>
+                    <p class="small"><strong>친구와 대화</strong></p>
+                    <p class="small">아까 한 얘기를 기억하고 이어서 대화</p>
+                </div>
+                <div>
+                    <div style="font-size:clamp(1.5rem,2.5vw,2rem);margin-bottom:0.3rem;">🤖</div>
+                    <p class="small"><strong>Claude와 대화</strong></p>
+                    <p class="small">같은 대화창의 내용을 기억하고 이어서 답변</p>
+                </div>
+            </div>
+        </div>
+        <div class="highlight-box reveal reveal-delay-2" style="max-width:min(90vw,600px);margin:var(--element-gap) auto 0;">
+            <p class="small">⚠️ <strong>새 대화를 시작하면</strong> 이전 대화의 컨텍스트는 사라집니다!</p>
+        </div>
+    </div>
+    <div class="slide-number">9 / 25</div>
+</section>
+
+<!-- =====================================================
+     SLIDE 10: TOKEN
+     ===================================================== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-mint">대화 용어</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <div class="term-card reveal" style="max-width:min(90vw,800px);margin:0 auto;border-top:4px solid var(--accent-peach);">
+            <div class="term-word" style="color:var(--accent-coral);">토큰</div>
+            <div class="term-eng">Token</div>
+            <div class="term-def">
+                AI가 글을 처리하는 <strong>최소 단위</strong>. 단어 하나 또는 단어의 일부분.
+            </div>
+        </div>
+        <div class="card reveal reveal-delay-1" style="max-width:min(90vw,800px);margin:var(--element-gap) auto 0;text-align:left;">
+            <h3 style="font-size:var(--body-size);margin-bottom:var(--element-gap);">🧩 비유: 레고 블록</h3>
+            <div style="display:flex;flex-direction:column;gap:clamp(0.3rem,0.6vw,0.5rem);">
+                <div style="display:flex;align-items:center;gap:0.5rem;">
+                    <span class="pill pill-sky" style="font-family:monospace;">안녕</span>
+                    <span class="pill pill-pink" style="font-family:monospace;">하세</span>
+                    <span class="pill pill-mint" style="font-family:monospace;">요</span>
+                    <span class="small">→ 약 3토큰</span>
+                </div>
+                <div style="display:flex;align-items:center;gap:0.5rem;">
+                    <span class="pill pill-lavender" style="font-family:monospace;">Hello</span>
+                    <span class="pill pill-sky" style="font-family:monospace;"> World</span>
+                    <span class="small">→ 약 2토큰</span>
+                </div>
+            </div>
+        </div>
+        <div class="highlight-box reveal reveal-delay-2" style="max-width:min(90vw,600px);margin:var(--element-gap) auto 0;">
+            <p class="small">💰 <strong>토큰을 많이 쓸수록 비용이 올라갑니다</strong> — 무료 플랜에는 사용량 제한이 있어요</p>
+        </div>
+    </div>
+    <div class="slide-number">10 / 25</div>
+</section>
+
+<!-- =====================================================
+     SLIDE 11: CONTEXT WINDOW
+     ===================================================== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-mint">대화 용어</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <div class="term-card reveal" style="max-width:min(90vw,800px);margin:0 auto;border-top:4px solid var(--accent-sky);">
+            <div class="term-word" style="color:var(--accent-sky);">컨텍스트 윈도우</div>
+            <div class="term-eng">Context Window</div>
+            <div class="term-def">
+                AI가 한 번에 기억할 수 있는 <strong>대화 내용의 최대 크기</strong>
+            </div>
+        </div>
+        <div class="card reveal reveal-delay-1" style="max-width:min(90vw,800px);margin:var(--element-gap) auto 0;text-align:center;">
+            <h3 style="font-size:var(--body-size);margin-bottom:var(--element-gap);">📋 비유: 책상 위의 공간</h3>
+            <div class="grid-2" style="align-items:center;">
+                <div>
+                    <div style="font-size:clamp(1.5rem,2.5vw,2rem);margin-bottom:0.3rem;">📄📄📄</div>
+                    <p class="small"><strong>책상이 좁으면</strong></p>
+                    <p class="small">문서 3장만 펼쳐볼 수 있음<br>→ 옛날 AI</p>
+                </div>
+                <div>
+                    <div style="font-size:clamp(1.5rem,2.5vw,2rem);margin-bottom:0.3rem;">📄📄📄📄📄📄📄📄</div>
+                    <p class="small"><strong>책상이 넓으면</strong></p>
+                    <p class="small">문서 100장도 펼쳐볼 수 있음<br>→ 최신 Claude</p>
+                </div>
+            </div>
+        </div>
+        <p class="reveal reveal-delay-2 small" style="margin-top:var(--element-gap);">대화가 너무 길어지면 처음 내용을 잊을 수 있어요 — 그때 새 대화를 시작하세요</p>
+    </div>
+    <div class="slide-number">11 / 25</div>
+</section>
+
+<!-- =====================================================
+     SLIDE 12: SECTION BREAK - HOW IT WORKS
+     ===================================================== -->
+<section class="slide centered" style="background:linear-gradient(135deg,#F3E8FF,#EDF2FB);">
+    <div class="deco-circle" style="width:clamp(160px,22vw,350px);height:clamp(160px,22vw,350px);background:var(--accent-lavender);bottom:-5%;left:-5%;opacity:0.2;"></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <div class="reveal">
+            <span class="pill pill-lavender" style="margin-bottom:var(--element-gap);display:inline-block;">PART 3</span>
+        </div>
+        <h1 class="reveal reveal-delay-1">동작 원리</h1>
+        <p class="reveal reveal-delay-2" style="font-size:var(--h3-size);color:var(--text-mid);">
+            Claude는 어떻게 작동할까? ⚙️
+        </p>
+    </div>
+    <div class="slide-number">12 / 25</div>
+</section>
+
+<!-- =====================================================
+     SLIDE 13: MODEL
+     ===================================================== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-lavender">동작 원리</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <div class="term-card reveal" style="max-width:min(90vw,800px);margin:0 auto;border-top:4px solid var(--accent-pink);">
+            <div class="term-word" style="color:var(--accent-pink);">모델</div>
+            <div class="term-eng">Model</div>
+            <div class="term-def">
+                학습이 완료된 AI의 <strong>"두뇌"</strong>. 같은 AI도 여러 버전의 모델이 있습니다.
+            </div>
+        </div>
+        <div class="card reveal reveal-delay-1" style="max-width:min(90vw,800px);margin:var(--element-gap) auto 0;text-align:left;">
+            <h3 style="font-size:var(--body-size);margin-bottom:var(--element-gap);">🚗 비유: 자동차 모델</h3>
+            <div style="display:flex;flex-direction:column;gap:clamp(0.3rem,0.6vw,0.5rem);">
+                <div style="display:flex;align-items:center;gap:0.5rem;">
+                    <span class="pill pill-sky">Haiku</span>
+                    <p class="small">가볍고 빠름 — 경차</p>
+                </div>
+                <div style="display:flex;align-items:center;gap:0.5rem;">
+                    <span class="pill pill-mint">Sonnet</span>
+                    <p class="small">균형 잡힘 — 세단</p>
+                </div>
+                <div style="display:flex;align-items:center;gap:0.5rem;">
+                    <span class="pill pill-lavender">Opus</span>
+                    <p class="small">가장 똑똑함 — SUV</p>
+                </div>
+            </div>
+        </div>
+        <div class="highlight-box reveal reveal-delay-2" style="max-width:min(90vw,600px);margin:var(--element-gap) auto 0;">
+            <p class="small">무료 버전에서는 보통 <strong>Sonnet</strong> 모델을 사용합니다</p>
+        </div>
+    </div>
+    <div class="slide-number">13 / 25</div>
+</section>
+
+<!-- =====================================================
+     SLIDE 14: HALLUCINATION
+     ===================================================== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-lavender">동작 원리</span></div>
+    <div class="deco-circle" style="width:clamp(100px,12vw,200px);height:clamp(100px,12vw,200px);background:var(--accent-coral);top:12%;right:5%;opacity:0.1;"></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <div class="term-card reveal" style="max-width:min(90vw,800px);margin:0 auto;border-top:4px solid var(--accent-coral);">
+            <div class="term-word" style="color:var(--accent-coral);">할루시네이션 (환각)</div>
+            <div class="term-eng">Hallucination</div>
+            <div class="term-def">
+                AI가 <strong>그럴듯하지만 사실이 아닌 내용</strong>을 자신있게 말하는 현상
+            </div>
+        </div>
+        <div class="card reveal reveal-delay-1" style="max-width:min(90vw,800px);margin:var(--element-gap) auto 0;text-align:left;">
+            <div style="display:flex;flex-direction:column;gap:clamp(0.3rem,0.6vw,0.5rem);">
+                <div class="chat-bubble chat-user" style="margin-left:auto;">
+                    서울에서 부산까지 걸어서 몇 시간?
+                </div>
+                <div class="chat-bubble chat-ai" style="border:2px solid var(--accent-coral);">
+                    약 12시간이면 도착합니다! 😊
+                    <p class="small" style="color:var(--accent-coral);margin-top:0.3rem;">⚠️ 실제로는 약 80~100시간 (400km)</p>
+                </div>
+            </div>
+        </div>
+        <div class="highlight-box reveal reveal-delay-2" style="max-width:min(90vw,600px);margin:var(--element-gap) auto 0;border-left-color:var(--accent-coral);">
+            <p class="small">⚠️ <strong>AI의 답변을 100% 신뢰하지 마세요!</strong> 중요한 정보는 반드시 확인하기</p>
+        </div>
+    </div>
+    <div class="slide-number">14 / 25</div>
+</section>
+
+<!-- =====================================================
+     SLIDE 15: TEMPERATURE
+     ===================================================== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-lavender">동작 원리</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <div class="term-card reveal" style="max-width:min(90vw,800px);margin:0 auto;border-top:4px solid var(--accent-gold);">
+            <div class="term-word" style="color:#D4A030;">온도 (Temperature)</div>
+            <div class="term-eng">Temperature</div>
+            <div class="term-def">
+                AI 답변의 <strong>창의성 수준</strong>을 조절하는 설정
+            </div>
+        </div>
+        <div class="card reveal reveal-delay-1" style="max-width:min(90vw,800px);margin:var(--element-gap) auto 0;">
+            <div class="grid-3" style="text-align:center;">
+                <div>
+                    <div style="font-size:clamp(1.5rem,2.5vw,2rem);margin-bottom:0.3rem;">🧊</div>
+                    <p class="small"><strong>온도 낮음 (0)</strong></p>
+                    <p class="small">정확하고 예측 가능<br>"1+1 = 2"</p>
+                </div>
+                <div>
+                    <div style="font-size:clamp(1.5rem,2.5vw,2rem);margin-bottom:0.3rem;">🌤️</div>
+                    <p class="small"><strong>온도 중간 (0.5)</strong></p>
+                    <p class="small">적당히 창의적<br>일반 대화에 적합</p>
+                </div>
+                <div>
+                    <div style="font-size:clamp(1.5rem,2.5vw,2rem);margin-bottom:0.3rem;">🔥</div>
+                    <p class="small"><strong>온도 높음 (1)</strong></p>
+                    <p class="small">창의적이고 다양<br>시, 이야기 쓰기에 적합</p>
+                </div>
+            </div>
+        </div>
+        <p class="reveal reveal-delay-2 small" style="margin-top:var(--element-gap);">Claude 웹에서는 자동 설정되므로 지금은 개념만 이해하면 됩니다</p>
+    </div>
+    <div class="slide-number">15 / 25</div>
+</section>
+
+<!-- =====================================================
+     SLIDE 16: TRAINING DATA
+     ===================================================== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-lavender">동작 원리</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <div class="term-card reveal" style="max-width:min(90vw,800px);margin:0 auto;border-top:4px solid var(--accent-mint);">
+            <div class="term-word" style="color:var(--accent-mint);">학습 데이터 & 지식 컷오프</div>
+            <div class="term-eng">Training Data & Knowledge Cutoff</div>
+            <div class="term-def">
+                AI가 학습한 정보와, 그 정보가 <strong>언제까지의 것인지</strong>
+            </div>
+        </div>
+        <div class="card reveal reveal-delay-1" style="max-width:min(90vw,800px);margin:var(--element-gap) auto 0;text-align:left;">
+            <h3 style="font-size:var(--body-size);margin-bottom:var(--element-gap);">📅 비유: 백과사전의 발행일</h3>
+            <div style="display:flex;flex-direction:column;gap:clamp(0.2rem,0.5vw,0.4rem);">
+                <p class="small">📖 2024년판 백과사전에는 2025년 뉴스가 없듯이,</p>
+                <p class="small">🤖 Claude도 <strong>학습 시점 이후의 정보는 모릅니다</strong></p>
+            </div>
+        </div>
+        <div class="highlight-box reveal reveal-delay-2" style="max-width:min(90vw,600px);margin:var(--element-gap) auto 0;">
+            <p class="small">💡 오늘의 날씨, 최신 뉴스, 실시간 주가 → Claude가 <strong>모르는 것들</strong></p>
+        </div>
+    </div>
+    <div class="slide-number">16 / 25</div>
+</section>
+
+<!-- =====================================================
+     SLIDE 17: SECTION BREAK - SKILLS
+     ===================================================== -->
+<section class="slide centered" style="background:linear-gradient(135deg,#FDE8EE,#EDF2FB);">
+    <div class="deco-circle" style="width:clamp(160px,22vw,350px);height:clamp(160px,22vw,350px);background:var(--accent-pink);top:-5%;left:-5%;opacity:0.15;"></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <div class="reveal">
+            <span class="pill pill-pink" style="margin-bottom:var(--element-gap);display:inline-block;">PART 4</span>
+        </div>
+        <h1 class="reveal reveal-delay-1">활용 기술</h1>
+        <p class="reveal reveal-delay-2" style="font-size:var(--h3-size);color:var(--text-mid);">
+            Claude를 200% 활용하는 방법 🛠️
+        </p>
+    </div>
+    <div class="slide-number">17 / 25</div>
+</section>
+
+<!-- =====================================================
+     SLIDE 18: PROMPT ENGINEERING
+     ===================================================== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-coral">활용 기술</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <div class="term-card reveal" style="max-width:min(90vw,800px);margin:0 auto;border-top:4px solid var(--accent-pink);">
+            <div class="term-word" style="color:var(--accent-pink);">프롬프트 엔지니어링</div>
+            <div class="term-eng">Prompt Engineering</div>
+            <div class="term-def">
+                AI에게 <strong>원하는 결과를 잘 뽑아내도록</strong> 요청을 설계하는 기술
+            </div>
+        </div>
+        <div class="card reveal reveal-delay-1" style="max-width:min(90vw,800px);margin:var(--element-gap) auto 0;text-align:left;">
+            <h3 style="font-size:var(--body-size);margin-bottom:var(--element-gap);">🎯 핵심 4원칙</h3>
+            <div class="grid-2">
+                <div style="display:flex;align-items:center;gap:0.5rem;">
+                    <span style="font-size:clamp(1.2rem,2vw,1.5rem);">1️⃣</span>
+                    <div>
+                        <p class="small"><strong>구체적으로</strong></p>
+                        <p class="small" style="color:var(--text-light);">"웹사이트" → "카페 메뉴판 웹사이트"</p>
+                    </div>
+                </div>
+                <div style="display:flex;align-items:center;gap:0.5rem;">
+                    <span style="font-size:clamp(1.2rem,2vw,1.5rem);">2️⃣</span>
+                    <div>
+                        <p class="small"><strong>예시 제공</strong></p>
+                        <p class="small" style="color:var(--text-light);">"이런 느낌으로 만들어줘"</p>
+                    </div>
+                </div>
+                <div style="display:flex;align-items:center;gap:0.5rem;">
+                    <span style="font-size:clamp(1.2rem,2vw,1.5rem);">3️⃣</span>
+                    <div>
+                        <p class="small"><strong>단계별 요청</strong></p>
+                        <p class="small" style="color:var(--text-light);">한 번에 하나씩 요청</p>
+                    </div>
+                </div>
+                <div style="display:flex;align-items:center;gap:0.5rem;">
+                    <span style="font-size:clamp(1.2rem,2vw,1.5rem);">4️⃣</span>
+                    <div>
+                        <p class="small"><strong>형식 지정</strong></p>
+                        <p class="small" style="color:var(--text-light);">"표로 정리해줘", "3줄로 요약해줘"</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="slide-number">18 / 25</div>
+</section>
+
+<!-- =====================================================
+     SLIDE 19: ROLE ASSIGNMENT
+     ===================================================== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-coral">활용 기술</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <div class="term-card reveal" style="max-width:min(90vw,800px);margin:0 auto;border-top:4px solid var(--accent-lavender);">
+            <div class="term-word" style="color:var(--accent-lavender);">역할 부여 (Role Playing)</div>
+            <div class="term-eng">System Prompt / Role Assignment</div>
+            <div class="term-def">
+                AI에게 <strong>특정 전문가 역할</strong>을 맡기는 기법
+            </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:clamp(0.3rem,0.6vw,0.5rem);max-width:min(90vw,700px);margin:var(--element-gap) auto 0;">
+            <div class="chat-bubble chat-user reveal reveal-delay-1" style="margin-left:auto;">
+                너는 10년 경력의 웹 디자이너야.<br>초보자도 이해할 수 있게 설명해줘.
+            </div>
+            <div class="chat-bubble chat-ai reveal reveal-delay-2">
+                <div class="chat-label" style="color:var(--accent-lavender);">Claude (웹 디자이너 모드)</div>
+                네, 알겠습니다! 디자인 원칙부터 쉽게 설명드릴게요. 먼저 색상 조합에 대해...
+            </div>
+        </div>
+        <div class="highlight-box reveal reveal-delay-3" style="max-width:min(90vw,600px);margin:var(--element-gap) auto 0;">
+            <p class="small">💡 역할을 부여하면 <strong>답변의 전문성과 관점</strong>이 달라집니다</p>
+        </div>
+    </div>
+    <div class="slide-number">19 / 25</div>
+</section>
+
+<!-- =====================================================
+     SLIDE 20: ARTIFACT
+     ===================================================== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-coral">활용 기술</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <div class="term-card reveal" style="max-width:min(90vw,800px);margin:0 auto;border-top:4px solid var(--accent-sky);">
+            <div class="term-word" style="color:var(--accent-sky);">아티팩트</div>
+            <div class="term-eng">Artifact</div>
+            <div class="term-def">
+                Claude가 대화창 옆에 <strong>별도 창으로 보여주는 결과물</strong> (코드, 문서, 표 등)
+            </div>
+        </div>
+        <div class="card reveal reveal-delay-1" style="max-width:min(90vw,800px);margin:var(--element-gap) auto 0;text-align:left;">
+            <h3 style="font-size:var(--body-size);margin-bottom:var(--element-gap);">✨ 아티팩트가 생기는 경우</h3>
+            <div class="grid-2" style="text-align:center;">
+                <div>
+                    <div style="font-size:clamp(1.3rem,2vw,1.8rem);">📝</div>
+                    <p class="small"><strong>코드</strong></p>
+                    <p class="small">HTML, Python 등<br>바로 미리보기 가능</p>
+                </div>
+                <div>
+                    <div style="font-size:clamp(1.3rem,2vw,1.8rem);">📊</div>
+                    <p class="small"><strong>표/차트</strong></p>
+                    <p class="small">데이터 시각화<br>바로 확인 가능</p>
+                </div>
+            </div>
+        </div>
+        <div class="highlight-box reveal reveal-delay-2" style="max-width:min(90vw,600px);margin:var(--element-gap) auto 0;">
+            <p class="small">💡 지난 시간 홈페이지 만들 때 <strong>오른쪽에 나온 코드 창</strong>이 바로 아티팩트!</p>
+        </div>
+    </div>
+    <div class="slide-number">20 / 25</div>
+</section>
+
+<!-- =====================================================
+     SLIDE 21: ITERATION
+     ===================================================== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-coral">활용 기술</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <div class="term-card reveal" style="max-width:min(90vw,800px);margin:0 auto;border-top:4px solid var(--accent-mint);">
+            <div class="term-word" style="color:var(--accent-mint);">반복 수정 (Iteration)</div>
+            <div class="term-eng">Iterative Refinement</div>
+            <div class="term-def">
+                한 번에 완벽한 결과를 기대하지 않고, <strong>여러 번 대화하며 개선</strong>하는 방법
+            </div>
+        </div>
+        <div class="card reveal reveal-delay-1" style="max-width:min(90vw,800px);margin:var(--element-gap) auto 0;text-align:left;">
+            <h3 style="font-size:var(--body-size);margin-bottom:var(--element-gap);">🔄 추천 워크플로우</h3>
+            <div style="display:flex;align-items:center;justify-content:center;gap:clamp(0.3rem,0.8vw,0.6rem);flex-wrap:wrap;">
+                <span class="pill pill-pink">1. 큰 틀 요청</span>
+                <span style="color:var(--text-light);">→</span>
+                <span class="pill pill-lavender">2. 확인</span>
+                <span style="color:var(--text-light);">→</span>
+                <span class="pill pill-sky">3. 세부 수정</span>
+                <span style="color:var(--text-light);">→</span>
+                <span class="pill pill-mint">4. 완성!</span>
+            </div>
+        </div>
+        <div class="highlight-box reveal reveal-delay-2" style="max-width:min(90vw,600px);margin:var(--element-gap) auto 0;">
+            <p class="small">💡 <strong>"이 부분만 이렇게 바꿔줘"</strong> 식으로 한 번에 하나씩 수정하는 것이 가장 효과적!</p>
+        </div>
+    </div>
+    <div class="slide-number">21 / 25</div>
+</section>
+
+<!-- =====================================================
+     SLIDE 22: PRACTICE - TERMS QUIZ
+     ===================================================== -->
+<section class="slide centered" style="background:linear-gradient(135deg,#E8F4FD,#F3E8FF);">
+    <div class="deco-circle" style="width:clamp(140px,18vw,280px);height:clamp(140px,18vw,280px);background:var(--accent-sky);top:-5%;right:-3%;opacity:0.15;"></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <div class="reveal">
+            <span class="pill pill-lavender" style="margin-bottom:var(--element-gap);display:inline-block;">퀴즈 타임!</span>
+        </div>
+        <h2 class="reveal reveal-delay-1" style="margin-bottom:var(--content-gap);">배운 용어 확인하기</h2>
+        <div style="display:flex;flex-direction:column;gap:var(--element-gap);max-width:min(90vw,700px);margin:0 auto;text-align:left;">
+            <div class="card reveal reveal-delay-1">
+                <p><strong>Q1.</strong> AI가 그럴듯하지만 틀린 말을 하는 현상은? <span class="small" style="float:right;">→ 할루시네이션</span></p>
+            </div>
+            <div class="card reveal reveal-delay-2">
+                <p><strong>Q2.</strong> 내가 AI에게 보내는 질문/요청을 뭐라 할까요? <span class="small" style="float:right;">→ 프롬프트</span></p>
+            </div>
+            <div class="card reveal reveal-delay-3">
+                <p><strong>Q3.</strong> AI가 글을 처리하는 최소 단위는? <span class="small" style="float:right;">→ 토큰</span></p>
+            </div>
+            <div class="card reveal reveal-delay-4">
+                <p><strong>Q4.</strong> Claude 옆에 나오는 코드/문서 창은? <span class="small" style="float:right;">→ 아티팩트</span></p>
+            </div>
+        </div>
+    </div>
+    <div class="slide-number">22 / 25</div>
+</section>
+
+<!-- =====================================================
+     SLIDE 23: PRACTICE - USE TERMS
+     ===================================================== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-lavender">실습</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <h2 class="reveal" style="margin-bottom:var(--content-gap);">실습: 배운 기술 써보기</h2>
+        <div style="display:flex;flex-direction:column;gap:var(--element-gap);max-width:min(90vw,800px);margin:0 auto;">
+            <div class="code-block reveal reveal-delay-1" style="text-align:left;background:var(--card-bg);color:var(--text-dark);border:2px solid var(--accent-pink);font-family:'Plus Jakarta Sans',sans-serif;">
+                <p class="small" style="color:var(--accent-pink);font-weight:700;">역할 부여 + 구체적 프롬프트</p>
+                <p class="small" style="margin-top:0.2rem;">"너는 전문 웹 디자이너야. 2025년 트렌드에 맞는 미니멀한 포트폴리오 사이트를 만들어줘. 다크 모드로, 프로젝트 3개를 카드 형태로 보여줘. 하나의 HTML 파일로 만들어줘."</p>
+            </div>
+            <div class="code-block reveal reveal-delay-2" style="text-align:left;background:var(--card-bg);color:var(--text-dark);border:2px solid var(--accent-mint);font-family:'Plus Jakarta Sans',sans-serif;">
+                <p class="small" style="color:var(--accent-mint);font-weight:700;">반복 수정 연습</p>
+                <p class="small" style="margin-top:0.2rem;">결과를 받은 후 → "카드에 마우스를 올리면 커지는 효과를 넣어줘" → "색상을 보라색 계열로 바꿔줘" → 반복!</p>
+            </div>
+        </div>
+        <p class="reveal reveal-delay-3 small" style="margin-top:var(--element-gap);">⏱️ <strong>10분간</strong> 자유롭게 실습해보세요!</p>
+    </div>
+    <div class="slide-number">23 / 25</div>
+</section>
+
+<!-- =====================================================
+     SLIDE 24: CHEAT SHEET
+     ===================================================== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-sky">정리</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <h2 class="reveal" style="margin-bottom:var(--content-gap);">오늘의 용어 한눈에 보기</h2>
+        <div class="grid-2 reveal reveal-delay-1" style="max-width:min(90vw,900px);margin:0 auto;font-size:var(--small-size);">
+            <div class="card" style="text-align:left;padding:clamp(0.5rem,1.2vw,1rem);">
+                <p style="font-size:var(--small-size);"><strong style="color:var(--accent-pink);">AI</strong> — 사람처럼 생각하는 프로그램</p>
+                <p style="font-size:var(--small-size);"><strong style="color:var(--accent-lavender);">LLM</strong> — 글을 읽고 쓰는 AI</p>
+                <p style="font-size:var(--small-size);"><strong style="color:var(--accent-mint);">챗봇</strong> — 대화형 AI</p>
+                <p style="font-size:var(--small-size);"><strong style="color:var(--accent-sky);">프롬프트</strong> — AI에게 보내는 요청</p>
+                <p style="font-size:var(--small-size);"><strong style="color:var(--accent-lavender);">컨텍스트</strong> — 대화의 앞뒤 맥락</p>
+            </div>
+            <div class="card" style="text-align:left;padding:clamp(0.5rem,1.2vw,1rem);">
+                <p style="font-size:var(--small-size);"><strong style="color:var(--accent-coral);">토큰</strong> — AI가 처리하는 글 단위</p>
+                <p style="font-size:var(--small-size);"><strong style="color:var(--accent-pink);">모델</strong> — AI의 두뇌 버전</p>
+                <p style="font-size:var(--small-size);"><strong style="color:var(--accent-coral);">할루시네이션</strong> — AI의 그럴듯한 거짓말</p>
+                <p style="font-size:var(--small-size);"><strong style="color:var(--accent-sky);">아티팩트</strong> — 별도 창의 결과물</p>
+                <p style="font-size:var(--small-size);"><strong style="color:var(--accent-mint);">반복 수정</strong> — 여러 번 대화하며 개선</p>
+            </div>
+        </div>
+        <div class="highlight-box reveal reveal-delay-2" style="max-width:min(90vw,600px);margin:var(--element-gap) auto 0;">
+            <p class="small">📸 이 슬라이드를 스크린샷 찍어두면 나중에 유용합니다!</p>
+        </div>
+    </div>
+    <div class="slide-number">24 / 25</div>
+</section>
+
+<!-- =====================================================
+     SLIDE 25: CLOSING
+     ===================================================== -->
+<section class="slide centered" style="background:linear-gradient(135deg, #E8FFE8 0%, #EDF2FB 50%, #F3E8FF 100%);">
+    <div class="deco-circle" style="width:clamp(200px,28vw,450px);height:clamp(200px,28vw,450px);background:var(--accent-mint);top:-8%;right:-5%;"></div>
+    <div class="deco-circle" style="width:clamp(150px,18vw,300px);height:clamp(150px,18vw,300px);background:var(--accent-lavender);bottom:5%;left:-3%;"></div>
+    <div class="deco-pill-shape" style="width:clamp(80px,10vw,150px);height:clamp(30px,3vw,50px);background:var(--accent-pink);bottom:30%;right:10%;transform:rotate(-12deg);"></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <div class="reveal">
+            <div style="font-size:clamp(3rem,6vw,5rem);margin-bottom:var(--element-gap);">🎓</div>
+        </div>
+        <h1 class="reveal reveal-delay-1" style="margin-bottom:var(--element-gap);">수고하셨습니다!</h1>
+        <p class="reveal reveal-delay-2" style="font-size:var(--h3-size);color:var(--text-mid);margin-bottom:var(--content-gap);">
+            이제 용어를 알았으니<br>Claude와 <strong>더 잘 대화</strong>할 수 있습니다
+        </p>
+        <div class="card reveal reveal-delay-3" style="margin:0 auto;display:inline-block;">
+            <p>다음 시간에는 <strong>더 복잡한 프로젝트</strong>에 도전해봐요! 🚀</p>
+        </div>
+    </div>
+    <div class="slide-number">25 / 25</div>
+</section>
+
+<!-- =====================================================
+     JAVASCRIPT: NAVIGATION & ANIMATIONS
+     ===================================================== -->
+<script>
+(function() {
+    'use strict';
+
+    const slides = document.querySelectorAll('.slide');
+    const totalSlides = slides.length;
+    const progress = document.getElementById('progress');
+    const navDotsContainer = document.getElementById('navDots');
+    let currentSlide = 0;
+
+    /* --- Nav dots --- */
+    slides.forEach((_, i) => {
+        const dot = document.createElement('button');
+        dot.className = 'nav-dot' + (i === 0 ? ' active' : '');
+        dot.setAttribute('aria-label', 'Go to slide ' + (i + 1));
+        dot.addEventListener('click', () => goToSlide(i));
+        navDotsContainer.appendChild(dot);
+    });
+    const dots = navDotsContainer.querySelectorAll('.nav-dot');
+
+    function updateUI(index) {
+        currentSlide = index;
+        progress.style.width = ((index + 1) / totalSlides * 100) + '%';
+        dots.forEach((d, i) => d.classList.toggle('active', i === index));
+    }
+
+    function goToSlide(index) {
+        if (index < 0 || index >= totalSlides) return;
+        slides[index].scrollIntoView({ behavior: 'smooth' });
+        updateUI(index);
+    }
+
+    /* --- Keyboard navigation --- */
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowDown' || e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+            e.preventDefault();
+            goToSlide(Math.min(currentSlide + 1, totalSlides - 1));
+        } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft' || e.key === 'PageUp') {
+            e.preventDefault();
+            goToSlide(Math.max(currentSlide - 1, 0));
+        } else if (e.key === 'Home') {
+            e.preventDefault();
+            goToSlide(0);
+        } else if (e.key === 'End') {
+            e.preventDefault();
+            goToSlide(totalSlides - 1);
+        }
+    });
+
+    /* --- Touch / swipe --- */
+    let touchStartY = 0;
+    document.addEventListener('touchstart', (e) => { touchStartY = e.touches[0].clientY; }, { passive: true });
+    document.addEventListener('touchend', (e) => {
+        const delta = touchStartY - e.changedTouches[0].clientY;
+        if (Math.abs(delta) > 50) {
+            goToSlide(delta > 0 ? Math.min(currentSlide + 1, totalSlides - 1) : Math.max(currentSlide - 1, 0));
+        }
+    }, { passive: true });
+
+    /* --- Scroll-snap observer --- */
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const idx = Array.from(slides).indexOf(entry.target);
+                if (idx !== -1) updateUI(idx);
+            }
+        });
+    }, { threshold: 0.6 });
+    slides.forEach(s => observer.observe(s));
+
+    /* --- Reveal animations --- */
+    const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) entry.target.classList.add('visible');
+        });
+    }, { threshold: 0.15 });
+    document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+    updateUI(0);
+})();
+</script>
+
+</body>
+</html>

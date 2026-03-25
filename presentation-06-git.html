@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Git 사용법 완전 정복</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+html,body{height:100%;overflow-x:hidden;margin:0;padding:0}
+html{scroll-snap-type:y mandatory;scroll-behavior:smooth}
+*{box-sizing:border-box;margin:0;padding:0}
+.slide{width:100vw;height:100vh;height:100dvh;overflow:hidden;scroll-snap-align:start;display:flex;flex-direction:column;position:relative;font-family:'Plus Jakarta Sans',sans-serif}
+.slide-content{flex:1;display:flex;flex-direction:column;justify-content:center;max-height:100%;overflow:hidden;padding:var(--slide-padding)}
+:root{
+    --title-size:clamp(1.5rem,5vw,4rem);--h2-size:clamp(1.25rem,3.5vw,2.5rem);
+    --h3-size:clamp(1rem,2.5vw,1.75rem);--body-size:clamp(0.75rem,1.5vw,1.125rem);
+    --small-size:clamp(0.65rem,1vw,0.875rem);--slide-padding:clamp(1rem,4vw,4rem);
+    --content-gap:clamp(0.5rem,2vw,2rem);--element-gap:clamp(0.25rem,1vw,1rem);
+    --bg-main:#EDF2FB;--card-bg:#FFFBF0;--card-shadow:rgba(0,0,0,0.06);
+    --accent-pink:#F4A7BB;--accent-mint:#A8E6CF;--accent-lavender:#C3B1E1;
+    --accent-sky:#89CFF0;--accent-peach:#FFDAB9;--accent-coral:#F08080;
+    --accent-teal:#5BB5A2;--accent-indigo:#7B8CDE;
+    --git-orange:#F05032;--git-dark:#3E2C00;
+    --text-dark:#2D3142;--text-mid:#4F5D75;--text-light:#8D99AE;
+    --code-bg:#1E1E2E;--code-text:#CDD6F4;--code-green:#A6E3A1;
+    --code-blue:#89B4FA;--code-pink:#F5C2E7;--code-orange:#FAB387;--code-yellow:#F9E2AF;
+}
+h1{font-size:var(--title-size);font-weight:800;color:var(--text-dark);line-height:1.2}
+h2{font-size:var(--h2-size);font-weight:700;color:var(--text-dark);line-height:1.3}
+h3{font-size:var(--h3-size);font-weight:600;color:var(--text-dark);line-height:1.3}
+p,li{font-size:var(--body-size);color:var(--text-mid);line-height:1.6}
+.small{font-size:var(--small-size);color:var(--text-light)}
+.pill{display:inline-block;padding:clamp(0.2rem,0.5vw,0.4rem) clamp(0.5rem,1.2vw,1rem);border-radius:50px;font-size:var(--small-size);font-weight:600;letter-spacing:0.03em}
+.pill-pink{background:var(--accent-pink);color:#fff}
+.pill-mint{background:var(--accent-mint);color:var(--text-dark)}
+.pill-lavender{background:var(--accent-lavender);color:#fff}
+.pill-sky{background:var(--accent-sky);color:var(--text-dark)}
+.pill-coral{background:var(--accent-coral);color:#fff}
+.pill-teal{background:var(--accent-teal);color:#fff}
+.pill-git{background:var(--git-orange);color:#fff}
+.pill-dark{background:var(--text-dark);color:#fff}
+.card{background:var(--card-bg);border-radius:clamp(12px,2vw,24px);padding:clamp(0.75rem,2vw,1.5rem);box-shadow:0 4px 20px var(--card-shadow)}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:clamp(0.5rem,1.5vw,1rem)}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(0.5rem,1.5vw,1rem)}
+.term-card{background:var(--card-bg);border-radius:clamp(12px,2vw,24px);padding:clamp(0.75rem,2vw,1.5rem);box-shadow:0 4px 20px var(--card-shadow);text-align:left}
+.term-word{font-size:var(--h3-size);font-weight:800;margin-bottom:clamp(0.2rem,0.5vw,0.4rem)}
+.term-eng{font-size:var(--small-size);color:var(--text-light);font-weight:500;margin-bottom:clamp(0.3rem,0.8vw,0.6rem)}
+.highlight-box{background:linear-gradient(135deg,rgba(137,207,240,0.15),rgba(195,177,225,0.15));border-left:4px solid var(--accent-sky);border-radius:0 clamp(8px,1vw,12px) clamp(8px,1vw,12px) 0;padding:clamp(0.6rem,1.2vw,1rem)}
+.warn-box{background:linear-gradient(135deg,rgba(240,128,128,0.1),rgba(255,218,185,0.15));border-left:4px solid var(--accent-coral);border-radius:0 clamp(8px,1vw,12px) clamp(8px,1vw,12px) 0;padding:clamp(0.6rem,1.2vw,1rem)}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:clamp(1rem,3vw,3rem);align-items:center;max-width:min(90vw,1000px);margin:0 auto;width:100%}
+.left-content{max-width:min(90vw,900px);margin:0 auto;width:100%}
+.centered{align-items:center;text-align:center}
+.step{display:flex;align-items:flex-start;gap:clamp(0.5rem,1.5vw,1rem)}
+.step-num{width:clamp(28px,3.5vw,44px);height:clamp(28px,3.5vw,44px);min-width:clamp(28px,3.5vw,44px);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:var(--body-size);color:#fff}
+.code-block{background:var(--code-bg);border-radius:clamp(8px,1.2vw,16px);padding:clamp(0.75rem,2vw,1.5rem);font-family:'Courier New',monospace;font-size:clamp(0.6rem,1.2vw,0.95rem);line-height:1.7;color:var(--code-text);overflow:hidden;max-width:min(90vw,900px);text-align:left}
+.code-block .cmd{color:var(--code-orange)}.code-block .flag{color:var(--code-pink)}
+.code-block .str{color:var(--code-green)}.code-block .comment{color:#6C7086;font-style:italic}
+.code-block .prompt{color:#6C7086}.code-block .output{color:#A6ADC8}
+.diagram-box{border:2px solid;border-radius:clamp(8px,1.2vw,14px);padding:clamp(0.4rem,1vw,0.8rem);text-align:center;font-size:var(--small-size);font-weight:600}
+.diagram-arrow{color:var(--text-light);font-size:clamp(1rem,2vw,1.5rem)}
+.flow-row{display:flex;align-items:center;justify-content:center;gap:clamp(0.3rem,1vw,0.8rem);flex-wrap:wrap}
+.deco-circle{position:absolute;border-radius:50%;opacity:0.15;z-index:0}
+.deco-pill-shape{position:absolute;border-radius:50px;opacity:0.12;z-index:0}
+.slide-number{position:absolute;bottom:clamp(0.75rem,2vw,1.5rem);right:clamp(0.75rem,2vw,1.5rem);font-size:var(--small-size);color:var(--text-light);font-weight:600;z-index:10}
+.section-label{position:absolute;top:clamp(0.75rem,2vw,1.5rem);left:clamp(0.75rem,2vw,1.5rem);z-index:10}
+.reveal{opacity:0;transform:translateY(20px);transition:all 0.6s cubic-bezier(0.22,1,0.36,1)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-delay-1{transition-delay:0.1s}.reveal-delay-2{transition-delay:0.2s}
+.reveal-delay-3{transition-delay:0.3s}.reveal-delay-4{transition-delay:0.4s}
+#progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--git-orange),var(--accent-sky),var(--accent-mint));z-index:1000;transition:width 0.3s ease}
+.nav-dots{position:fixed;right:clamp(0.5rem,1.5vw,1rem);top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:5px;z-index:1000}
+.nav-dot{width:7px;height:7px;border-radius:50%;background:var(--text-light);opacity:0.3;cursor:pointer;transition:all 0.3s;border:none;padding:0}
+.nav-dot.active{opacity:1;background:var(--git-orange);transform:scale(1.3)}
+/* Branch diagram */
+.branch-line{height:3px;border-radius:2px;flex:1;min-width:30px}
+.branch-dot{width:clamp(14px,1.8vw,20px);height:clamp(14px,1.8vw,20px);border-radius:50%;flex-shrink:0}
+@media(max-height:700px){:root{--slide-padding:clamp(0.75rem,3vw,2rem);--content-gap:clamp(0.4rem,1.5vw,1rem);--title-size:clamp(1.25rem,4.5vw,2.5rem);--h2-size:clamp(1rem,3vw,1.75rem)}}
+@media(max-height:600px){:root{--slide-padding:clamp(0.5rem,2.5vw,1.5rem);--content-gap:clamp(0.3rem,1vw,0.75rem);--title-size:clamp(1.1rem,4vw,2rem);--body-size:clamp(0.7rem,1.2vw,0.95rem)}.nav-dots{display:none}}
+@media(max-height:500px){:root{--slide-padding:clamp(0.4rem,2vw,1rem);--title-size:clamp(1rem,3.5vw,1.5rem);--h2-size:clamp(0.9rem,2.5vw,1.25rem);--body-size:clamp(0.65rem,1vw,0.85rem)}}
+@media(max-width:600px){:root{--title-size:clamp(1.25rem,7vw,2.5rem)}.grid-3,.grid-2{grid-template-columns:1fr}.two-col{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:0.01ms!important;transition-duration:0.2s!important}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<div id="progress" style="width:0%"></div>
+<nav class="nav-dots" id="navDots" aria-label="Slide navigation"></nav>
+
+<!-- ===== 1: TITLE ===== -->
+<section class="slide centered" style="background:linear-gradient(135deg,#EDF2FB 0%,#FFF0E8 40%,#F3E8FF 100%);">
+    <div class="deco-circle" style="width:clamp(200px,30vw,500px);height:clamp(200px,30vw,500px);background:var(--git-orange);top:-8%;right:-5%;"></div>
+    <div class="deco-circle" style="width:clamp(150px,20vw,350px);height:clamp(150px,20vw,350px);background:var(--accent-lavender);bottom:5%;left:-3%;"></div>
+    <div class="deco-pill-shape" style="width:clamp(80px,12vw,180px);height:clamp(30px,4vw,60px);background:var(--accent-mint);top:22%;left:10%;transform:rotate(-12deg);"></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <div class="reveal"><span class="pill pill-git" style="margin-bottom:clamp(0.5rem,1.5vw,1rem);display:inline-block;">강의 6 / 버전 관리</span></div>
+        <h1 class="reveal reveal-delay-1" style="margin-bottom:clamp(0.5rem,1.5vw,1rem);">Git 사용법<br>완전 정복</h1>
+        <p class="reveal reveal-delay-2" style="font-size:var(--h3-size);color:var(--text-mid);margin-bottom:clamp(1rem,2vw,2rem);">코드의 타임머신을 배워봅시다</p>
+        <p class="reveal reveal-delay-3 small">⌨️ 방향키 또는 스크롤로 이동</p>
+    </div>
+    <div class="slide-number">1 / 30</div>
+</section>
+
+<!-- ===== 2: RECAP ===== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-sky">지난 시간</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <h2 class="reveal" style="margin-bottom:var(--content-gap);">5강에서 GitHub를 사용했죠?</h2>
+        <div class="card reveal reveal-delay-1" style="max-width:min(90vw,700px);margin:0 auto;">
+            <div style="display:flex;flex-direction:column;gap:clamp(0.3rem,0.6vw,0.5rem);">
+                <p>✅ GitHub 회원가입</p>
+                <p>✅ 파일을 <strong>웹에서 직접</strong> 업로드</p>
+                <p>✅ Vercel로 배포</p>
+            </div>
+        </div>
+        <div class="highlight-box reveal reveal-delay-2" style="max-width:min(90vw,600px);margin:var(--element-gap) auto 0;">
+            <p>오늘은 <strong>전문 개발자처럼 터미널에서 Git을 사용</strong>하는 방법을 배웁니다!</p>
+        </div>
+    </div>
+    <div class="slide-number">2 / 30</div>
+</section>
+
+<!-- ===== 3: AGENDA ===== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-git">오늘의 여정</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <h2 class="reveal" style="margin-bottom:var(--content-gap);">오늘 배울 내용</h2>
+        <div class="grid-2 reveal reveal-delay-1" style="max-width:min(90vw,800px);margin:0 auto;">
+            <div class="card" style="text-align:left;border-left:4px solid var(--git-orange);">
+                <h3 style="font-size:var(--body-size);margin-bottom:0.2rem;">🤔 Part 1: Git이란?</h3>
+                <p class="small">왜 필요하고, 어떻게 설치하나</p>
+            </div>
+            <div class="card" style="text-align:left;border-left:4px solid var(--accent-sky);">
+                <h3 style="font-size:var(--body-size);margin-bottom:0.2rem;">💾 Part 2: 기본 명령어</h3>
+                <p class="small">init, add, commit, status, log</p>
+            </div>
+            <div class="card" style="text-align:left;border-left:4px solid var(--accent-teal);">
+                <h3 style="font-size:var(--body-size);margin-bottom:0.2rem;">🔗 Part 3: GitHub 연동</h3>
+                <p class="small">push, pull, clone</p>
+            </div>
+            <div class="card" style="text-align:left;border-left:4px solid var(--accent-lavender);">
+                <h3 style="font-size:var(--body-size);margin-bottom:0.2rem;">🌿 Part 4: 브랜치</h3>
+                <p class="small">branch, merge — 평행 우주</p>
+            </div>
+        </div>
+    </div>
+    <div class="slide-number">3 / 30</div>
+</section>
+
+<!-- ===== 4: SECTION - WHAT IS GIT ===== -->
+<section class="slide centered" style="background:linear-gradient(135deg,#FFF0E8,#EDF2FB);">
+    <div class="deco-circle" style="width:clamp(160px,22vw,350px);height:clamp(160px,22vw,350px);background:var(--git-orange);top:-5%;left:-5%;opacity:0.1;"></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <div class="reveal"><span class="pill pill-git" style="margin-bottom:var(--element-gap);display:inline-block;">PART 1</span></div>
+        <h1 class="reveal reveal-delay-1">Git이란?</h1>
+        <p class="reveal reveal-delay-2" style="font-size:var(--h3-size);color:var(--text-mid);">코드의 타임머신 ⏰</p>
+    </div>
+    <div class="slide-number">4 / 30</div>
+</section>
+
+<!-- ===== 5: WHY GIT ===== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-git">Git이란</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <h2 class="reveal" style="margin-bottom:var(--content-gap);">Git 없이 코딩하면...</h2>
+        <div class="card reveal reveal-delay-1" style="max-width:min(90vw,700px);margin:0 auto;text-align:left;border:2px solid var(--accent-coral);">
+            <p class="small" style="font-weight:700;color:var(--accent-coral);margin-bottom:0.3rem;">😱 이런 파일이 생깁니다</p>
+            <div class="code-block" style="font-size:clamp(0.55rem,1vw,0.85rem);">
+                <span class="output">index.html</span><br>
+                <span class="output">index_수정.html</span><br>
+                <span class="output">index_최종.html</span><br>
+                <span class="output">index_최종_진짜최종.html</span><br>
+                <span class="output">index_최종_진짜최종_이게마지막.html</span><br>
+                <span class="output">index_최종_진짜최종_이게마지막(2).html</span>
+            </div>
+        </div>
+        <div class="highlight-box reveal reveal-delay-2" style="max-width:min(90vw,600px);margin:var(--element-gap) auto 0;">
+            <p class="small">💡 Git은 <strong>하나의 파일에서 모든 변경 이력을 관리</strong>합니다. 파일 복사 지옥 탈출!</p>
+        </div>
+    </div>
+    <div class="slide-number">5 / 30</div>
+</section>
+
+<!-- ===== 6: WHAT IS GIT ===== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-git">Git이란</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <div class="term-card reveal" style="max-width:min(90vw,800px);margin:0 auto;border-top:4px solid var(--git-orange);">
+            <div class="term-word" style="color:var(--git-orange);">Git</div>
+            <div class="term-eng">Version Control System (VCS)</div>
+            <div style="font-size:var(--body-size);color:var(--text-mid);margin-bottom:var(--element-gap);">
+                파일의 <strong>변경 이력을 기록하고 관리</strong>하는 도구
+            </div>
+            <div class="grid-3" style="text-align:center;">
+                <div>
+                    <div style="font-size:clamp(1.5rem,2.5vw,2rem);">⏰</div>
+                    <p class="small"><strong>타임머신</strong></p>
+                    <p class="small" style="color:var(--text-light);">과거 상태로<br>되돌리기 가능</p>
+                </div>
+                <div>
+                    <div style="font-size:clamp(1.5rem,2.5vw,2rem);">📝</div>
+                    <p class="small"><strong>변경 일지</strong></p>
+                    <p class="small" style="color:var(--text-light);">누가, 언제, 뭘<br>바꿨는지 기록</p>
+                </div>
+                <div>
+                    <div style="font-size:clamp(1.5rem,2.5vw,2rem);">🌿</div>
+                    <p class="small"><strong>평행 우주</strong></p>
+                    <p class="small" style="color:var(--text-light);">여러 버전을<br>동시에 실험</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="slide-number">6 / 30</div>
+</section>
+
+<!-- ===== 7: GIT VS GITHUB ===== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-git">Git이란</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <h2 class="reveal" style="margin-bottom:var(--content-gap);">Git ≠ GitHub (다시 한번!)</h2>
+        <div class="two-col reveal reveal-delay-1" style="max-width:min(90vw,800px);">
+            <div class="card" style="text-align:center;border-top:4px solid var(--git-orange);">
+                <div style="font-size:clamp(2rem,3.5vw,3rem);margin-bottom:0.3rem;">🔧</div>
+                <h3 style="color:var(--git-orange);">Git</h3>
+                <p class="small" style="margin-top:0.3rem;"><strong>도구</strong> (소프트웨어)</p>
+                <p class="small">내 컴퓨터에 설치<br>변경 이력 관리</p>
+                <p class="small" style="color:var(--text-light);">비유: 카메라</p>
+            </div>
+            <div class="card" style="text-align:center;border-top:4px solid var(--text-dark);">
+                <div style="font-size:clamp(2rem,3.5vw,3rem);margin-bottom:0.3rem;">🐙</div>
+                <h3 style="color:var(--text-dark);">GitHub</h3>
+                <p class="small" style="margin-top:0.3rem;"><strong>서비스</strong> (웹사이트)</p>
+                <p class="small">인터넷 코드 저장소<br>팀 협업 플랫폼</p>
+                <p class="small" style="color:var(--text-light);">비유: 사진 클라우드</p>
+            </div>
+        </div>
+        <div class="highlight-box reveal reveal-delay-2" style="max-width:min(90vw,600px);margin:var(--element-gap) auto 0;">
+            <p class="small">Git으로 찍은 "스냅샷"을 GitHub에 <strong>업로드</strong>하는 구조입니다</p>
+        </div>
+    </div>
+    <div class="slide-number">7 / 30</div>
+</section>
+
+<!-- ===== 8: INSTALL GIT ===== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-git">설치</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <h2 class="reveal" style="margin-bottom:var(--content-gap);">Git 설치하기</h2>
+        <div class="grid-2 reveal reveal-delay-1" style="max-width:min(90vw,800px);margin:0 auto;">
+            <div class="card" style="text-align:left;border-top:4px solid var(--accent-sky);">
+                <h3 style="font-size:var(--body-size);margin-bottom:0.3rem;">🍎 Mac</h3>
+                <div class="code-block" style="font-size:clamp(0.55rem,1vw,0.8rem);">
+                    <span class="comment"># 터미널에서 실행</span><br>
+                    <span class="prompt">$</span> <span class="cmd">xcode-select</span> <span class="flag">--install</span>
+                </div>
+                <p class="small" style="margin-top:0.3rem;">또는 git-scm.com에서 다운로드</p>
+            </div>
+            <div class="card" style="text-align:left;border-top:4px solid var(--accent-lavender);">
+                <h3 style="font-size:var(--body-size);margin-bottom:0.3rem;">🪟 Windows</h3>
+                <div class="code-block" style="font-size:clamp(0.55rem,1vw,0.8rem);">
+                    <span class="comment"># git-scm.com 에서</span><br>
+                    <span class="comment"># 설치 파일 다운로드</span><br>
+                    <span class="comment"># → 기본 설정으로 설치</span>
+                </div>
+                <p class="small" style="margin-top:0.3rem;">Git Bash가 함께 설치됨</p>
+            </div>
+        </div>
+        <div class="card reveal reveal-delay-2" style="max-width:min(90vw,600px);margin:var(--element-gap) auto 0;text-align:left;">
+            <p class="small" style="font-weight:700;margin-bottom:0.2rem;">설치 확인:</p>
+            <div class="code-block" style="font-size:clamp(0.55rem,1vw,0.8rem);">
+                <span class="prompt">$</span> <span class="cmd">git</span> <span class="flag">--version</span><br>
+                <span class="output">git version 2.44.0</span>  <span class="comment">← 버전이 나오면 성공!</span>
+            </div>
+        </div>
+    </div>
+    <div class="slide-number">8 / 30</div>
+</section>
+
+<!-- ===== 9: INITIAL SETUP ===== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-git">설정</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <h2 class="reveal" style="margin-bottom:var(--content-gap);">최초 1회 설정 (내 정보 등록)</h2>
+        <div class="card reveal reveal-delay-1" style="max-width:min(90vw,800px);margin:0 auto;text-align:left;">
+            <div class="code-block">
+                <span class="comment"># 이름 설정 (GitHub 이름과 같게)</span><br>
+                <span class="prompt">$</span> <span class="cmd">git config</span> <span class="flag">--global</span> user.name <span class="str">"홍길동"</span><br><br>
+                <span class="comment"># 이메일 설정 (GitHub 이메일과 같게)</span><br>
+                <span class="prompt">$</span> <span class="cmd">git config</span> <span class="flag">--global</span> user.email <span class="str">"hong@email.com"</span>
+            </div>
+        </div>
+        <div class="highlight-box reveal reveal-delay-2" style="max-width:min(90vw,600px);margin:var(--element-gap) auto 0;">
+            <p class="small">💡 이 설정은 <strong>딱 한 번만</strong> 하면 됩니다. 모든 커밋에 이 정보가 기록돼요.</p>
+        </div>
+    </div>
+    <div class="slide-number">9 / 30</div>
+</section>
+
+<!-- ===== 10: SECTION - BASIC COMMANDS ===== -->
+<section class="slide centered" style="background:linear-gradient(135deg,#E8F4FD,#EDF2FB);">
+    <div class="deco-circle" style="width:clamp(160px,22vw,350px);height:clamp(160px,22vw,350px);background:var(--accent-sky);bottom:-5%;right:-5%;opacity:0.15;"></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <div class="reveal"><span class="pill pill-sky" style="margin-bottom:var(--element-gap);display:inline-block;">PART 2</span></div>
+        <h1 class="reveal reveal-delay-1">기본 명령어</h1>
+        <p class="reveal reveal-delay-2" style="font-size:var(--h3-size);color:var(--text-mid);">Git의 핵심 5가지 💾</p>
+    </div>
+    <div class="slide-number">10 / 30</div>
+</section>
+
+<!-- ===== 11: GIT WORKFLOW DIAGRAM ===== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-sky">기본 흐름</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <h2 class="reveal" style="margin-bottom:var(--content-gap);">Git의 3가지 공간</h2>
+        <div class="card reveal reveal-delay-1" style="max-width:min(90vw,850px);margin:0 auto;">
+            <div class="flow-row" style="gap:clamp(0.4rem,1.2vw,1rem);">
+                <div class="diagram-box" style="border-color:var(--accent-coral);color:var(--accent-coral);flex:1;min-width:100px;">
+                    📂<br>작업 디렉토리<br><span class="small">파일 수정 중</span>
+                </div>
+                <div style="text-align:center;">
+                    <span class="diagram-arrow">→</span><br>
+                    <span class="pill pill-sky" style="font-size:clamp(0.45rem,0.7vw,0.6rem);">git add</span>
+                </div>
+                <div class="diagram-box" style="border-color:var(--accent-sky);color:var(--accent-sky);flex:1;min-width:100px;">
+                    📋<br>스테이징<br><span class="small">커밋 준비</span>
+                </div>
+                <div style="text-align:center;">
+                    <span class="diagram-arrow">→</span><br>
+                    <span class="pill pill-mint" style="font-size:clamp(0.45rem,0.7vw,0.6rem);">git commit</span>
+                </div>
+                <div class="diagram-box" style="border-color:var(--accent-mint);color:var(--accent-mint);flex:1;min-width:100px;">
+                    💾<br>저장소<br><span class="small">이력 확정!</span>
+                </div>
+            </div>
+        </div>
+        <div class="highlight-box reveal reveal-delay-2" style="max-width:min(90vw,600px);margin:var(--element-gap) auto 0;">
+            <p class="small">💡 비유: <strong>사진 찍기</strong> — 포즈 잡고(수정) → 프레임에 넣고(add) → 찰칵(commit)!</p>
+        </div>
+    </div>
+    <div class="slide-number">11 / 30</div>
+</section>
+
+<!-- ===== 12: GIT INIT ===== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-sky">명령어</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <h2 class="reveal" style="margin-bottom:var(--content-gap);">① git init — 저장소 만들기</h2>
+        <div class="two-col reveal reveal-delay-1">
+            <div style="text-align:left;">
+                <p style="margin-bottom:var(--element-gap);">프로젝트 폴더에서 Git을 <strong>처음 시작</strong>하는 명령어</p>
+                <p class="small">• 프로젝트당 <strong>1번만</strong> 실행</p>
+                <p class="small">• 숨겨진 .git 폴더가 생성됨</p>
+                <p class="small">• 이 순간부터 변경 추적 시작!</p>
+            </div>
+            <div class="code-block">
+                <span class="comment"># 프로젝트 폴더로 이동</span><br>
+                <span class="prompt">$</span> <span class="cmd">cd</span> my-website<br><br>
+                <span class="comment"># Git 시작!</span><br>
+                <span class="prompt">$</span> <span class="cmd">git init</span><br>
+                <span class="output">Initialized empty Git<br>repository</span>
+            </div>
+        </div>
+    </div>
+    <div class="slide-number">12 / 30</div>
+</section>
+
+<!-- ===== 13: GIT STATUS ===== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-sky">명령어</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <h2 class="reveal" style="margin-bottom:var(--content-gap);">② git status — 현재 상태 확인</h2>
+        <div class="two-col reveal reveal-delay-1">
+            <div style="text-align:left;">
+                <p style="margin-bottom:var(--element-gap);">어떤 파일이 수정/추가됐는지 <strong>확인</strong>하는 명령어</p>
+                <p class="small">• <strong style="color:var(--accent-coral);">빨간색</strong> = 아직 add 안 한 파일</p>
+                <p class="small">• <strong style="color:var(--accent-mint);">초록색</strong> = add 완료, 커밋 대기 중</p>
+                <p class="small">• 수시로 확인하는 습관!</p>
+            </div>
+            <div class="code-block">
+                <span class="prompt">$</span> <span class="cmd">git status</span><br><br>
+                <span style="color:var(--code-orange);">Untracked files:</span><br>
+                &nbsp;&nbsp;<span style="color:#F38BA8;">index.html</span><br>
+                &nbsp;&nbsp;<span style="color:#F38BA8;">style.css</span>
+            </div>
+        </div>
+        <div class="highlight-box reveal reveal-delay-2" style="max-width:min(90vw,600px);margin:var(--element-gap) auto 0;">
+            <p class="small">💡 <strong>길을 잃었을 때의 나침반!</strong> 헷갈리면 git status부터 실행하세요</p>
+        </div>
+    </div>
+    <div class="slide-number">13 / 30</div>
+</section>
+
+<!-- ===== 14: GIT ADD ===== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-sky">명령어</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <h2 class="reveal" style="margin-bottom:var(--content-gap);">③ git add — 스테이징에 올리기</h2>
+        <div class="card reveal reveal-delay-1" style="max-width:min(90vw,800px);margin:0 auto;text-align:left;">
+            <div class="code-block">
+                <span class="comment"># 특정 파일만 추가</span><br>
+                <span class="prompt">$</span> <span class="cmd">git add</span> index.html<br><br>
+                <span class="comment"># 모든 변경된 파일 추가 (가장 많이 사용!)</span><br>
+                <span class="prompt">$</span> <span class="cmd">git add</span> <span class="flag">.</span>
+            </div>
+        </div>
+        <div class="two-col reveal reveal-delay-2" style="margin-top:var(--element-gap);max-width:min(90vw,700px);">
+            <div class="card" style="text-align:center;">
+                <p class="small"><strong>git add index.html</strong></p>
+                <p class="small" style="color:var(--text-light);">이 파일만 찍을 준비</p>
+            </div>
+            <div class="card" style="text-align:center;border:2px solid var(--accent-mint);">
+                <p class="small"><strong>git add .</strong></p>
+                <p class="small" style="color:var(--accent-mint);">전부 다 찍을 준비! (추천)</p>
+            </div>
+        </div>
+    </div>
+    <div class="slide-number">14 / 30</div>
+</section>
+
+<!-- ===== 15: GIT COMMIT ===== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-sky">명령어</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <h2 class="reveal" style="margin-bottom:var(--content-gap);">④ git commit — 스냅샷 저장!</h2>
+        <div class="card reveal reveal-delay-1" style="max-width:min(90vw,800px);margin:0 auto;text-align:left;">
+            <div class="code-block">
+                <span class="comment"># 메시지와 함께 커밋 (-m = message)</span><br>
+                <span class="prompt">$</span> <span class="cmd">git commit</span> <span class="flag">-m</span> <span class="str">"첫 번째 페이지 완성"</span>
+            </div>
+        </div>
+        <div class="card reveal reveal-delay-2" style="max-width:min(90vw,800px);margin:var(--element-gap) auto 0;text-align:left;">
+            <h3 style="font-size:var(--body-size);margin-bottom:var(--element-gap);">✍️ 좋은 커밋 메시지 작성법</h3>
+            <div class="grid-2">
+                <div>
+                    <p class="small" style="color:var(--accent-coral);font-weight:700;">❌ 나쁜 예</p>
+                    <p class="small">"수정함"</p>
+                    <p class="small">"asdf"</p>
+                    <p class="small">"ㅋㅋ"</p>
+                </div>
+                <div>
+                    <p class="small" style="color:var(--accent-mint);font-weight:700;">✅ 좋은 예</p>
+                    <p class="small">"메인 페이지 헤더 추가"</p>
+                    <p class="small">"로그인 버그 수정"</p>
+                    <p class="small">"배경색을 파란색으로 변경"</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="slide-number">15 / 30</div>
+</section>
+
+<!-- ===== 16: GIT LOG ===== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-sky">명령어</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <h2 class="reveal" style="margin-bottom:var(--content-gap);">⑤ git log — 커밋 이력 보기</h2>
+        <div class="card reveal reveal-delay-1" style="max-width:min(90vw,800px);margin:0 auto;text-align:left;">
+            <div class="code-block" style="font-size:clamp(0.55rem,1vw,0.85rem);">
+                <span class="prompt">$</span> <span class="cmd">git log</span> <span class="flag">--oneline</span><br><br>
+                <span class="str">a1b2c3d</span> <span class="output">배경색을 파란색으로 변경</span><br>
+                <span class="str">e4f5g6h</span> <span class="output">메인 페이지 헤더 추가</span><br>
+                <span class="str">i7j8k9l</span> <span class="output">첫 번째 페이지 완성</span>
+            </div>
+        </div>
+        <div class="highlight-box reveal reveal-delay-2" style="max-width:min(90vw,600px);margin:var(--element-gap) auto 0;">
+            <p class="small">💡 <strong>a1b2c3d</strong> 같은 코드 = 커밋 ID. 이걸로 과거 버전을 찾아갈 수 있어요!</p>
+        </div>
+        <p class="reveal reveal-delay-3 small" style="margin-top:var(--element-gap);">나가려면 <strong>q</strong> 키를 누르세요</p>
+    </div>
+    <div class="slide-number">16 / 30</div>
+</section>
+
+<!-- ===== 17: PRACTICE BASIC ===== -->
+<section class="slide centered" style="background:linear-gradient(135deg,#E8FFE8,#EDF2FB);">
+    <div class="slide-content centered" style="z-index:1;">
+        <div class="reveal"><span class="pill pill-mint" style="margin-bottom:var(--element-gap);display:inline-block;">실습 타임!</span></div>
+        <h2 class="reveal reveal-delay-1" style="margin-bottom:var(--content-gap);">실습: 기본 명령어 따라하기</h2>
+        <div class="card reveal reveal-delay-2" style="max-width:min(90vw,700px);margin:0 auto;text-align:left;">
+            <div class="code-block" style="font-size:clamp(0.55rem,1vw,0.85rem);">
+                <span class="comment"># 1. 폴더 만들고 이동</span><br>
+                <span class="prompt">$</span> <span class="cmd">mkdir</span> git-practice && <span class="cmd">cd</span> git-practice<br><br>
+                <span class="comment"># 2. Git 시작</span><br>
+                <span class="prompt">$</span> <span class="cmd">git init</span><br><br>
+                <span class="comment"># 3. 파일 만들기</span><br>
+                <span class="prompt">$</span> <span class="cmd">echo</span> <span class="str">"Hello Git!"</span> > index.html<br><br>
+                <span class="comment"># 4. 상태 확인 → 추가 → 커밋</span><br>
+                <span class="prompt">$</span> <span class="cmd">git status</span><br>
+                <span class="prompt">$</span> <span class="cmd">git add</span> <span class="flag">.</span><br>
+                <span class="prompt">$</span> <span class="cmd">git commit</span> <span class="flag">-m</span> <span class="str">"첫 커밋"</span><br>
+                <span class="prompt">$</span> <span class="cmd">git log</span>
+            </div>
+        </div>
+        <p class="reveal reveal-delay-3 small" style="margin-top:var(--element-gap);">⏱️ <strong>5분간</strong> 함께 진행합니다!</p>
+    </div>
+    <div class="slide-number">17 / 30</div>
+</section>
+
+<!-- ===== 18: SECTION - GITHUB CONNECTION ===== -->
+<section class="slide centered" style="background:linear-gradient(135deg,#EDF2FB,#E8FFE8);">
+    <div class="deco-circle" style="width:clamp(160px,22vw,350px);height:clamp(160px,22vw,350px);background:var(--accent-teal);top:-5%;left:-5%;opacity:0.15;"></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <div class="reveal"><span class="pill pill-teal" style="margin-bottom:var(--element-gap);display:inline-block;">PART 3</span></div>
+        <h1 class="reveal reveal-delay-1">GitHub 연동</h1>
+        <p class="reveal reveal-delay-2" style="font-size:var(--h3-size);color:var(--text-mid);">내 컴퓨터 ⟷ 인터넷 연결 🔗</p>
+    </div>
+    <div class="slide-number">18 / 30</div>
+</section>
+
+<!-- ===== 19: REMOTE ===== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-teal">GitHub 연동</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <h2 class="reveal" style="margin-bottom:var(--content-gap);">git remote — GitHub 주소 연결</h2>
+        <div class="card reveal reveal-delay-1" style="max-width:min(90vw,800px);margin:0 auto;text-align:left;">
+            <div class="code-block" style="font-size:clamp(0.55rem,1vw,0.85rem);">
+                <span class="comment"># GitHub 레포 주소를 "origin"이라는 이름으로 등록</span><br>
+                <span class="prompt">$</span> <span class="cmd">git remote add</span> origin <span class="str">https://github.com/내아이디/my-website.git</span>
+            </div>
+        </div>
+        <div class="highlight-box reveal reveal-delay-2" style="max-width:min(90vw,600px);margin:var(--element-gap) auto 0;">
+            <p class="small">💡 <strong>"origin"</strong> = GitHub 주소의 별명. 관례적으로 항상 origin이라고 씁니다.</p>
+        </div>
+    </div>
+    <div class="slide-number">19 / 30</div>
+</section>
+
+<!-- ===== 20: PUSH ===== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-teal">GitHub 연동</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <h2 class="reveal" style="margin-bottom:var(--content-gap);">git push — 코드 올리기</h2>
+        <div class="two-col reveal reveal-delay-1">
+            <div style="text-align:left;">
+                <p style="margin-bottom:var(--element-gap);">내 컴퓨터의 커밋을<br><strong>GitHub에 업로드</strong></p>
+                <div class="flow-row" style="justify-content:flex-start;">
+                    <div class="diagram-box" style="border-color:var(--git-orange);color:var(--git-orange);font-size:var(--small-size);">💻 내 PC</div>
+                    <span class="diagram-arrow">→</span>
+                    <div class="diagram-box" style="border-color:var(--text-dark);color:var(--text-dark);font-size:var(--small-size);">🐙 GitHub</div>
+                </div>
+            </div>
+            <div class="code-block">
+                <span class="comment"># 처음 push할 때</span><br>
+                <span class="prompt">$</span> <span class="cmd">git push</span> <span class="flag">-u</span> origin main<br><br>
+                <span class="comment"># 그 다음부터는</span><br>
+                <span class="prompt">$</span> <span class="cmd">git push</span>
+            </div>
+        </div>
+    </div>
+    <div class="slide-number">20 / 30</div>
+</section>
+
+<!-- ===== 21: PULL ===== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-teal">GitHub 연동</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <h2 class="reveal" style="margin-bottom:var(--content-gap);">git pull — 코드 가져오기</h2>
+        <div class="two-col reveal reveal-delay-1">
+            <div style="text-align:left;">
+                <p style="margin-bottom:var(--element-gap);">GitHub에 있는 최신 코드를<br><strong>내 컴퓨터로 다운로드</strong></p>
+                <div class="flow-row" style="justify-content:flex-start;">
+                    <div class="diagram-box" style="border-color:var(--text-dark);color:var(--text-dark);font-size:var(--small-size);">🐙 GitHub</div>
+                    <span class="diagram-arrow">→</span>
+                    <div class="diagram-box" style="border-color:var(--git-orange);color:var(--git-orange);font-size:var(--small-size);">💻 내 PC</div>
+                </div>
+            </div>
+            <div class="code-block">
+                <span class="comment"># 최신 변경사항 가져오기</span><br>
+                <span class="prompt">$</span> <span class="cmd">git pull</span>
+            </div>
+        </div>
+        <div class="highlight-box reveal reveal-delay-2" style="max-width:min(90vw,600px);margin:var(--element-gap) auto 0;">
+            <p class="small">💡 <strong>push = 밀어 올리기</strong> / <strong>pull = 당겨 받기</strong>. 반대 방향!</p>
+        </div>
+    </div>
+    <div class="slide-number">21 / 30</div>
+</section>
+
+<!-- ===== 22: CLONE ===== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-teal">GitHub 연동</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <h2 class="reveal" style="margin-bottom:var(--content-gap);">git clone — 프로젝트 통째로 복사</h2>
+        <div class="card reveal reveal-delay-1" style="max-width:min(90vw,800px);margin:0 auto;text-align:left;">
+            <div class="code-block">
+                <span class="comment"># GitHub의 프로젝트를 내 컴퓨터로 복사</span><br>
+                <span class="prompt">$</span> <span class="cmd">git clone</span> <span class="str">https://github.com/아이디/프로젝트.git</span>
+            </div>
+            <p class="small" style="margin-top:var(--element-gap);">✅ 폴더 생성 + 코드 다운로드 + Git 설정 — <strong>한 번에 완료!</strong></p>
+        </div>
+        <div class="highlight-box reveal reveal-delay-2" style="max-width:min(90vw,600px);margin:var(--element-gap) auto 0;">
+            <p class="small">💡 새 컴퓨터에서 작업하거나, 다른 사람의 프로젝트를 가져올 때 사용합니다</p>
+        </div>
+    </div>
+    <div class="slide-number">22 / 30</div>
+</section>
+
+<!-- ===== 23: DAILY WORKFLOW ===== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-teal">워크플로우</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <h2 class="reveal" style="margin-bottom:var(--content-gap);">매일 쓰는 Git 루틴</h2>
+        <div class="card reveal reveal-delay-1" style="max-width:min(90vw,700px);margin:0 auto;text-align:left;">
+            <div class="code-block" style="font-size:clamp(0.55rem,1vw,0.85rem);">
+                <span class="comment"># 1. 코드 수정 후 상태 확인</span><br>
+                <span class="prompt">$</span> <span class="cmd">git status</span><br><br>
+                <span class="comment"># 2. 변경 파일 모두 스테이징</span><br>
+                <span class="prompt">$</span> <span class="cmd">git add</span> <span class="flag">.</span><br><br>
+                <span class="comment"># 3. 커밋 (스냅샷 저장)</span><br>
+                <span class="prompt">$</span> <span class="cmd">git commit</span> <span class="flag">-m</span> <span class="str">"오늘 작업 내용"</span><br><br>
+                <span class="comment"># 4. GitHub에 올리기</span><br>
+                <span class="prompt">$</span> <span class="cmd">git push</span>
+            </div>
+        </div>
+        <div class="highlight-box reveal reveal-delay-2" style="max-width:min(90vw,600px);margin:var(--element-gap) auto 0;">
+            <p class="small">🔄 <strong>status → add → commit → push</strong> — 이 4단계만 기억하세요!</p>
+        </div>
+    </div>
+    <div class="slide-number">23 / 30</div>
+</section>
+
+<!-- ===== 24: SECTION - BRANCH ===== -->
+<section class="slide centered" style="background:linear-gradient(135deg,#F3E8FF,#EDF2FB);">
+    <div class="deco-circle" style="width:clamp(160px,22vw,350px);height:clamp(160px,22vw,350px);background:var(--accent-lavender);bottom:-5%;left:-5%;opacity:0.15;"></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <div class="reveal"><span class="pill pill-lavender" style="margin-bottom:var(--element-gap);display:inline-block;">PART 4</span></div>
+        <h1 class="reveal reveal-delay-1">🌿 브랜치</h1>
+        <p class="reveal reveal-delay-2" style="font-size:var(--h3-size);color:var(--text-mid);">코드의 평행 우주</p>
+    </div>
+    <div class="slide-number">24 / 30</div>
+</section>
+
+<!-- ===== 25: BRANCH CONCEPT ===== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-lavender">브랜치</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <div class="term-card reveal" style="max-width:min(90vw,800px);margin:0 auto;border-top:4px solid var(--accent-lavender);">
+            <div class="term-word" style="color:var(--accent-lavender);">브랜치 (Branch)</div>
+            <div class="term-eng">"가지"라는 뜻</div>
+            <div style="font-size:var(--body-size);color:var(--text-mid);margin-bottom:var(--element-gap);">
+                원본 코드를 건드리지 않고 <strong>새로운 실험을 할 수 있는 복사본</strong>
+            </div>
+        </div>
+        <div class="card reveal reveal-delay-1" style="max-width:min(90vw,800px);margin:var(--element-gap) auto 0;">
+            <!-- Branch visual -->
+            <div style="display:flex;flex-direction:column;gap:clamp(0.5rem,1vw,0.8rem);align-items:center;">
+                <!-- main branch -->
+                <div style="display:flex;align-items:center;gap:4px;width:min(80%,500px);">
+                    <div class="branch-dot" style="background:var(--accent-sky);"></div>
+                    <div class="branch-line" style="background:var(--accent-sky);"></div>
+                    <div class="branch-dot" style="background:var(--accent-sky);"></div>
+                    <div class="branch-line" style="background:var(--accent-sky);"></div>
+                    <div class="branch-dot" style="background:var(--accent-sky);"></div>
+                    <div class="branch-line" style="background:var(--accent-sky);"></div>
+                    <div class="branch-dot" style="background:var(--accent-sky);"></div>
+                    <span class="pill pill-sky" style="font-size:clamp(0.45rem,0.7vw,0.6rem);margin-left:4px;">main</span>
+                </div>
+                <!-- feature branch -->
+                <div style="display:flex;align-items:center;gap:4px;width:min(50%,300px);margin-left:min(15%,100px);">
+                    <div class="branch-dot" style="background:var(--accent-lavender);"></div>
+                    <div class="branch-line" style="background:var(--accent-lavender);"></div>
+                    <div class="branch-dot" style="background:var(--accent-lavender);"></div>
+                    <div class="branch-line" style="background:var(--accent-lavender);"></div>
+                    <div class="branch-dot" style="background:var(--accent-lavender);"></div>
+                    <span class="pill pill-lavender" style="font-size:clamp(0.45rem,0.7vw,0.6rem);margin-left:4px;">new-feature</span>
+                </div>
+            </div>
+        </div>
+        <div class="highlight-box reveal reveal-delay-2" style="max-width:min(90vw,600px);margin:var(--element-gap) auto 0;">
+            <p class="small">💡 비유: <strong>게임 세이브 슬롯</strong> — 메인 세이브는 안전하게 두고 새 슬롯에서 실험!</p>
+        </div>
+    </div>
+    <div class="slide-number">25 / 30</div>
+</section>
+
+<!-- ===== 26: BRANCH COMMANDS ===== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-lavender">브랜치</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <h2 class="reveal" style="margin-bottom:var(--content-gap);">브랜치 핵심 명령어</h2>
+        <div class="card reveal reveal-delay-1" style="max-width:min(90vw,800px);margin:0 auto;text-align:left;">
+            <div class="code-block" style="font-size:clamp(0.55rem,1vw,0.85rem);">
+                <span class="comment"># 새 브랜치 만들고 이동</span><br>
+                <span class="prompt">$</span> <span class="cmd">git checkout</span> <span class="flag">-b</span> <span class="str">new-feature</span><br><br>
+                <span class="comment"># 브랜치 목록 보기 (* = 현재 위치)</span><br>
+                <span class="prompt">$</span> <span class="cmd">git branch</span><br>
+                <span class="output">&nbsp;&nbsp;main</span><br>
+                <span class="str">* new-feature</span><br><br>
+                <span class="comment"># main 브랜치로 돌아가기</span><br>
+                <span class="prompt">$</span> <span class="cmd">git checkout</span> main
+            </div>
+        </div>
+    </div>
+    <div class="slide-number">26 / 30</div>
+</section>
+
+<!-- ===== 27: MERGE ===== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-lavender">브랜치</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <h2 class="reveal" style="margin-bottom:var(--content-gap);">git merge — 합치기</h2>
+        <div class="card reveal reveal-delay-1" style="max-width:min(90vw,800px);margin:0 auto;text-align:left;">
+            <p class="small" style="margin-bottom:var(--element-gap);">실험이 성공하면 <strong>main에 합칩니다</strong></p>
+            <div class="code-block" style="font-size:clamp(0.55rem,1vw,0.85rem);">
+                <span class="comment"># 1. main으로 이동</span><br>
+                <span class="prompt">$</span> <span class="cmd">git checkout</span> main<br><br>
+                <span class="comment"># 2. new-feature를 main에 합치기</span><br>
+                <span class="prompt">$</span> <span class="cmd">git merge</span> <span class="str">new-feature</span><br><br>
+                <span class="comment"># 3. 합친 결과를 GitHub에 올리기</span><br>
+                <span class="prompt">$</span> <span class="cmd">git push</span>
+            </div>
+        </div>
+        <div class="highlight-box reveal reveal-delay-2" style="max-width:min(90vw,600px);margin:var(--element-gap) auto 0;">
+            <p class="small">💡 실험 실패? <strong>브랜치만 삭제</strong>하면 됩니다. main은 안전! → <code style="background:rgba(0,0,0,0.05);padding:1px 4px;border-radius:3px;">git branch -d new-feature</code></p>
+        </div>
+    </div>
+    <div class="slide-number">27 / 30</div>
+</section>
+
+<!-- ===== 28: CHEAT SHEET ===== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-git">치트시트</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <h2 class="reveal" style="margin-bottom:var(--content-gap);">Git 명령어 한눈에 보기</h2>
+        <div class="grid-2 reveal reveal-delay-1" style="max-width:min(90vw,900px);margin:0 auto;">
+            <div class="card" style="text-align:left;padding:clamp(0.5rem,1.2vw,1rem);">
+                <p class="small" style="font-weight:700;color:var(--git-orange);margin-bottom:0.2rem;">기본</p>
+                <p style="font-size:var(--small-size);"><code>git init</code> — 저장소 시작</p>
+                <p style="font-size:var(--small-size);"><code>git status</code> — 상태 확인</p>
+                <p style="font-size:var(--small-size);"><code>git add .</code> — 전체 스테이징</p>
+                <p style="font-size:var(--small-size);"><code>git commit -m "메시지"</code> — 저장</p>
+                <p style="font-size:var(--small-size);"><code>git log --oneline</code> — 이력 보기</p>
+            </div>
+            <div class="card" style="text-align:left;padding:clamp(0.5rem,1.2vw,1rem);">
+                <p class="small" style="font-weight:700;color:var(--accent-teal);margin-bottom:0.2rem;">원격 & 브랜치</p>
+                <p style="font-size:var(--small-size);"><code>git push</code> — GitHub에 올리기</p>
+                <p style="font-size:var(--small-size);"><code>git pull</code> — GitHub에서 받기</p>
+                <p style="font-size:var(--small-size);"><code>git clone URL</code> — 프로젝트 복사</p>
+                <p style="font-size:var(--small-size);"><code>git checkout -b 이름</code> — 브랜치 생성</p>
+                <p style="font-size:var(--small-size);"><code>git merge 이름</code> — 브랜치 합치기</p>
+            </div>
+        </div>
+        <p class="reveal reveal-delay-2 small" style="margin-top:var(--element-gap);">📸 이 슬라이드를 스크린샷 찍어두세요!</p>
+    </div>
+    <div class="slide-number">28 / 30</div>
+</section>
+
+<!-- ===== 29: DAILY RHYTHM ===== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-git">정리</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <h2 class="reveal" style="margin-bottom:var(--content-gap);">외워야 할 리듬 하나만!</h2>
+        <div class="card reveal reveal-delay-1" style="max-width:min(90vw,700px);margin:0 auto;text-align:center;">
+            <div class="flow-row" style="gap:clamp(0.3rem,0.8vw,0.6rem);">
+                <span class="pill pill-sky" style="font-size:var(--body-size);">status</span>
+                <span class="diagram-arrow">→</span>
+                <span class="pill pill-lavender" style="font-size:var(--body-size);">add</span>
+                <span class="diagram-arrow">→</span>
+                <span class="pill pill-mint" style="font-size:var(--body-size);">commit</span>
+                <span class="diagram-arrow">→</span>
+                <span class="pill pill-git" style="font-size:var(--body-size);">push</span>
+            </div>
+            <p style="margin-top:var(--content-gap);font-size:var(--h3-size);font-weight:700;color:var(--text-dark);">
+                확인 → 담기 → 저장 → 올리기
+            </p>
+        </div>
+        <div class="warn-box reveal reveal-delay-2" style="max-width:min(90vw,600px);margin:var(--element-gap) auto 0;">
+            <p class="small">⚠️ 하루에 <strong>최소 1번은 commit + push</strong>하세요! 작업물을 잃지 않는 유일한 방법입니다.</p>
+        </div>
+    </div>
+    <div class="slide-number">29 / 30</div>
+</section>
+
+<!-- ===== 30: CLOSING ===== -->
+<section class="slide centered" style="background:linear-gradient(135deg,#FFF0E8 0%,#EDF2FB 40%,#F3E8FF 100%);">
+    <div class="deco-circle" style="width:clamp(200px,28vw,450px);height:clamp(200px,28vw,450px);background:var(--git-orange);top:-8%;right:-5%;"></div>
+    <div class="deco-circle" style="width:clamp(150px,18vw,300px);height:clamp(150px,18vw,300px);background:var(--accent-lavender);bottom:5%;left:-3%;"></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <div class="reveal"><div style="font-size:clamp(3rem,6vw,5rem);margin-bottom:var(--element-gap);">🌿</div></div>
+        <h1 class="reveal reveal-delay-1" style="margin-bottom:var(--element-gap);">수고하셨습니다!</h1>
+        <p class="reveal reveal-delay-2" style="font-size:var(--h3-size);color:var(--text-mid);margin-bottom:var(--content-gap);">
+            이제 <strong>코드의 타임머신</strong>을<br>자유롭게 조종할 수 있습니다
+        </p>
+        <div class="card reveal reveal-delay-3" style="margin:0 auto;display:inline-block;">
+            <p><strong>status → add → commit → push</strong> 💪</p>
+        </div>
+    </div>
+    <div class="slide-number">30 / 30</div>
+</section>
+
+<script>
+(function(){
+    'use strict';
+    const s=document.querySelectorAll('.slide'),t=s.length,p=document.getElementById('progress'),n=document.getElementById('navDots');
+    let c=0;
+    s.forEach((_,i)=>{const d=document.createElement('button');d.className='nav-dot'+(i===0?' active':'');d.setAttribute('aria-label','Slide '+(i+1));d.addEventListener('click',()=>g(i));n.appendChild(d)});
+    const dots=n.querySelectorAll('.nav-dot');
+    function u(i){c=i;p.style.width=((i+1)/t*100)+'%';dots.forEach((d,j)=>d.classList.toggle('active',j===i))}
+    function g(i){if(i<0||i>=t)return;s[i].scrollIntoView({behavior:'smooth'});u(i)}
+    document.addEventListener('keydown',e=>{if(['ArrowDown','ArrowRight',' ','PageDown'].includes(e.key)){e.preventDefault();g(Math.min(c+1,t-1))}else if(['ArrowUp','ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();g(Math.max(c-1,0))}else if(e.key==='Home'){e.preventDefault();g(0)}else if(e.key==='End'){e.preventDefault();g(t-1)}});
+    let ty=0;
+    document.addEventListener('touchstart',e=>{ty=e.touches[0].clientY},{passive:true});
+    document.addEventListener('touchend',e=>{const d=ty-e.changedTouches[0].clientY;if(Math.abs(d)>50)g(d>0?Math.min(c+1,t-1):Math.max(c-1,0))},{passive:true});
+    const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){const i=Array.from(s).indexOf(e.target);if(i!==-1)u(i)}})},{threshold:0.6});
+    s.forEach(x=>obs.observe(x));
+    const ro=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')})},{threshold:0.15});
+    document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
+    u(0);
+})();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>프론트엔드 & 백엔드 학습 로드맵</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+html,body{height:100%;overflow-x:hidden;margin:0;padding:0}
+html{scroll-snap-type:y mandatory;scroll-behavior:smooth}
+*{box-sizing:border-box;margin:0;padding:0}
+.slide{width:100vw;height:100vh;height:100dvh;overflow:hidden;scroll-snap-align:start;display:flex;flex-direction:column;position:relative;font-family:'Plus Jakarta Sans',sans-serif}
+.slide-content{flex:1;display:flex;flex-direction:column;justify-content:center;max-height:100%;overflow:hidden;padding:var(--slide-padding)}
+:root{
+    --title-size:clamp(1.5rem,5vw,4rem);--h2-size:clamp(1.25rem,3.5vw,2.5rem);
+    --h3-size:clamp(1rem,2.5vw,1.75rem);--body-size:clamp(0.75rem,1.5vw,1.125rem);
+    --small-size:clamp(0.65rem,1vw,0.875rem);--slide-padding:clamp(1rem,4vw,4rem);
+    --content-gap:clamp(0.5rem,2vw,2rem);--element-gap:clamp(0.25rem,1vw,1rem);
+    --bg-main:#EDF2FB;--card-bg:#FFFBF0;--card-shadow:rgba(0,0,0,0.06);
+    --accent-pink:#F4A7BB;--accent-mint:#A8E6CF;--accent-lavender:#C3B1E1;
+    --accent-sky:#89CFF0;--accent-peach:#FFDAB9;--accent-coral:#F08080;
+    --accent-teal:#5BB5A2;--accent-indigo:#7B8CDE;
+    --fe-color:#3B82F6;--be-color:#8B5CF6;--fs-color:#EC4899;
+    --text-dark:#2D3142;--text-mid:#4F5D75;--text-light:#8D99AE;
+    --code-bg:#1E1E2E;--code-text:#CDD6F4;--code-green:#A6E3A1;
+    --code-blue:#89B4FA;--code-pink:#F5C2E7;--code-orange:#FAB387;
+}
+h1{font-size:var(--title-size);font-weight:800;color:var(--text-dark);line-height:1.2}
+h2{font-size:var(--h2-size);font-weight:700;color:var(--text-dark);line-height:1.3}
+h3{font-size:var(--h3-size);font-weight:600;color:var(--text-dark);line-height:1.3}
+p,li{font-size:var(--body-size);color:var(--text-mid);line-height:1.6}
+.small{font-size:var(--small-size);color:var(--text-light)}
+.pill{display:inline-block;padding:clamp(0.2rem,0.5vw,0.4rem) clamp(0.5rem,1.2vw,1rem);border-radius:50px;font-size:var(--small-size);font-weight:600;letter-spacing:0.03em}
+.pill-fe{background:var(--fe-color);color:#fff}
+.pill-be{background:var(--be-color);color:#fff}
+.pill-fs{background:var(--fs-color);color:#fff}
+.pill-pink{background:var(--accent-pink);color:#fff}
+.pill-mint{background:var(--accent-mint);color:var(--text-dark)}
+.pill-lavender{background:var(--accent-lavender);color:#fff}
+.pill-sky{background:var(--accent-sky);color:var(--text-dark)}
+.pill-coral{background:var(--accent-coral);color:#fff}
+.pill-teal{background:var(--accent-teal);color:#fff}
+.pill-dark{background:var(--text-dark);color:#fff}
+.card{background:var(--card-bg);border-radius:clamp(12px,2vw,24px);padding:clamp(0.75rem,2vw,1.5rem);box-shadow:0 4px 20px var(--card-shadow)}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:clamp(0.5rem,1.5vw,1rem)}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(0.5rem,1.5vw,1rem)}
+.highlight-box{background:linear-gradient(135deg,rgba(59,130,246,0.1),rgba(139,92,246,0.1));border-left:4px solid var(--fe-color);border-radius:0 clamp(8px,1vw,12px) clamp(8px,1vw,12px) 0;padding:clamp(0.6rem,1.2vw,1rem)}
+.warn-box{background:linear-gradient(135deg,rgba(240,128,128,0.1),rgba(255,218,185,0.15));border-left:4px solid var(--accent-coral);border-radius:0 clamp(8px,1vw,12px) clamp(8px,1vw,12px) 0;padding:clamp(0.6rem,1.2vw,1rem)}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:clamp(1rem,3vw,3rem);align-items:center;max-width:min(90vw,1000px);margin:0 auto;width:100%}
+.left-content{max-width:min(90vw,900px);margin:0 auto;width:100%}
+.centered{align-items:center;text-align:center}
+.step{display:flex;align-items:flex-start;gap:clamp(0.5rem,1.5vw,1rem)}
+.step-num{width:clamp(28px,3.5vw,44px);height:clamp(28px,3.5vw,44px);min-width:clamp(28px,3.5vw,44px);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:var(--body-size);color:#fff}
+.code-block{background:var(--code-bg);border-radius:clamp(8px,1.2vw,16px);padding:clamp(0.75rem,2vw,1.5rem);font-family:'Courier New',monospace;font-size:clamp(0.6rem,1.2vw,0.95rem);line-height:1.7;color:var(--code-text);overflow:hidden;max-width:min(90vw,900px);text-align:left}
+.code-block .cmd{color:var(--code-orange)}.code-block .str{color:var(--code-green)}.code-block .comment{color:#6C7086;font-style:italic}
+.diagram-box{border:2px solid;border-radius:clamp(8px,1.2vw,14px);padding:clamp(0.4rem,1vw,0.8rem);text-align:center;font-size:var(--small-size);font-weight:600}
+.diagram-arrow{color:var(--text-light);font-size:clamp(1rem,2vw,1.5rem)}
+.flow-row{display:flex;align-items:center;justify-content:center;gap:clamp(0.3rem,1vw,0.8rem);flex-wrap:wrap}
+.deco-circle{position:absolute;border-radius:50%;opacity:0.15;z-index:0}
+.deco-pill-shape{position:absolute;border-radius:50px;opacity:0.12;z-index:0}
+.slide-number{position:absolute;bottom:clamp(0.75rem,2vw,1.5rem);right:clamp(0.75rem,2vw,1.5rem);font-size:var(--small-size);color:var(--text-light);font-weight:600;z-index:10}
+.section-label{position:absolute;top:clamp(0.75rem,2vw,1.5rem);left:clamp(0.75rem,2vw,1.5rem);z-index:10}
+/* Timeline */
+.timeline-item{display:flex;gap:clamp(0.5rem,1.2vw,1rem);align-items:flex-start}
+.timeline-dot{width:clamp(12px,1.5vw,18px);height:clamp(12px,1.5vw,18px);min-width:clamp(12px,1.5vw,18px);border-radius:50%;margin-top:4px}
+.timeline-line{width:2px;min-height:clamp(20px,3vh,40px);margin-left:clamp(5px,0.65vw,8px)}
+.reveal{opacity:0;transform:translateY(20px);transition:all 0.6s cubic-bezier(0.22,1,0.36,1)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-delay-1{transition-delay:0.1s}.reveal-delay-2{transition-delay:0.2s}
+.reveal-delay-3{transition-delay:0.3s}.reveal-delay-4{transition-delay:0.4s}
+.reveal-delay-5{transition-delay:0.5s}
+#progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--fe-color),var(--be-color),var(--fs-color));z-index:1000;transition:width 0.3s ease}
+.nav-dots{position:fixed;right:clamp(0.5rem,1.5vw,1rem);top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:5px;z-index:1000}
+.nav-dot{width:7px;height:7px;border-radius:50%;background:var(--text-light);opacity:0.3;cursor:pointer;transition:all 0.3s;border:none;padding:0}
+.nav-dot.active{opacity:1;background:var(--fe-color);transform:scale(1.3)}
+@media(max-height:700px){:root{--slide-padding:clamp(0.75rem,3vw,2rem);--content-gap:clamp(0.4rem,1.5vw,1rem);--title-size:clamp(1.25rem,4.5vw,2.5rem);--h2-size:clamp(1rem,3vw,1.75rem)}}
+@media(max-height:600px){:root{--slide-padding:clamp(0.5rem,2.5vw,1.5rem);--content-gap:clamp(0.3rem,1vw,0.75rem);--title-size:clamp(1.1rem,4vw,2rem);--body-size:clamp(0.7rem,1.2vw,0.95rem)}.nav-dots{display:none}}
+@media(max-height:500px){:root{--slide-padding:clamp(0.4rem,2vw,1rem);--title-size:clamp(1rem,3.5vw,1.5rem);--h2-size:clamp(0.9rem,2.5vw,1.25rem);--body-size:clamp(0.65rem,1vw,0.85rem)}}
+@media(max-width:600px){:root{--title-size:clamp(1.25rem,7vw,2.5rem)}.grid-3,.grid-2{grid-template-columns:1fr}.two-col{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:0.01ms!important;transition-duration:0.2s!important}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<div id="progress" style="width:0%"></div>
+<nav class="nav-dots" id="navDots" aria-label="Slide navigation"></nav>
+
+<!-- ===== 1: TITLE ===== -->
+<section class="slide centered" style="background:linear-gradient(135deg,#EDF2FB 0%,#E8F0FE 40%,#F0E8FF 100%);">
+    <div class="deco-circle" style="width:clamp(200px,30vw,500px);height:clamp(200px,30vw,500px);background:var(--fe-color);top:-8%;right:-5%;"></div>
+    <div class="deco-circle" style="width:clamp(150px,20vw,350px);height:clamp(150px,20vw,350px);background:var(--be-color);bottom:5%;left:-3%;"></div>
+    <div class="deco-pill-shape" style="width:clamp(80px,12vw,180px);height:clamp(30px,4vw,60px);background:var(--accent-mint);top:22%;left:10%;transform:rotate(-12deg);"></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <div class="reveal"><span class="pill pill-fe" style="margin-bottom:clamp(0.5rem,1.5vw,1rem);display:inline-block;">강의 8 / 학습 가이드</span></div>
+        <h1 class="reveal reveal-delay-1" style="margin-bottom:clamp(0.5rem,1.5vw,1rem);">프론트엔드 & 백엔드<br>학습 로드맵</h1>
+        <p class="reveal reveal-delay-2" style="font-size:var(--h3-size);color:var(--text-mid);margin-bottom:clamp(1rem,2vw,2rem);">초보자를 위한 단계별 공부 가이드</p>
+        <p class="reveal reveal-delay-3 small">⌨️ 방향키 또는 스크롤로 이동</p>
+    </div>
+    <div class="slide-number">1 / 32</div>
+</section>
+
+<!-- ===== 2: MINDSET ===== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-dark">마음가짐</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <h2 class="reveal" style="margin-bottom:var(--content-gap);">시작하기 전에 알아둘 것</h2>
+        <div style="display:flex;flex-direction:column;gap:var(--element-gap);max-width:min(90vw,700px);margin:0 auto;">
+            <div class="card reveal reveal-delay-1" style="text-align:left;border-left:4px solid var(--accent-mint);">
+                <p><strong style="color:var(--accent-teal);">1. 완벽하게 알 필요 없다</strong> — 만들면서 배우는 것이 가장 빠름</p>
+            </div>
+            <div class="card reveal reveal-delay-2" style="text-align:left;border-left:4px solid var(--accent-sky);">
+                <p><strong style="color:var(--fe-color);">2. AI와 함께 하면 10배 빠르다</strong> — Claude에게 물어보며 학습</p>
+            </div>
+            <div class="card reveal reveal-delay-3" style="text-align:left;border-left:4px solid var(--accent-lavender);">
+                <p><strong style="color:var(--be-color);">3. 프론트→백엔드 순서가 좋다</strong> — 눈에 보이는 것부터 시작</p>
+            </div>
+            <div class="card reveal reveal-delay-4" style="text-align:left;border-left:4px solid var(--accent-pink);">
+                <p><strong style="color:var(--fs-color);">4. 프로젝트를 만들어라</strong> — 강의만 듣는 것은 30% 효과</p>
+            </div>
+        </div>
+    </div>
+    <div class="slide-number">2 / 32</div>
+</section>
+
+<!-- ===== 3: BIG PICTURE ===== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-dark">전체 그림</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <h2 class="reveal" style="margin-bottom:var(--content-gap);">학습 전체 지도</h2>
+        <div class="card reveal reveal-delay-1" style="max-width:min(90vw,850px);margin:0 auto;">
+            <div class="flow-row" style="gap:clamp(0.3rem,0.8vw,0.6rem);">
+                <div class="diagram-box" style="border-color:var(--text-dark);color:var(--text-dark);font-size:var(--small-size);">
+                    🌱 공통 기초<br><span style="font-size:clamp(0.5rem,0.7vw,0.6rem);">1~2개월</span>
+                </div>
+                <span class="diagram-arrow">→</span>
+                <div class="diagram-box" style="border-color:var(--fe-color);color:var(--fe-color);font-size:var(--small-size);">
+                    🖥️ 프론트엔드<br><span style="font-size:clamp(0.5rem,0.7vw,0.6rem);">2~4개월</span>
+                </div>
+                <span class="diagram-arrow">→</span>
+                <div class="diagram-box" style="border-color:var(--be-color);color:var(--be-color);font-size:var(--small-size);">
+                    ⚙️ 백엔드<br><span style="font-size:clamp(0.5rem,0.7vw,0.6rem);">2~4개월</span>
+                </div>
+                <span class="diagram-arrow">→</span>
+                <div class="diagram-box" style="border-color:var(--fs-color);color:var(--fs-color);font-size:var(--small-size);">
+                    🌟 풀스택<br><span style="font-size:clamp(0.5rem,0.7vw,0.6rem);">프로젝트!</span>
+                </div>
+            </div>
+        </div>
+        <div class="highlight-box reveal reveal-delay-2" style="max-width:min(90vw,600px);margin:var(--element-gap) auto 0;">
+            <p class="small">💡 기간은 하루 <strong>1~2시간 공부</strong> 기준. AI와 함께하면 절반으로 단축 가능!</p>
+        </div>
+    </div>
+    <div class="slide-number">3 / 32</div>
+</section>
+
+<!-- ===== 4: AGENDA ===== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-fe">오늘의 여정</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <h2 class="reveal" style="margin-bottom:var(--content-gap);">오늘 배울 내용</h2>
+        <div class="grid-2 reveal reveal-delay-1" style="max-width:min(90vw,800px);margin:0 auto;">
+            <div class="card" style="text-align:left;border-left:4px solid var(--text-dark);">
+                <h3 style="font-size:var(--body-size);margin-bottom:0.2rem;">🌱 Part 1: 공통 기초</h3>
+                <p class="small">프론트·백엔드 공통으로 필요한 것</p>
+            </div>
+            <div class="card" style="text-align:left;border-left:4px solid var(--fe-color);">
+                <h3 style="font-size:var(--body-size);margin-bottom:0.2rem;">🖥️ Part 2: 프론트엔드</h3>
+                <p class="small">단계별 학습 경로</p>
+            </div>
+            <div class="card" style="text-align:left;border-left:4px solid var(--be-color);">
+                <h3 style="font-size:var(--body-size);margin-bottom:0.2rem;">⚙️ Part 3: 백엔드</h3>
+                <p class="small">단계별 학습 경로</p>
+            </div>
+            <div class="card" style="text-align:left;border-left:4px solid var(--fs-color);">
+                <h3 style="font-size:var(--body-size);margin-bottom:0.2rem;">🎯 Part 4: 학습 전략</h3>
+                <p class="small">효율적 공부법 & 추천 자료</p>
+            </div>
+        </div>
+    </div>
+    <div class="slide-number">4 / 32</div>
+</section>
+
+<!-- ===== 5: SECTION - COMMON ===== -->
+<section class="slide centered" style="background:linear-gradient(135deg,#EDF2FB,#E8FFE8);">
+    <div class="deco-circle" style="width:clamp(160px,22vw,350px);height:clamp(160px,22vw,350px);background:var(--accent-teal);top:-5%;right:-5%;opacity:0.15;"></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <div class="reveal"><span class="pill pill-dark" style="margin-bottom:var(--element-gap);display:inline-block;">PART 1</span></div>
+        <h1 class="reveal reveal-delay-1">🌱 공통 기초</h1>
+        <p class="reveal reveal-delay-2" style="font-size:var(--h3-size);color:var(--text-mid);">프론트·백엔드 모두에게 필요한 기반</p>
+    </div>
+    <div class="slide-number">5 / 32</div>
+</section>
+
+<!-- ===== 6: HTML CSS JS ===== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-dark">공통 기초</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <h2 class="reveal" style="margin-bottom:var(--content-gap);">Step 1: 웹의 3대 언어 (2~4주)</h2>
+        <div class="grid-3 reveal reveal-delay-1" style="max-width:min(90vw,850px);margin:0 auto;">
+            <div class="card" style="text-align:center;border-top:4px solid var(--accent-sky);">
+                <div style="font-size:clamp(1.5rem,2.5vw,2rem);">🦴</div>
+                <h3 style="font-size:var(--body-size);color:var(--accent-sky);">HTML</h3>
+                <p class="small">태그, 구조, 시맨틱<br>폼, 테이블, 미디어</p>
+                <p class="small" style="color:var(--accent-sky);font-weight:600;">1주</p>
+            </div>
+            <div class="card" style="text-align:center;border-top:4px solid var(--accent-pink);">
+                <div style="font-size:clamp(1.5rem,2.5vw,2rem);">🎨</div>
+                <h3 style="font-size:var(--body-size);color:var(--accent-pink);">CSS</h3>
+                <p class="small">선택자, Flexbox, Grid<br>반응형, 애니메이션</p>
+                <p class="small" style="color:var(--accent-pink);font-weight:600;">1~2주</p>
+            </div>
+            <div class="card" style="text-align:center;border-top:4px solid var(--accent-mint);">
+                <div style="font-size:clamp(1.5rem,2.5vw,2rem);">⚡</div>
+                <h3 style="font-size:var(--body-size);color:var(--accent-mint);">JavaScript</h3>
+                <p class="small">변수, 함수, 조건문<br>DOM 조작, 이벤트</p>
+                <p class="small" style="color:var(--accent-mint);font-weight:600;">2~3주</p>
+            </div>
+        </div>
+        <div class="highlight-box reveal reveal-delay-2" style="max-width:min(90vw,600px);margin:var(--element-gap) auto 0;">
+            <p class="small">💡 <strong>1강에서 이미 시작했어요!</strong> Claude에게 "HTML 태그 종류 알려줘"라고 물어보세요</p>
+        </div>
+    </div>
+    <div class="slide-number">6 / 32</div>
+</section>
+
+<!-- ===== 7: GIT + TERMINAL ===== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-dark">공통 기초</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <h2 class="reveal" style="margin-bottom:var(--content-gap);">Step 2: 개발 도구 (1~2주)</h2>
+        <div class="grid-2 reveal reveal-delay-1" style="max-width:min(90vw,800px);margin:0 auto;">
+            <div class="card" style="text-align:center;border-top:4px solid var(--accent-coral);">
+                <div style="font-size:clamp(1.5rem,2.5vw,2rem);">🐙</div>
+                <h3 style="font-size:var(--body-size);">Git & GitHub</h3>
+                <p class="small">commit, push, pull<br>브랜치, PR (6강에서 배움!)</p>
+            </div>
+            <div class="card" style="text-align:center;border-top:4px solid var(--accent-teal);">
+                <div style="font-size:clamp(1.5rem,2.5vw,2rem);">⌨️</div>
+                <h3 style="font-size:var(--body-size);">터미널 & VS Code</h3>
+                <p class="small">기본 명령어 (cd, ls, mkdir)<br>에디터 단축키</p>
+            </div>
+        </div>
+        <div class="warn-box reveal reveal-delay-2" style="max-width:min(90vw,600px);margin:var(--element-gap) auto 0;">
+            <p class="small">⚠️ Git을 모르면 현업에서 <strong>절대 일할 수 없습니다.</strong> 반드시 익히세요!</p>
+        </div>
+    </div>
+    <div class="slide-number">7 / 32</div>
+</section>
+
+<!-- ===== 8: SECTION - FRONTEND ===== -->
+<section class="slide centered" style="background:linear-gradient(135deg,#E8F0FE,#EDF2FB);">
+    <div class="deco-circle" style="width:clamp(160px,22vw,350px);height:clamp(160px,22vw,350px);background:var(--fe-color);top:-5%;left:-5%;opacity:0.12;"></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <div class="reveal"><span class="pill pill-fe" style="margin-bottom:var(--element-gap);display:inline-block;">PART 2</span></div>
+        <h1 class="reveal reveal-delay-1">🖥️ 프론트엔드 로드맵</h1>
+        <p class="reveal reveal-delay-2" style="font-size:var(--h3-size);color:var(--text-mid);">사용자가 보는 화면 만들기</p>
+    </div>
+    <div class="slide-number">8 / 32</div>
+</section>
+
+<!-- ===== 9: FE LEVEL 1 ===== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-fe">프론트엔드</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <h2 class="reveal" style="margin-bottom:var(--content-gap);">Level 1: CSS 심화 (2~3주)</h2>
+        <div class="card reveal reveal-delay-1" style="max-width:min(90vw,800px);margin:0 auto;text-align:left;">
+            <div class="grid-2">
+                <div>
+                    <p class="small" style="font-weight:700;color:var(--fe-color);margin-bottom:0.3rem;">배울 것</p>
+                    <p class="small">• Flexbox 레이아웃</p>
+                    <p class="small">• CSS Grid</p>
+                    <p class="small">• 반응형 디자인 (미디어 쿼리)</p>
+                    <p class="small">• CSS 변수, 트랜지션</p>
+                </div>
+                <div>
+                    <p class="small" style="font-weight:700;color:var(--accent-teal);margin-bottom:0.3rem;">🎯 실습 프로젝트</p>
+                    <p class="small">• 네이버 메인페이지 따라 만들기</p>
+                    <p class="small">• 반응형 포트폴리오 사이트</p>
+                    <p class="small" style="margin-top:0.3rem;color:var(--text-light);">Claude에게 "네이버 메인 레이아웃을 Flexbox로 만들어줘"</p>
+                </div>
+            </div>
+        </div>
+        <div class="highlight-box reveal reveal-delay-2" style="max-width:min(90vw,600px);margin:var(--element-gap) auto 0;">
+            <p class="small">💡 <strong>Tailwind CSS</strong>를 함께 배우면 CSS를 더 빠르게 작성할 수 있어요</p>
+        </div>
+    </div>
+    <div class="slide-number">9 / 32</div>
+</section>
+
+<!-- ===== 10: FE LEVEL 2 ===== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-fe">프론트엔드</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <h2 class="reveal" style="margin-bottom:var(--content-gap);">Level 2: JavaScript 심화 (3~4주)</h2>
+        <div class="card reveal reveal-delay-1" style="max-width:min(90vw,800px);margin:0 auto;text-align:left;">
+            <div class="grid-2">
+                <div>
+                    <p class="small" style="font-weight:700;color:var(--fe-color);margin-bottom:0.3rem;">배울 것</p>
+                    <p class="small">• ES6+ 문법 (화살표 함수, 구조분해)</p>
+                    <p class="small">• 비동기 처리 (async/await)</p>
+                    <p class="small">• API 호출 (fetch)</p>
+                    <p class="small">• 배열 메서드 (map, filter, reduce)</p>
+                </div>
+                <div>
+                    <p class="small" style="font-weight:700;color:var(--accent-teal);margin-bottom:0.3rem;">🎯 실습 프로젝트</p>
+                    <p class="small">• 날씨 앱 (API 연동)</p>
+                    <p class="small">• 할일 목록 (CRUD)</p>
+                    <p class="small" style="margin-top:0.3rem;color:var(--text-light);">Claude에게 "날씨 API를 사용한 앱 만들어줘"</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="slide-number">10 / 32</div>
+</section>
+
+<!-- ===== 11: FE LEVEL 3 ===== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-fe">프론트엔드</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <h2 class="reveal" style="margin-bottom:var(--content-gap);">Level 3: 프레임워크 (4~6주)</h2>
+        <div class="grid-3 reveal reveal-delay-1" style="max-width:min(90vw,850px);margin:0 auto;">
+            <div class="card" style="text-align:center;border-top:4px solid var(--accent-sky);position:relative;">
+                <div style="position:absolute;top:-8px;right:-5px;"><span class="pill pill-fe" style="font-size:clamp(0.45rem,0.6vw,0.55rem);">추천!</span></div>
+                <div style="font-size:clamp(1.5rem,2.5vw,2rem);">⚛️</div>
+                <h3 style="font-size:var(--body-size);">React</h3>
+                <p class="small">가장 높은 점유율<br>취업에 가장 유리<br>생태계가 가장 풍부</p>
+            </div>
+            <div class="card" style="text-align:center;border-top:4px solid var(--accent-mint);">
+                <div style="font-size:clamp(1.5rem,2.5vw,2rem);">💚</div>
+                <h3 style="font-size:var(--body-size);">Vue</h3>
+                <p class="small">배우기 가장 쉬움<br>한국에서 인기<br>문서가 잘 되어있음</p>
+            </div>
+            <div class="card" style="text-align:center;border-top:4px solid var(--accent-coral);">
+                <div style="font-size:clamp(1.5rem,2.5vw,2rem);">🅰️</div>
+                <h3 style="font-size:var(--body-size);">Angular</h3>
+                <p class="small">대규모 프로젝트용<br>기업에서 사용<br>학습 난이도 높음</p>
+            </div>
+        </div>
+        <div class="highlight-box reveal reveal-delay-2" style="max-width:min(90vw,600px);margin:var(--element-gap) auto 0;">
+            <p class="small">💡 <strong>처음엔 하나만!</strong> React를 추천합니다. 나중에 다른 것도 쉽게 배울 수 있어요.</p>
+        </div>
+    </div>
+    <div class="slide-number">11 / 32</div>
+</section>
+
+<!-- ===== 12: FE LEVEL 4 ===== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-fe">프론트엔드</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <h2 class="reveal" style="margin-bottom:var(--content-gap);">Level 4: 메타 프레임워크 (2~3주)</h2>
+        <div class="two-col reveal reveal-delay-1" style="max-width:min(90vw,800px);">
+            <div class="card" style="text-align:center;border-top:4px solid var(--text-dark);position:relative;">
+                <div style="position:absolute;top:-8px;right:-5px;"><span class="pill pill-fe" style="font-size:clamp(0.45rem,0.6vw,0.55rem);">추천!</span></div>
+                <div style="font-size:clamp(1.5rem,2.5vw,2rem);">▲</div>
+                <h3 style="font-size:var(--body-size);">Next.js</h3>
+                <p class="small">React 기반<br>서버 렌더링, 라우팅<br>풀스택 가능!</p>
+            </div>
+            <div class="card" style="text-align:center;border-top:4px solid var(--accent-mint);">
+                <div style="font-size:clamp(1.5rem,2.5vw,2rem);">⚡</div>
+                <h3 style="font-size:var(--body-size);">Nuxt.js</h3>
+                <p class="small">Vue 기반<br>같은 역할<br>Vue 선택 시 이것</p>
+            </div>
+        </div>
+        <div class="highlight-box reveal reveal-delay-2" style="max-width:min(90vw,600px);margin:var(--element-gap) auto 0;">
+            <p class="small">💡 Next.js를 배우면 프론트엔드 + 간단한 백엔드까지 <strong>한 번에 해결!</strong></p>
+        </div>
+    </div>
+    <div class="slide-number">12 / 32</div>
+</section>
+
+<!-- ===== 13: FE ROADMAP SUMMARY ===== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-fe">정리</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <h2 class="reveal" style="margin-bottom:var(--content-gap);">프론트엔드 로드맵 한눈에</h2>
+        <div class="card reveal reveal-delay-1" style="max-width:min(90vw,800px);margin:0 auto;">
+            <div class="flow-row" style="gap:clamp(0.3rem,0.6vw,0.5rem);">
+                <span class="pill pill-sky" style="font-size:clamp(0.45rem,0.7vw,0.6rem);">HTML/CSS</span>
+                <span class="diagram-arrow" style="font-size:var(--small-size);">→</span>
+                <span class="pill pill-mint" style="font-size:clamp(0.45rem,0.7vw,0.6rem);">JavaScript</span>
+                <span class="diagram-arrow" style="font-size:var(--small-size);">→</span>
+                <span class="pill pill-fe" style="font-size:clamp(0.45rem,0.7vw,0.6rem);">React</span>
+                <span class="diagram-arrow" style="font-size:var(--small-size);">→</span>
+                <span class="pill pill-dark" style="font-size:clamp(0.45rem,0.7vw,0.6rem);">Next.js</span>
+                <span class="diagram-arrow" style="font-size:var(--small-size);">→</span>
+                <span class="pill pill-coral" style="font-size:clamp(0.45rem,0.7vw,0.6rem);">TypeScript</span>
+            </div>
+            <p class="small" style="text-align:center;margin-top:var(--element-gap);color:var(--fe-color);font-weight:600;">예상 기간: 3~6개월</p>
+        </div>
+        <div class="card reveal reveal-delay-2" style="max-width:min(90vw,800px);margin:var(--element-gap) auto 0;text-align:left;">
+            <p class="small" style="font-weight:700;margin-bottom:0.3rem;">추가로 배우면 좋은 것</p>
+            <div class="flow-row" style="justify-content:flex-start;gap:0.3rem;">
+                <span class="pill" style="background:#E8F4FD;color:var(--text-dark);font-size:clamp(0.45rem,0.65vw,0.55rem);">Tailwind CSS</span>
+                <span class="pill" style="background:#E8F4FD;color:var(--text-dark);font-size:clamp(0.45rem,0.65vw,0.55rem);">TypeScript</span>
+                <span class="pill" style="background:#E8F4FD;color:var(--text-dark);font-size:clamp(0.45rem,0.65vw,0.55rem);">상태관리</span>
+                <span class="pill" style="background:#E8F4FD;color:var(--text-dark);font-size:clamp(0.45rem,0.65vw,0.55rem);">테스트</span>
+            </div>
+        </div>
+    </div>
+    <div class="slide-number">13 / 32</div>
+</section>
+
+<!-- ===== 14: SECTION - BACKEND ===== -->
+<section class="slide centered" style="background:linear-gradient(135deg,#F0E8FF,#EDF2FB);">
+    <div class="deco-circle" style="width:clamp(160px,22vw,350px);height:clamp(160px,22vw,350px);background:var(--be-color);bottom:-5%;left:-5%;opacity:0.12;"></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <div class="reveal"><span class="pill pill-be" style="margin-bottom:var(--element-gap);display:inline-block;">PART 3</span></div>
+        <h1 class="reveal reveal-delay-1">⚙️ 백엔드 로드맵</h1>
+        <p class="reveal reveal-delay-2" style="font-size:var(--h3-size);color:var(--text-mid);">보이지 않는 곳에서 일하는 두뇌</p>
+    </div>
+    <div class="slide-number">14 / 32</div>
+</section>
+
+<!-- ===== 15: CHOOSE LANGUAGE ===== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-be">백엔드</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <h2 class="reveal" style="margin-bottom:var(--content-gap);">첫 번째 선택: 언어</h2>
+        <div class="grid-3 reveal reveal-delay-1" style="max-width:min(90vw,850px);margin:0 auto;">
+            <div class="card" style="text-align:center;border-top:4px solid var(--accent-mint);position:relative;">
+                <div style="position:absolute;top:-8px;right:-5px;"><span class="pill pill-be" style="font-size:clamp(0.45rem,0.6vw,0.55rem);">초보 추천!</span></div>
+                <div style="font-size:clamp(1.5rem,2.5vw,2rem);">🟢</div>
+                <h3 style="font-size:var(--body-size);">Node.js</h3>
+                <p class="small">JavaScript로 백엔드<br>프론트와 같은 언어<br><strong>하나만 배워도 풀스택!</strong></p>
+            </div>
+            <div class="card" style="text-align:center;border-top:4px solid var(--accent-sky);">
+                <div style="font-size:clamp(1.5rem,2.5vw,2rem);">🐍</div>
+                <h3 style="font-size:var(--body-size);">Python</h3>
+                <p class="small">가장 쉬운 문법<br>AI/데이터 분야 강세<br>Django, FastAPI</p>
+            </div>
+            <div class="card" style="text-align:center;border-top:4px solid var(--accent-coral);">
+                <div style="font-size:clamp(1.5rem,2.5vw,2rem);">☕</div>
+                <h3 style="font-size:var(--body-size);">Java</h3>
+                <p class="small">대기업 표준<br>안정적, 체계적<br>Spring Boot</p>
+            </div>
+        </div>
+        <div class="highlight-box reveal reveal-delay-2" style="max-width:min(90vw,600px);margin:var(--element-gap) auto 0;">
+            <p class="small">💡 프론트엔드에서 JavaScript를 배웠다면 <strong>Node.js가 가장 효율적!</strong></p>
+        </div>
+    </div>
+    <div class="slide-number">15 / 32</div>
+</section>
+
+<!-- ===== 16: BE LEVEL 1 ===== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-be">백엔드</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <h2 class="reveal" style="margin-bottom:var(--content-gap);">Level 1: 서버 기초 (2~3주)</h2>
+        <div class="card reveal reveal-delay-1" style="max-width:min(90vw,800px);margin:0 auto;text-align:left;">
+            <div class="grid-2">
+                <div>
+                    <p class="small" style="font-weight:700;color:var(--be-color);margin-bottom:0.3rem;">배울 것</p>
+                    <p class="small">• HTTP 요청/응답 이해</p>
+                    <p class="small">• REST API 개념</p>
+                    <p class="small">• Express.js (Node.js용 프레임워크)</p>
+                    <p class="small">• 라우팅, 미들웨어</p>
+                </div>
+                <div>
+                    <p class="small" style="font-weight:700;color:var(--accent-teal);margin-bottom:0.3rem;">🎯 실습 프로젝트</p>
+                    <p class="small">• "Hello World" API 만들기</p>
+                    <p class="small">• 간단한 CRUD API</p>
+                    <p class="small" style="margin-top:0.3rem;color:var(--text-light);">Claude에게 "Express로 할일 목록 API 만들어줘"</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="slide-number">16 / 32</div>
+</section>
+
+<!-- ===== 17: BE LEVEL 2 ===== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-be">백엔드</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <h2 class="reveal" style="margin-bottom:var(--content-gap);">Level 2: 데이터베이스 (3~4주)</h2>
+        <div class="two-col reveal reveal-delay-1" style="max-width:min(90vw,800px);">
+            <div class="card" style="text-align:center;border-top:4px solid var(--accent-sky);position:relative;">
+                <div style="position:absolute;top:-8px;right:-5px;"><span class="pill pill-be" style="font-size:clamp(0.45rem,0.6vw,0.55rem);">먼저!</span></div>
+                <div style="font-size:clamp(1.5rem,2.5vw,2rem);">📊</div>
+                <h3 style="font-size:var(--body-size);">SQL (관계형)</h3>
+                <p class="small">PostgreSQL, MySQL<br>표 형태의 데이터<br>가장 기본적이고 중요</p>
+            </div>
+            <div class="card" style="text-align:center;border-top:4px solid var(--accent-mint);">
+                <div style="font-size:clamp(1.5rem,2.5vw,2rem);">🍃</div>
+                <h3 style="font-size:var(--body-size);">NoSQL</h3>
+                <p class="small">MongoDB, Firebase<br>유연한 구조<br>빠른 프로토타이핑</p>
+            </div>
+        </div>
+        <div class="highlight-box reveal reveal-delay-2" style="max-width:min(90vw,600px);margin:var(--element-gap) auto 0;">
+            <p class="small">💡 초보자 팁: <strong>Supabase</strong>(무료 PostgreSQL) 또는 <strong>Firebase</strong>(무료 NoSQL)로 시작하세요</p>
+        </div>
+    </div>
+    <div class="slide-number">17 / 32</div>
+</section>
+
+<!-- ===== 18: BE LEVEL 3 ===== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-be">백엔드</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <h2 class="reveal" style="margin-bottom:var(--content-gap);">Level 3: 인증 & 보안 (2주)</h2>
+        <div class="card reveal reveal-delay-1" style="max-width:min(90vw,800px);margin:0 auto;text-align:left;">
+            <div class="grid-2">
+                <div>
+                    <p class="small" style="font-weight:700;color:var(--be-color);margin-bottom:0.3rem;">배울 것</p>
+                    <p class="small">• 로그인/회원가입 구현</p>
+                    <p class="small">• JWT 토큰 인증</p>
+                    <p class="small">• 비밀번호 암호화</p>
+                    <p class="small">• OAuth (구글, GitHub 로그인)</p>
+                </div>
+                <div>
+                    <p class="small" style="font-weight:700;color:var(--accent-teal);margin-bottom:0.3rem;">🎯 실습 프로젝트</p>
+                    <p class="small">• 회원가입 + 로그인 시스템</p>
+                    <p class="small">• 구글 소셜 로그인</p>
+                    <p class="small" style="margin-top:0.3rem;color:var(--text-light);">Claude에게 "JWT 인증 시스템 만들어줘"</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="slide-number">18 / 32</div>
+</section>
+
+<!-- ===== 19: BE LEVEL 4 ===== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-be">백엔드</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <h2 class="reveal" style="margin-bottom:var(--content-gap);">Level 4: 배포 & 운영 (2주)</h2>
+        <div style="display:flex;flex-direction:column;gap:var(--element-gap);max-width:min(90vw,800px);margin:0 auto;">
+            <div class="card reveal reveal-delay-1" style="text-align:left;border-left:4px solid var(--accent-teal);">
+                <p><strong style="color:var(--accent-teal);">클라우드 배포</strong> — Vercel, Railway, Render (무료 시작 가능)</p>
+            </div>
+            <div class="card reveal reveal-delay-2" style="text-align:left;border-left:4px solid var(--accent-sky);">
+                <p><strong style="color:var(--accent-sky);">Docker</strong> — 어디서든 같은 환경으로 실행 (컨테이너)</p>
+            </div>
+            <div class="card reveal reveal-delay-3" style="text-align:left;border-left:4px solid var(--accent-lavender);">
+                <p><strong style="color:var(--accent-lavender);">CI/CD</strong> — GitHub Actions로 자동 테스트 & 배포</p>
+            </div>
+        </div>
+        <div class="highlight-box reveal reveal-delay-4" style="max-width:min(90vw,600px);margin:var(--element-gap) auto 0;">
+            <p class="small">💡 5강에서 배운 <strong>Vercel</strong>이 백엔드 배포도 지원합니다!</p>
+        </div>
+    </div>
+    <div class="slide-number">19 / 32</div>
+</section>
+
+<!-- ===== 20: BE ROADMAP SUMMARY ===== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-be">정리</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <h2 class="reveal" style="margin-bottom:var(--content-gap);">백엔드 로드맵 한눈에</h2>
+        <div class="card reveal reveal-delay-1" style="max-width:min(90vw,800px);margin:0 auto;">
+            <div class="flow-row" style="gap:clamp(0.3rem,0.6vw,0.5rem);">
+                <span class="pill pill-mint" style="font-size:clamp(0.45rem,0.7vw,0.6rem);">Node.js</span>
+                <span class="diagram-arrow" style="font-size:var(--small-size);">→</span>
+                <span class="pill pill-sky" style="font-size:clamp(0.45rem,0.7vw,0.6rem);">Express</span>
+                <span class="diagram-arrow" style="font-size:var(--small-size);">→</span>
+                <span class="pill pill-be" style="font-size:clamp(0.45rem,0.7vw,0.6rem);">DB (SQL)</span>
+                <span class="diagram-arrow" style="font-size:var(--small-size);">→</span>
+                <span class="pill pill-coral" style="font-size:clamp(0.45rem,0.7vw,0.6rem);">인증</span>
+                <span class="diagram-arrow" style="font-size:var(--small-size);">→</span>
+                <span class="pill pill-dark" style="font-size:clamp(0.45rem,0.7vw,0.6rem);">배포</span>
+            </div>
+            <p class="small" style="text-align:center;margin-top:var(--element-gap);color:var(--be-color);font-weight:600;">예상 기간: 3~5개월</p>
+        </div>
+    </div>
+    <div class="slide-number">20 / 32</div>
+</section>
+
+<!-- ===== 21: FULLSTACK PROJECT ===== -->
+<section class="slide centered" style="background:linear-gradient(135deg,#FDE8F0,#EDF2FB);">
+    <div class="deco-circle" style="width:clamp(160px,22vw,350px);height:clamp(160px,22vw,350px);background:var(--fs-color);top:-5%;right:-5%;opacity:0.1;"></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <h2 class="reveal" style="margin-bottom:var(--content-gap);">🌟 최종 목표: 풀스택 프로젝트</h2>
+        <div class="grid-3 reveal reveal-delay-1" style="max-width:min(90vw,850px);margin:0 auto;">
+            <div class="card" style="text-align:center;border-top:3px solid var(--accent-pink);">
+                <div style="font-size:clamp(1.5rem,2.5vw,2rem);">📝</div>
+                <p class="small"><strong>블로그 플랫폼</strong></p>
+                <p class="small" style="color:var(--text-light);">글쓰기, 수정, 삭제<br>회원가입, 댓글</p>
+            </div>
+            <div class="card" style="text-align:center;border-top:3px solid var(--accent-mint);">
+                <div style="font-size:clamp(1.5rem,2.5vw,2rem);">🛒</div>
+                <p class="small"><strong>쇼핑몰</strong></p>
+                <p class="small" style="color:var(--text-light);">상품 목록, 장바구니<br>결제, 주문 관리</p>
+            </div>
+            <div class="card" style="text-align:center;border-top:3px solid var(--accent-lavender);">
+                <div style="font-size:clamp(1.5rem,2.5vw,2rem);">💬</div>
+                <p class="small"><strong>채팅 앱</strong></p>
+                <p class="small" style="color:var(--text-light);">실시간 메시지<br>채팅방, 알림</p>
+            </div>
+        </div>
+        <div class="highlight-box reveal reveal-delay-2" style="max-width:min(90vw,600px);margin:var(--element-gap) auto 0;">
+            <p class="small">💡 이 중 하나를 <strong>포트폴리오</strong>로 만들면 취업에 강력한 무기가 됩니다!</p>
+        </div>
+    </div>
+    <div class="slide-number">21 / 32</div>
+</section>
+
+<!-- ===== 22: SECTION - STRATEGY ===== -->
+<section class="slide centered" style="background:linear-gradient(135deg,#E8FFE8,#EDF2FB);">
+    <div class="deco-circle" style="width:clamp(160px,22vw,350px);height:clamp(160px,22vw,350px);background:var(--accent-mint);bottom:-5%;right:-5%;opacity:0.15;"></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <div class="reveal"><span class="pill pill-teal" style="margin-bottom:var(--element-gap);display:inline-block;">PART 4</span></div>
+        <h1 class="reveal reveal-delay-1">🎯 학습 전략</h1>
+        <p class="reveal reveal-delay-2" style="font-size:var(--h3-size);color:var(--text-mid);">효율적으로 공부하는 방법</p>
+    </div>
+    <div class="slide-number">22 / 32</div>
+</section>
+
+<!-- ===== 23: 70-20-10 RULE ===== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-teal">학습 전략</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <h2 class="reveal" style="margin-bottom:var(--content-gap);">70-20-10 법칙</h2>
+        <div class="grid-3 reveal reveal-delay-1" style="max-width:min(90vw,850px);margin:0 auto;">
+            <div class="card" style="text-align:center;border-top:4px solid var(--accent-mint);">
+                <div style="font-size:clamp(2rem,4vw,3rem);font-weight:800;color:var(--accent-teal);">70%</div>
+                <h3 style="font-size:var(--body-size);">직접 만들기</h3>
+                <p class="small">프로젝트를 만들면서<br>에러를 만나고 해결</p>
+            </div>
+            <div class="card" style="text-align:center;border-top:4px solid var(--accent-sky);">
+                <div style="font-size:clamp(2rem,4vw,3rem);font-weight:800;color:var(--fe-color);">20%</div>
+                <h3 style="font-size:var(--body-size);">다른 코드 읽기</h3>
+                <p class="small">GitHub에서 좋은 코드<br>따라 쳐보고 분석</p>
+            </div>
+            <div class="card" style="text-align:center;border-top:4px solid var(--accent-lavender);">
+                <div style="font-size:clamp(2rem,4vw,3rem);font-weight:800;color:var(--be-color);">10%</div>
+                <h3 style="font-size:var(--body-size);">이론 학습</h3>
+                <p class="small">강의, 책, 문서<br>필요할 때 찾아보기</p>
+            </div>
+        </div>
+        <div class="warn-box reveal reveal-delay-2" style="max-width:min(90vw,600px);margin:var(--element-gap) auto 0;">
+            <p class="small">⚠️ <strong>강의만 수십 개 듣는 "튜토리얼 지옥"에 빠지지 마세요!</strong> 직접 만드는 것이 핵심</p>
+        </div>
+    </div>
+    <div class="slide-number">23 / 32</div>
+</section>
+
+<!-- ===== 24: AI ASSISTED LEARNING ===== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-teal">학습 전략</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <h2 class="reveal" style="margin-bottom:var(--content-gap);">AI와 함께 배우는 5가지 방법</h2>
+        <div style="display:flex;flex-direction:column;gap:var(--element-gap);max-width:min(90vw,800px);margin:0 auto;">
+            <div class="card reveal reveal-delay-1" style="text-align:left;">
+                <p><strong style="color:var(--fe-color);">1. 코드 설명 요청</strong> — "이 코드가 뭐하는 건지 한 줄씩 설명해줘"</p>
+            </div>
+            <div class="card reveal reveal-delay-2" style="text-align:left;">
+                <p><strong style="color:var(--be-color);">2. 에러 해결</strong> — 에러 메시지를 복사해서 "이 에러 왜 나오는지 알려줘"</p>
+            </div>
+            <div class="card reveal reveal-delay-3" style="text-align:left;">
+                <p><strong style="color:var(--accent-teal);">3. 리팩토링 요청</strong> — "이 코드를 더 좋게 고쳐줘. 왜 그렇게 하는지 설명도 해줘"</p>
+            </div>
+            <div class="card reveal reveal-delay-4" style="text-align:left;">
+                <p><strong style="color:var(--fs-color);">4. 개념 비유 요청</strong> — "async/await를 식당 비유로 설명해줘"</p>
+            </div>
+        </div>
+        <div class="highlight-box reveal reveal-delay-4" style="max-width:min(90vw,600px);margin:var(--element-gap) auto 0;">
+            <p class="small"><strong>5. 퀴즈 요청</strong> — "JavaScript 기초 퀴즈 10문제 내줘" → 실력 점검!</p>
+        </div>
+    </div>
+    <div class="slide-number">24 / 32</div>
+</section>
+
+<!-- ===== 25: FREE RESOURCES - KOREAN ===== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-teal">추천 자료</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <h2 class="reveal" style="margin-bottom:var(--content-gap);">무료 학습 자료 (한국어)</h2>
+        <div class="grid-2 reveal reveal-delay-1" style="max-width:min(90vw,800px);margin:0 auto;">
+            <div class="card" style="text-align:left;border-left:4px solid var(--accent-mint);">
+                <h3 style="font-size:var(--body-size);margin-bottom:0.2rem;">📺 생활코딩</h3>
+                <p class="small">HTML, CSS, JS, Node.js<br>한국어 무료 강의의 교과서</p>
+            </div>
+            <div class="card" style="text-align:left;border-left:4px solid var(--accent-sky);">
+                <h3 style="font-size:var(--body-size);margin-bottom:0.2rem;">📺 드림코딩</h3>
+                <p class="small">체계적인 커리큘럼<br>프론트엔드 중심</p>
+            </div>
+            <div class="card" style="text-align:left;border-left:4px solid var(--accent-lavender);">
+                <h3 style="font-size:var(--body-size);margin-bottom:0.2rem;">📺 코딩앙마</h3>
+                <p class="small">짧고 핵심만<br>JavaScript 심화</p>
+            </div>
+            <div class="card" style="text-align:left;border-left:4px solid var(--accent-pink);">
+                <h3 style="font-size:var(--body-size);margin-bottom:0.2rem;">📚 MDN 한국어</h3>
+                <p class="small">모질라 공식 문서<br>웹 기술 백과사전</p>
+            </div>
+        </div>
+    </div>
+    <div class="slide-number">25 / 32</div>
+</section>
+
+<!-- ===== 26: FREE RESOURCES - ENGLISH ===== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-teal">추천 자료</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <h2 class="reveal" style="margin-bottom:var(--content-gap);">무료 학습 자료 (영어 — 한글 자막 가능)</h2>
+        <div class="grid-2 reveal reveal-delay-1" style="max-width:min(90vw,800px);margin:0 auto;">
+            <div class="card" style="text-align:left;border-left:4px solid var(--accent-teal);">
+                <h3 style="font-size:var(--body-size);margin-bottom:0.2rem;">🎮 freeCodeCamp</h3>
+                <p class="small">실습 중심 무료 커리큘럼<br>인증서 발급까지!</p>
+            </div>
+            <div class="card" style="text-align:left;border-left:4px solid var(--fe-color);">
+                <h3 style="font-size:var(--body-size);margin-bottom:0.2rem;">📺 Fireship (YouTube)</h3>
+                <p class="small">100초 시리즈<br>모든 기술을 빠르게 소개</p>
+            </div>
+            <div class="card" style="text-align:left;border-left:4px solid var(--be-color);">
+                <h3 style="font-size:var(--body-size);margin-bottom:0.2rem;">🗺️ roadmap.sh</h3>
+                <p class="small">프론트/백엔드 로드맵<br>시각적으로 정리된 가이드</p>
+            </div>
+            <div class="card" style="text-align:left;border-left:4px solid var(--accent-coral);">
+                <h3 style="font-size:var(--body-size);margin-bottom:0.2rem;">📚 The Odin Project</h3>
+                <p class="small">풀스택 무료 과정<br>프로젝트 기반 학습</p>
+            </div>
+        </div>
+    </div>
+    <div class="slide-number">26 / 32</div>
+</section>
+
+<!-- ===== 27: COMMON MISTAKES ===== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-coral">주의</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <h2 class="reveal" style="margin-bottom:var(--content-gap);">초보자가 빠지기 쉬운 함정</h2>
+        <div style="display:flex;flex-direction:column;gap:var(--element-gap);max-width:min(90vw,800px);margin:0 auto;">
+            <div class="card reveal reveal-delay-1" style="text-align:left;border:2px solid var(--accent-coral);">
+                <p class="small" style="color:var(--accent-coral);font-weight:700;">❌ 함정 1: 튜토리얼 수집가</p>
+                <p class="small">강의만 모으고 직접 코딩은 안 함 → <strong>강의 하나 듣고 바로 프로젝트!</strong></p>
+            </div>
+            <div class="card reveal reveal-delay-2" style="text-align:left;border:2px solid var(--accent-coral);">
+                <p class="small" style="color:var(--accent-coral);font-weight:700;">❌ 함정 2: 동시에 여러 언어</p>
+                <p class="small">이것저것 맛보기만 → <strong>한 가지 스택에 집중!</strong></p>
+            </div>
+            <div class="card reveal reveal-delay-3" style="text-align:left;border:2px solid var(--accent-coral);">
+                <p class="small" style="color:var(--accent-coral);font-weight:700;">❌ 함정 3: 완벽주의</p>
+                <p class="small">다 알아야 시작한다고 생각 → <strong>60%만 알아도 만들기 시작!</strong></p>
+            </div>
+            <div class="card reveal reveal-delay-4" style="text-align:left;border:2px solid var(--accent-coral);">
+                <p class="small" style="color:var(--accent-coral);font-weight:700;">❌ 함정 4: AI에 100% 의존</p>
+                <p class="small">복사만 하고 이해 안 함 → <strong>코드를 한 줄씩 이해하기!</strong></p>
+            </div>
+        </div>
+    </div>
+    <div class="slide-number">27 / 32</div>
+</section>
+
+<!-- ===== 28: WEEKLY PLAN ===== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-teal">실전</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <h2 class="reveal" style="margin-bottom:var(--content-gap);">추천 주간 학습 패턴</h2>
+        <div class="card reveal reveal-delay-1" style="max-width:min(90vw,800px);margin:0 auto;text-align:left;">
+            <div class="grid-2">
+                <div>
+                    <p class="small" style="font-weight:700;color:var(--fe-color);margin-bottom:0.3rem;">평일 (1~2시간/일)</p>
+                    <p class="small">🔵 월: 새 개념 학습 (영상/문서)</p>
+                    <p class="small">🟢 화~목: 프로젝트 코딩</p>
+                    <p class="small">🟣 금: 코드 리뷰 & 복습</p>
+                </div>
+                <div>
+                    <p class="small" style="font-weight:700;color:var(--be-color);margin-bottom:0.3rem;">주말 (선택)</p>
+                    <p class="small">🟠 토: 미니 프로젝트 도전</p>
+                    <p class="small">⚪ 일: 쉬기 (번아웃 방지!)</p>
+                    <p class="small" style="margin-top:0.3rem;color:var(--text-light);">꾸준함 > 벼락치기</p>
+                </div>
+            </div>
+        </div>
+        <div class="highlight-box reveal reveal-delay-2" style="max-width:min(90vw,600px);margin:var(--element-gap) auto 0;">
+            <p class="small">💡 <strong>매일 30분이라도 코드를 만져보세요.</strong> GitHub 잔디밭(기여 그래프)이 동기부여가 됩니다!</p>
+        </div>
+    </div>
+    <div class="slide-number">28 / 32</div>
+</section>
+
+<!-- ===== 29: RECOMMENDED STACK ===== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-fs">추천</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <h2 class="reveal" style="margin-bottom:var(--content-gap);">2025년 추천 스택</h2>
+        <div class="card reveal reveal-delay-1" style="max-width:min(90vw,800px);margin:0 auto;text-align:center;">
+            <p style="margin-bottom:var(--element-gap);">초보자가 <strong>풀스택</strong>을 가장 빨리 달성할 수 있는 조합</p>
+            <div class="flow-row" style="gap:clamp(0.3rem,0.6vw,0.5rem);">
+                <span class="pill pill-fe" style="font-size:var(--small-size);">React</span>
+                <span style="color:var(--text-light);">+</span>
+                <span class="pill pill-dark" style="font-size:var(--small-size);">Next.js</span>
+                <span style="color:var(--text-light);">+</span>
+                <span class="pill pill-coral" style="font-size:var(--small-size);">TypeScript</span>
+                <span style="color:var(--text-light);">+</span>
+                <span class="pill pill-teal" style="font-size:var(--small-size);">Tailwind</span>
+                <span style="color:var(--text-light);">+</span>
+                <span class="pill pill-be" style="font-size:var(--small-size);">Supabase</span>
+                <span style="color:var(--text-light);">+</span>
+                <span class="pill pill-mint" style="font-size:var(--small-size);">Vercel</span>
+            </div>
+        </div>
+        <div class="highlight-box reveal reveal-delay-2" style="max-width:min(90vw,600px);margin:var(--element-gap) auto 0;">
+            <p class="small">💡 <strong>JavaScript 하나만으로 프론트 + 백엔드 + DB + 배포</strong>까지 가능한 조합!</p>
+        </div>
+    </div>
+    <div class="slide-number">29 / 32</div>
+</section>
+
+<!-- ===== 30: PRACTICE ===== -->
+<section class="slide centered" style="background:linear-gradient(135deg,#E8F4FD,#E8FFE8);">
+    <div class="slide-content centered" style="z-index:1;">
+        <div class="reveal"><span class="pill pill-fe" style="margin-bottom:var(--element-gap);display:inline-block;">실습 타임!</span></div>
+        <h2 class="reveal reveal-delay-1" style="margin-bottom:var(--content-gap);">실습: 나만의 학습 계획 만들기</h2>
+        <div style="display:flex;flex-direction:column;gap:var(--element-gap);max-width:min(90vw,700px);margin:0 auto;text-align:left;">
+            <div class="card reveal reveal-delay-1" style="border:2px solid var(--fe-color);">
+                <p class="small" style="color:var(--fe-color);font-weight:700;">Claude에게 이렇게 요청하세요:</p>
+                <p class="small">"나는 프로그래밍 초보자야. 프론트엔드 개발자가 되고 싶어. 6개월 학습 계획을 주 단위로 세워줘. 매일 1시간 투자 가능해."</p>
+            </div>
+            <div class="card reveal reveal-delay-2" style="border:2px solid var(--be-color);">
+                <p class="small" style="color:var(--be-color);font-weight:700;">또는:</p>
+                <p class="small">"나는 풀스택을 배우고 싶어. Next.js + Supabase 스택으로 3개월 계획 세워줘. 첫 달에 만들 프로젝트도 추천해줘."</p>
+            </div>
+        </div>
+        <p class="reveal reveal-delay-3 small" style="margin-top:var(--element-gap);">⏱️ <strong>5분간</strong> 자신만의 학습 계획을 받아보세요!</p>
+    </div>
+    <div class="slide-number">30 / 32</div>
+</section>
+
+<!-- ===== 31: CHEAT SHEET ===== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-fe">정리</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <h2 class="reveal" style="margin-bottom:var(--content-gap);">핵심 정리</h2>
+        <div class="grid-2 reveal reveal-delay-1" style="max-width:min(90vw,900px);margin:0 auto;">
+            <div class="card" style="text-align:left;padding:clamp(0.5rem,1.2vw,1rem);">
+                <p class="small" style="font-weight:700;color:var(--fe-color);margin-bottom:0.2rem;">프론트엔드 경로</p>
+                <p style="font-size:var(--small-size);">HTML/CSS → JavaScript →</p>
+                <p style="font-size:var(--small-size);">React → Next.js → TypeScript</p>
+                <p style="font-size:var(--small-size);margin-top:0.3rem;font-weight:700;color:var(--be-color);">백엔드 경로</p>
+                <p style="font-size:var(--small-size);">Node.js → Express →</p>
+                <p style="font-size:var(--small-size);">DB(SQL) → 인증 → 배포</p>
+            </div>
+            <div class="card" style="text-align:left;padding:clamp(0.5rem,1.2vw,1rem);">
+                <p class="small" style="font-weight:700;color:var(--accent-teal);margin-bottom:0.2rem;">학습 원칙</p>
+                <p style="font-size:var(--small-size);">✅ 70% 직접 만들기</p>
+                <p style="font-size:var(--small-size);">✅ 한 번에 하나의 기술</p>
+                <p style="font-size:var(--small-size);">✅ AI와 함께 학습</p>
+                <p style="font-size:var(--small-size);">✅ 매일 꾸준히 조금씩</p>
+                <p style="font-size:var(--small-size);">❌ 튜토리얼만 보기</p>
+                <p style="font-size:var(--small-size);">❌ 동시에 여러 언어</p>
+            </div>
+        </div>
+        <p class="reveal reveal-delay-2 small" style="margin-top:var(--element-gap);">📸 스크린샷 찍어두세요!</p>
+    </div>
+    <div class="slide-number">31 / 32</div>
+</section>
+
+<!-- ===== 32: CLOSING ===== -->
+<section class="slide centered" style="background:linear-gradient(135deg,#E8F0FE 0%,#EDF2FB 40%,#F0E8FF 100%);">
+    <div class="deco-circle" style="width:clamp(200px,28vw,450px);height:clamp(200px,28vw,450px);background:var(--fe-color);top:-8%;right:-5%;"></div>
+    <div class="deco-circle" style="width:clamp(150px,18vw,300px);height:clamp(150px,18vw,300px);background:var(--be-color);bottom:5%;left:-3%;"></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <div class="reveal"><div style="font-size:clamp(3rem,6vw,5rem);margin-bottom:var(--element-gap);">🗺️</div></div>
+        <h1 class="reveal reveal-delay-1" style="margin-bottom:var(--element-gap);">수고하셨습니다!</h1>
+        <p class="reveal reveal-delay-2" style="font-size:var(--h3-size);color:var(--text-mid);margin-bottom:var(--content-gap);">
+            이제 <strong>어디로 가야 할지</strong> 알았으니<br>한 걸음씩 나아가면 됩니다
+        </p>
+        <div class="card reveal reveal-delay-3" style="margin:0 auto;display:inline-block;">
+            <p><strong>오늘 당장 첫 프로젝트를 시작하세요!</strong> 🚀</p>
+        </div>
+    </div>
+    <div class="slide-number">32 / 32</div>
+</section>
+
+<script>
+(function(){
+    'use strict';
+    const s=document.querySelectorAll('.slide'),t=s.length,p=document.getElementById('progress'),n=document.getElementById('navDots');
+    let c=0;
+    s.forEach((_,i)=>{const d=document.createElement('button');d.className='nav-dot'+(i===0?' active':'');d.setAttribute('aria-label','Slide '+(i+1));d.addEventListener('click',()=>g(i));n.appendChild(d)});
+    const dots=n.querySelectorAll('.nav-dot');
+    function u(i){c=i;p.style.width=((i+1)/t*100)+'%';dots.forEach((d,j)=>d.classList.toggle('active',j===i))}
+    function g(i){if(i<0||i>=t)return;s[i].scrollIntoView({behavior:'smooth'});u(i)}
+    document.addEventListener('keydown',e=>{if(['ArrowDown','ArrowRight',' ','PageDown'].includes(e.key)){e.preventDefault();g(Math.min(c+1,t-1))}else if(['ArrowUp','ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();g(Math.max(c-1,0))}else if(e.key==='Home'){e.preventDefault();g(0)}else if(e.key==='End'){e.preventDefault();g(t-1)}});
+    let ty=0;
+    document.addEventListener('touchstart',e=>{ty=e.touches[0].clientY},{passive:true});
+    document.addEventListener('touchend',e=>{const d=ty-e.changedTouches[0].clientY;if(Math.abs(d)>50)g(d>0?Math.min(c+1,t-1):Math.max(c-1,0))},{passive:true});
+    const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){const i=Array.from(s).indexOf(e.target);if(i!==-1)u(i)}})},{threshold:0.6});
+    s.forEach(x=>obs.observe(x));
+    const ro=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')})},{threshold:0.15});
+    document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
+    u(0);
+})();
+</script>
+
+</body>
+</html>

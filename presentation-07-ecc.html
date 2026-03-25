@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Everything Claude Code로 개발 자동화하기</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+html,body{height:100%;overflow-x:hidden;margin:0;padding:0}
+html{scroll-snap-type:y mandatory;scroll-behavior:smooth}
+*{box-sizing:border-box;margin:0;padding:0}
+.slide{width:100vw;height:100vh;height:100dvh;overflow:hidden;scroll-snap-align:start;display:flex;flex-direction:column;position:relative;font-family:'Plus Jakarta Sans',sans-serif}
+.slide-content{flex:1;display:flex;flex-direction:column;justify-content:center;max-height:100%;overflow:hidden;padding:var(--slide-padding)}
+:root{
+    --title-size:clamp(1.5rem,5vw,4rem);--h2-size:clamp(1.25rem,3.5vw,2.5rem);
+    --h3-size:clamp(1rem,2.5vw,1.75rem);--body-size:clamp(0.75rem,1.5vw,1.125rem);
+    --small-size:clamp(0.65rem,1vw,0.875rem);--slide-padding:clamp(1rem,4vw,4rem);
+    --content-gap:clamp(0.5rem,2vw,2rem);--element-gap:clamp(0.25rem,1vw,1rem);
+    --bg-main:#EDF2FB;--card-bg:#FFFBF0;--card-shadow:rgba(0,0,0,0.06);
+    --accent-pink:#F4A7BB;--accent-mint:#A8E6CF;--accent-lavender:#C3B1E1;
+    --accent-sky:#89CFF0;--accent-peach:#FFDAB9;--accent-coral:#F08080;
+    --accent-teal:#5BB5A2;--accent-indigo:#7B8CDE;
+    --ecc-purple:#8B5CF6;--ecc-blue:#3B82F6;
+    --text-dark:#2D3142;--text-mid:#4F5D75;--text-light:#8D99AE;
+    --code-bg:#1E1E2E;--code-text:#CDD6F4;--code-green:#A6E3A1;
+    --code-blue:#89B4FA;--code-pink:#F5C2E7;--code-orange:#FAB387;--code-yellow:#F9E2AF;
+}
+h1{font-size:var(--title-size);font-weight:800;color:var(--text-dark);line-height:1.2}
+h2{font-size:var(--h2-size);font-weight:700;color:var(--text-dark);line-height:1.3}
+h3{font-size:var(--h3-size);font-weight:600;color:var(--text-dark);line-height:1.3}
+p,li{font-size:var(--body-size);color:var(--text-mid);line-height:1.6}
+.small{font-size:var(--small-size);color:var(--text-light)}
+.pill{display:inline-block;padding:clamp(0.2rem,0.5vw,0.4rem) clamp(0.5rem,1.2vw,1rem);border-radius:50px;font-size:var(--small-size);font-weight:600;letter-spacing:0.03em}
+.pill-pink{background:var(--accent-pink);color:#fff}
+.pill-mint{background:var(--accent-mint);color:var(--text-dark)}
+.pill-lavender{background:var(--accent-lavender);color:#fff}
+.pill-sky{background:var(--accent-sky);color:var(--text-dark)}
+.pill-coral{background:var(--accent-coral);color:#fff}
+.pill-teal{background:var(--accent-teal);color:#fff}
+.pill-ecc{background:var(--ecc-purple);color:#fff}
+.pill-dark{background:var(--text-dark);color:#fff}
+.card{background:var(--card-bg);border-radius:clamp(12px,2vw,24px);padding:clamp(0.75rem,2vw,1.5rem);box-shadow:0 4px 20px var(--card-shadow)}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:clamp(0.5rem,1.5vw,1rem)}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(0.5rem,1.5vw,1rem)}
+.highlight-box{background:linear-gradient(135deg,rgba(139,92,246,0.1),rgba(59,130,246,0.1));border-left:4px solid var(--ecc-purple);border-radius:0 clamp(8px,1vw,12px) clamp(8px,1vw,12px) 0;padding:clamp(0.6rem,1.2vw,1rem)}
+.warn-box{background:linear-gradient(135deg,rgba(240,128,128,0.1),rgba(255,218,185,0.15));border-left:4px solid var(--accent-coral);border-radius:0 clamp(8px,1vw,12px) clamp(8px,1vw,12px) 0;padding:clamp(0.6rem,1.2vw,1rem)}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:clamp(1rem,3vw,3rem);align-items:center;max-width:min(90vw,1000px);margin:0 auto;width:100%}
+.left-content{max-width:min(90vw,900px);margin:0 auto;width:100%}
+.centered{align-items:center;text-align:center}
+.step{display:flex;align-items:flex-start;gap:clamp(0.5rem,1.5vw,1rem)}
+.step-num{width:clamp(28px,3.5vw,44px);height:clamp(28px,3.5vw,44px);min-width:clamp(28px,3.5vw,44px);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:var(--body-size);color:#fff}
+.code-block{background:var(--code-bg);border-radius:clamp(8px,1.2vw,16px);padding:clamp(0.75rem,2vw,1.5rem);font-family:'Courier New',monospace;font-size:clamp(0.6rem,1.2vw,0.95rem);line-height:1.7;color:var(--code-text);overflow:hidden;max-width:min(90vw,900px);text-align:left}
+.code-block .cmd{color:var(--code-orange)}.code-block .flag{color:var(--code-pink)}
+.code-block .str{color:var(--code-green)}.code-block .comment{color:#6C7086;font-style:italic}
+.code-block .prompt{color:#6C7086}.code-block .output{color:#A6ADC8}
+.diagram-box{border:2px solid;border-radius:clamp(8px,1.2vw,14px);padding:clamp(0.4rem,1vw,0.8rem);text-align:center;font-size:var(--small-size);font-weight:600}
+.diagram-arrow{color:var(--text-light);font-size:clamp(1rem,2vw,1.5rem)}
+.flow-row{display:flex;align-items:center;justify-content:center;gap:clamp(0.3rem,1vw,0.8rem);flex-wrap:wrap}
+.deco-circle{position:absolute;border-radius:50%;opacity:0.15;z-index:0}
+.deco-pill-shape{position:absolute;border-radius:50px;opacity:0.12;z-index:0}
+.slide-number{position:absolute;bottom:clamp(0.75rem,2vw,1.5rem);right:clamp(0.75rem,2vw,1.5rem);font-size:var(--small-size);color:var(--text-light);font-weight:600;z-index:10}
+.section-label{position:absolute;top:clamp(0.75rem,2vw,1.5rem);left:clamp(0.75rem,2vw,1.5rem);z-index:10}
+.reveal{opacity:0;transform:translateY(20px);transition:all 0.6s cubic-bezier(0.22,1,0.36,1)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-delay-1{transition-delay:0.1s}.reveal-delay-2{transition-delay:0.2s}
+.reveal-delay-3{transition-delay:0.3s}.reveal-delay-4{transition-delay:0.4s}
+#progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--ecc-purple),var(--ecc-blue),var(--accent-mint));z-index:1000;transition:width 0.3s ease}
+.nav-dots{position:fixed;right:clamp(0.5rem,1.5vw,1rem);top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:5px;z-index:1000}
+.nav-dot{width:7px;height:7px;border-radius:50%;background:var(--text-light);opacity:0.3;cursor:pointer;transition:all 0.3s;border:none;padding:0}
+.nav-dot.active{opacity:1;background:var(--ecc-purple);transform:scale(1.3)}
+/* Prompt card */
+.prompt-card{background:var(--card-bg);border:2px solid var(--ecc-purple);border-radius:clamp(12px,2vw,20px);padding:clamp(0.6rem,1.5vw,1rem) clamp(0.8rem,2vw,1.2rem);font-size:var(--body-size);line-height:1.5;text-align:left}
+.prompt-label{font-size:var(--small-size);font-weight:700;color:var(--ecc-purple);margin-bottom:0.15rem}
+@media(max-height:700px){:root{--slide-padding:clamp(0.75rem,3vw,2rem);--content-gap:clamp(0.4rem,1.5vw,1rem);--title-size:clamp(1.25rem,4.5vw,2.5rem);--h2-size:clamp(1rem,3vw,1.75rem)}}
+@media(max-height:600px){:root{--slide-padding:clamp(0.5rem,2.5vw,1.5rem);--content-gap:clamp(0.3rem,1vw,0.75rem);--title-size:clamp(1.1rem,4vw,2rem);--body-size:clamp(0.7rem,1.2vw,0.95rem)}.nav-dots{display:none}}
+@media(max-height:500px){:root{--slide-padding:clamp(0.4rem,2vw,1rem);--title-size:clamp(1rem,3.5vw,1.5rem);--h2-size:clamp(0.9rem,2.5vw,1.25rem);--body-size:clamp(0.65rem,1vw,0.85rem)}}
+@media(max-width:600px){:root{--title-size:clamp(1.25rem,7vw,2.5rem)}.grid-3,.grid-2{grid-template-columns:1fr}.two-col{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:0.01ms!important;transition-duration:0.2s!important}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<div id="progress" style="width:0%"></div>
+<nav class="nav-dots" id="navDots" aria-label="Slide navigation"></nav>
+
+<!-- ===== 1: TITLE ===== -->
+<section class="slide centered" style="background:linear-gradient(135deg,#EDF2FB 0%,#F0E8FF 40%,#E8F4FD 100%);">
+    <div class="deco-circle" style="width:clamp(200px,30vw,500px);height:clamp(200px,30vw,500px);background:var(--ecc-purple);top:-8%;right:-5%;"></div>
+    <div class="deco-circle" style="width:clamp(150px,20vw,350px);height:clamp(150px,20vw,350px);background:var(--ecc-blue);bottom:5%;left:-3%;"></div>
+    <div class="deco-pill-shape" style="width:clamp(80px,12vw,180px);height:clamp(30px,4vw,60px);background:var(--accent-mint);top:22%;left:10%;transform:rotate(-12deg);"></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <div class="reveal"><span class="pill pill-ecc" style="margin-bottom:clamp(0.5rem,1.5vw,1rem);display:inline-block;">강의 7 / ECC</span></div>
+        <h1 class="reveal reveal-delay-1" style="margin-bottom:clamp(0.5rem,1.5vw,1rem);">Everything Claude Code<br>완전 가이드</h1>
+        <p class="reveal reveal-delay-2" style="font-size:var(--h3-size);color:var(--text-mid);margin-bottom:clamp(1rem,2vw,2rem);">Claude Code에 슈퍼파워를 추가하는 플러그인</p>
+        <p class="reveal reveal-delay-3 small">⌨️ 방향키 또는 스크롤로 이동</p>
+    </div>
+    <div class="slide-number">1 / 30</div>
+</section>
+
+<!-- ===== 2: WHAT IS CLAUDE CODE ===== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-sky">배경 지식</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <h2 class="reveal" style="margin-bottom:var(--content-gap);">먼저, Claude Code란?</h2>
+        <div class="two-col reveal reveal-delay-1" style="max-width:min(90vw,800px);">
+            <div class="card" style="text-align:center;border-top:4px solid var(--accent-sky);">
+                <div style="font-size:clamp(2rem,3.5vw,3rem);margin-bottom:0.3rem;">💬</div>
+                <h3 style="font-size:var(--body-size);">Claude.ai (웹)</h3>
+                <p class="small">브라우저에서 채팅<br>일반 대화, 글쓰기</p>
+            </div>
+            <div class="card" style="text-align:center;border-top:4px solid var(--ecc-purple);">
+                <div style="font-size:clamp(2rem,3.5vw,3rem);margin-bottom:0.3rem;">⌨️</div>
+                <h3 style="font-size:var(--body-size);">Claude Code (터미널)</h3>
+                <p class="small">터미널에서 실행<br><strong>파일 읽기/쓰기, 명령어 실행</strong><br>진짜 개발 가능!</p>
+            </div>
+        </div>
+        <div class="highlight-box reveal reveal-delay-2" style="max-width:min(90vw,600px);margin:var(--element-gap) auto 0;">
+            <p class="small">💡 Claude Code = AI가 <strong>직접 코드를 작성하고, 파일을 만들고, 터미널 명령어를 실행</strong>하는 도구</p>
+        </div>
+    </div>
+    <div class="slide-number">2 / 30</div>
+</section>
+
+<!-- ===== 3: WHAT IS ECC ===== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-ecc">ECC</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <h2 class="reveal" style="margin-bottom:var(--content-gap);">Everything Claude Code (ECC)란?</h2>
+        <div class="card reveal reveal-delay-1" style="max-width:min(90vw,800px);margin:0 auto;border-top:4px solid var(--ecc-purple);text-align:left;">
+            <p style="font-size:var(--h3-size);margin-bottom:var(--element-gap);">
+                Claude Code를 <strong style="color:var(--ecc-purple);">프로 개발 도구</strong>로 만드는 확장 플러그인
+            </p>
+            <div class="grid-3" style="text-align:center;">
+                <div>
+                    <div style="font-size:clamp(1.5rem,2.5vw,2rem);">📋</div>
+                    <p class="small"><strong>100+ 스킬</strong></p>
+                    <p class="small" style="color:var(--text-light);">전문 분야별 능력</p>
+                </div>
+                <div>
+                    <div style="font-size:clamp(1.5rem,2.5vw,2rem);">🤖</div>
+                    <p class="small"><strong>15+ 에이전트</strong></p>
+                    <p class="small" style="color:var(--text-light);">자동 작업 수행</p>
+                </div>
+                <div>
+                    <div style="font-size:clamp(1.5rem,2.5vw,2rem);">📏</div>
+                    <p class="small"><strong>코딩 규칙</strong></p>
+                    <p class="small" style="color:var(--text-light);">일관된 코드 품질</p>
+                </div>
+            </div>
+        </div>
+        <div class="highlight-box reveal reveal-delay-2" style="max-width:min(90vw,600px);margin:var(--element-gap) auto 0;">
+            <p class="small">💡 비유: Claude Code가 <strong>자동차</strong>라면, ECC는 <strong>네비게이션 + 자율주행 + 블랙박스</strong></p>
+        </div>
+    </div>
+    <div class="slide-number">3 / 30</div>
+</section>
+
+<!-- ===== 4: BEFORE VS AFTER ===== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-ecc">ECC</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <h2 class="reveal" style="margin-bottom:var(--content-gap);">ECC 없이 vs ECC와 함께</h2>
+        <div class="two-col reveal reveal-delay-1" style="max-width:min(90vw,800px);">
+            <div class="card" style="text-align:left;border:2px solid var(--accent-coral);">
+                <p class="small" style="color:var(--accent-coral);font-weight:700;margin-bottom:0.3rem;">❌ 기본 Claude Code</p>
+                <p class="small">• 매번 코딩 스타일 지시 필요</p>
+                <p class="small">• 테스트를 잊기 쉬움</p>
+                <p class="small">• 코드 리뷰 수동</p>
+                <p class="small">• 보안 체크 빠뜨림</p>
+                <p class="small">• 일관성 없는 결과물</p>
+            </div>
+            <div class="card" style="text-align:left;border:2px solid var(--ecc-purple);">
+                <p class="small" style="color:var(--ecc-purple);font-weight:700;margin-bottom:0.3rem;">✅ ECC 적용 후</p>
+                <p class="small">• 규칙이 자동으로 적용됨</p>
+                <p class="small">• TDD 워크플로우 내장</p>
+                <p class="small">• 코드 리뷰 에이전트 자동 실행</p>
+                <p class="small">• 보안 스캔 자동화</p>
+                <p class="small">• 전문가 수준의 일관성</p>
+            </div>
+        </div>
+    </div>
+    <div class="slide-number">4 / 30</div>
+</section>
+
+<!-- ===== 5: AGENDA ===== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-ecc">오늘의 여정</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <h2 class="reveal" style="margin-bottom:var(--content-gap);">오늘 배울 내용</h2>
+        <div class="grid-2 reveal reveal-delay-1" style="max-width:min(90vw,800px);margin:0 auto;">
+            <div class="card" style="text-align:left;border-left:4px solid var(--ecc-purple);">
+                <h3 style="font-size:var(--body-size);margin-bottom:0.2rem;">🔌 Part 1: 설치</h3>
+                <p class="small">ECC 설치와 초기 설정</p>
+            </div>
+            <div class="card" style="text-align:left;border-left:4px solid var(--ecc-blue);">
+                <h3 style="font-size:var(--body-size);margin-bottom:0.2rem;">📋 Part 2: 핵심 스킬</h3>
+                <p class="small">가장 많이 쓰는 슬래시 커맨드</p>
+            </div>
+            <div class="card" style="text-align:left;border-left:4px solid var(--accent-mint);">
+                <h3 style="font-size:var(--body-size);margin-bottom:0.2rem;">🤖 Part 3: 에이전트</h3>
+                <p class="small">자동으로 일하는 AI 동료들</p>
+            </div>
+            <div class="card" style="text-align:left;border-left:4px solid var(--accent-pink);">
+                <h3 style="font-size:var(--body-size);margin-bottom:0.2rem;">🏗️ Part 4: 실전 워크플로우</h3>
+                <p class="small">홈페이지/앱을 처음부터 끝까지</p>
+            </div>
+        </div>
+    </div>
+    <div class="slide-number">5 / 30</div>
+</section>
+
+<!-- ===== 6: SECTION - INSTALL ===== -->
+<section class="slide centered" style="background:linear-gradient(135deg,#F0E8FF,#EDF2FB);">
+    <div class="deco-circle" style="width:clamp(160px,22vw,350px);height:clamp(160px,22vw,350px);background:var(--ecc-purple);top:-5%;left:-5%;opacity:0.1;"></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <div class="reveal"><span class="pill pill-ecc" style="margin-bottom:var(--element-gap);display:inline-block;">PART 1</span></div>
+        <h1 class="reveal reveal-delay-1">ECC 설치하기</h1>
+        <p class="reveal reveal-delay-2" style="font-size:var(--h3-size);color:var(--text-mid);">5분 만에 세팅 완료 🔌</p>
+    </div>
+    <div class="slide-number">6 / 30</div>
+</section>
+
+<!-- ===== 7: PREREQUISITES ===== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-ecc">설치</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <h2 class="reveal" style="margin-bottom:var(--content-gap);">사전 준비물</h2>
+        <div class="grid-3 reveal reveal-delay-1" style="max-width:min(90vw,850px);margin:0 auto;">
+            <div class="card" style="text-align:center;border-top:4px solid var(--accent-sky);">
+                <div style="font-size:clamp(1.5rem,2.5vw,2rem);margin-bottom:0.3rem;">⌨️</div>
+                <h3 style="font-size:var(--body-size);">Claude Code</h3>
+                <p class="small">터미널에 설치된<br>Claude Code CLI</p>
+            </div>
+            <div class="card" style="text-align:center;border-top:4px solid var(--accent-mint);">
+                <div style="font-size:clamp(1.5rem,2.5vw,2rem);margin-bottom:0.3rem;">📦</div>
+                <h3 style="font-size:var(--body-size);">Node.js</h3>
+                <p class="small">JavaScript 실행 환경<br>(v18 이상)</p>
+            </div>
+            <div class="card" style="text-align:center;border-top:4px solid var(--accent-lavender);">
+                <div style="font-size:clamp(1.5rem,2.5vw,2rem);margin-bottom:0.3rem;">🐙</div>
+                <h3 style="font-size:var(--body-size);">Git</h3>
+                <p class="small">6강에서 배운<br>버전 관리 도구</p>
+            </div>
+        </div>
+        <div class="highlight-box reveal reveal-delay-2" style="max-width:min(90vw,600px);margin:var(--element-gap) auto 0;">
+            <p class="small">💡 Claude Code 설치: <code style="background:rgba(0,0,0,0.05);padding:1px 4px;border-radius:3px;">npm install -g @anthropic-ai/claude-code</code></p>
+        </div>
+    </div>
+    <div class="slide-number">7 / 30</div>
+</section>
+
+<!-- ===== 8: INSTALL ECC ===== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-ecc">설치</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <h2 class="reveal" style="margin-bottom:var(--content-gap);">ECC 설치 방법</h2>
+        <div class="card reveal reveal-delay-1" style="max-width:min(90vw,800px);margin:0 auto;text-align:left;">
+            <div class="code-block" style="font-size:clamp(0.55rem,1vw,0.85rem);">
+                <span class="comment"># 1. ECC 저장소 클론</span><br>
+                <span class="prompt">$</span> <span class="cmd">git clone</span> <span class="str">https://github.com/nicobailon/everything-claude-code.git</span><br><br>
+                <span class="comment"># 2. 설치 스크립트 실행</span><br>
+                <span class="prompt">$</span> <span class="cmd">cd</span> everything-claude-code<br>
+                <span class="prompt">$</span> <span class="cmd">./install.sh</span>
+            </div>
+        </div>
+        <div class="card reveal reveal-delay-2" style="max-width:min(90vw,800px);margin:var(--element-gap) auto 0;text-align:left;">
+            <p class="small" style="font-weight:700;margin-bottom:0.3rem;">또는 Claude Code 안에서 직접 설치:</p>
+            <div class="prompt-card">
+                <div class="prompt-label">Claude Code에서 입력</div>
+                <p class="small" style="color:var(--text-dark);">/configure-ecc</p>
+            </div>
+        </div>
+        <div class="highlight-box reveal reveal-delay-3" style="max-width:min(90vw,600px);margin:var(--element-gap) auto 0;">
+            <p class="small">💡 설치 스크립트가 <strong>스킬, 에이전트, 규칙을 자동으로 ~/.claude/ 에 복사</strong>합니다</p>
+        </div>
+    </div>
+    <div class="slide-number">8 / 30</div>
+</section>
+
+<!-- ===== 9: ECC STRUCTURE ===== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-ecc">구조</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <h2 class="reveal" style="margin-bottom:var(--content-gap);">ECC의 구성 요소</h2>
+        <div class="card reveal reveal-delay-1" style="max-width:min(90vw,800px);margin:0 auto;">
+            <div class="grid-2" style="text-align:left;">
+                <div>
+                    <div style="display:flex;align-items:center;gap:0.3rem;margin-bottom:0.3rem;">
+                        <span style="font-size:clamp(1.2rem,1.5vw,1.5rem);">📋</span>
+                        <h3 style="font-size:var(--body-size);color:var(--ecc-purple);">스킬 (Skills)</h3>
+                    </div>
+                    <p class="small">/plan, /tdd, /code-review 등<br>슬래시 커맨드로 실행하는 전문 능력</p>
+                </div>
+                <div>
+                    <div style="display:flex;align-items:center;gap:0.3rem;margin-bottom:0.3rem;">
+                        <span style="font-size:clamp(1.2rem,1.5vw,1.5rem);">🤖</span>
+                        <h3 style="font-size:var(--body-size);color:var(--ecc-blue);">에이전트 (Agents)</h3>
+                    </div>
+                    <p class="small">code-reviewer, tdd-guide 등<br>자동으로 작업 수행하는 AI 동료</p>
+                </div>
+                <div>
+                    <div style="display:flex;align-items:center;gap:0.3rem;margin-bottom:0.3rem;">
+                        <span style="font-size:clamp(1.2rem,1.5vw,1.5rem);">📏</span>
+                        <h3 style="font-size:var(--body-size);color:var(--accent-teal);">규칙 (Rules)</h3>
+                    </div>
+                    <p class="small">코딩 스타일, 보안, 테스트 등<br>일관된 코드 품질 유지</p>
+                </div>
+                <div>
+                    <div style="display:flex;align-items:center;gap:0.3rem;margin-bottom:0.3rem;">
+                        <span style="font-size:clamp(1.2rem,1.5vw,1.5rem);">🪝</span>
+                        <h3 style="font-size:var(--body-size);color:var(--accent-coral);">훅 (Hooks)</h3>
+                    </div>
+                    <p class="small">파일 저장 시 자동 포맷 등<br>이벤트 기반 자동화</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="slide-number">9 / 30</div>
+</section>
+
+<!-- ===== 10: SECTION - SKILLS ===== -->
+<section class="slide centered" style="background:linear-gradient(135deg,#E8F4FD,#F0E8FF);">
+    <div class="deco-circle" style="width:clamp(160px,22vw,350px);height:clamp(160px,22vw,350px);background:var(--ecc-blue);bottom:-5%;right:-5%;opacity:0.12;"></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <div class="reveal"><span class="pill pill-sky" style="margin-bottom:var(--element-gap);display:inline-block;">PART 2</span></div>
+        <h1 class="reveal reveal-delay-1">핵심 슬래시 커맨드</h1>
+        <p class="reveal reveal-delay-2" style="font-size:var(--h3-size);color:var(--text-mid);">가장 많이 쓰는 ECC 스킬들 📋</p>
+    </div>
+    <div class="slide-number">10 / 30</div>
+</section>
+
+<!-- ===== 11: /plan ===== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-sky">스킬</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <h2 class="reveal" style="margin-bottom:var(--content-gap);">/plan — 구현 계획 세우기</h2>
+        <div class="two-col reveal reveal-delay-1">
+            <div style="text-align:left;">
+                <p style="margin-bottom:var(--element-gap);">코드를 쓰기 <strong>전에</strong> 단계별 계획을 세우는 스킬</p>
+                <p class="small">• 요구사항 분석</p>
+                <p class="small">• 리스크 평가</p>
+                <p class="small">• 단계별 실행 계획</p>
+                <p class="small">• 사용자 확인 후 실행</p>
+            </div>
+            <div class="prompt-card">
+                <div class="prompt-label">사용 예시</div>
+                <p class="small" style="color:var(--text-dark);"><strong>/plan</strong> 레스토랑 예약 웹앱을 만들어줘. 날짜 선택, 인원수, 메뉴 선택 기능이 필요해.</p>
+            </div>
+        </div>
+        <div class="highlight-box reveal reveal-delay-2" style="max-width:min(90vw,600px);margin:var(--element-gap) auto 0;">
+            <p class="small">💡 <strong>코드 먼저 쓰지 말고, 항상 /plan 부터!</strong> 잘못된 방향으로 가는 것을 방지합니다</p>
+        </div>
+    </div>
+    <div class="slide-number">11 / 30</div>
+</section>
+
+<!-- ===== 12: /tdd ===== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-sky">스킬</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <h2 class="reveal" style="margin-bottom:var(--content-gap);">/tdd — 테스트 주도 개발</h2>
+        <div class="card reveal reveal-delay-1" style="max-width:min(90vw,800px);margin:0 auto;">
+            <p style="margin-bottom:var(--element-gap);text-align:center;">테스트를 <strong>먼저</strong> 작성하고, 그 다음 코드를 구현하는 방식</p>
+            <div class="flow-row">
+                <div class="diagram-box" style="border-color:var(--accent-coral);color:var(--accent-coral);font-size:var(--small-size);">
+                    🔴 RED<br>테스트 작성<br>(실패)
+                </div>
+                <span class="diagram-arrow">→</span>
+                <div class="diagram-box" style="border-color:var(--accent-mint);color:var(--accent-mint);font-size:var(--small-size);">
+                    🟢 GREEN<br>코드 구현<br>(통과!)
+                </div>
+                <span class="diagram-arrow">→</span>
+                <div class="diagram-box" style="border-color:var(--ecc-purple);color:var(--ecc-purple);font-size:var(--small-size);">
+                    🔵 REFACTOR<br>코드 정리<br>(개선)
+                </div>
+            </div>
+        </div>
+        <div class="prompt-card reveal reveal-delay-2" style="max-width:min(90vw,600px);margin:var(--element-gap) auto 0;">
+            <div class="prompt-label">사용 예시</div>
+            <p class="small" style="color:var(--text-dark);"><strong>/tdd</strong> 장바구니에 상품 추가/삭제/수량 변경 기능을 구현해줘</p>
+        </div>
+    </div>
+    <div class="slide-number">12 / 30</div>
+</section>
+
+<!-- ===== 13: /code-review ===== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-sky">스킬</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <h2 class="reveal" style="margin-bottom:var(--content-gap);">/code-review — 코드 리뷰</h2>
+        <div class="two-col reveal reveal-delay-1">
+            <div style="text-align:left;">
+                <p style="margin-bottom:var(--element-gap);">작성한 코드의 <strong>품질, 보안, 성능</strong>을 자동으로 검사</p>
+                <p class="small">• 버그 가능성 탐지</p>
+                <p class="small">• 보안 취약점 확인</p>
+                <p class="small">• 코드 스타일 일관성</p>
+                <p class="small">• 성능 개선 제안</p>
+            </div>
+            <div class="prompt-card">
+                <div class="prompt-label">사용 예시</div>
+                <p class="small" style="color:var(--text-dark);"><strong>/code-review</strong></p>
+                <p class="small" style="color:var(--text-light);margin-top:0.2rem;">→ 현재 변경된 코드를 자동으로 분석해줍니다</p>
+            </div>
+        </div>
+        <div class="highlight-box reveal reveal-delay-2" style="max-width:min(90vw,600px);margin:var(--element-gap) auto 0;">
+            <p class="small">💡 <strong>코드를 작성한 직후</strong>에 실행하면 실수를 바로 잡을 수 있어요!</p>
+        </div>
+    </div>
+    <div class="slide-number">13 / 30</div>
+</section>
+
+<!-- ===== 14: /docs ===== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-sky">스킬</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <h2 class="reveal" style="margin-bottom:var(--content-gap);">더 많은 핵심 슬래시 커맨드</h2>
+        <div style="display:flex;flex-direction:column;gap:var(--element-gap);max-width:min(90vw,800px);margin:0 auto;">
+            <div class="card reveal reveal-delay-1" style="text-align:left;border-left:4px solid var(--ecc-blue);">
+                <p><strong style="color:var(--ecc-blue);">/docs</strong> — 최신 라이브러리 문서를 검색해서 정확한 코드 작성</p>
+            </div>
+            <div class="card reveal reveal-delay-2" style="text-align:left;border-left:4px solid var(--accent-teal);">
+                <p><strong style="color:var(--accent-teal);">/verify</strong> — 빌드, 테스트, 린팅을 한 번에 실행해서 코드 검증</p>
+            </div>
+            <div class="card reveal reveal-delay-3" style="text-align:left;border-left:4px solid var(--accent-pink);">
+                <p><strong style="color:var(--accent-pink);">/frontend-slides</strong> — 이 프레젠테이션처럼 HTML 슬라이드를 자동 생성</p>
+            </div>
+            <div class="card reveal reveal-delay-4" style="text-align:left;border-left:4px solid var(--accent-coral);">
+                <p><strong style="color:var(--accent-coral);">/build-fix</strong> — 빌드 에러가 나면 자동으로 원인 분석 후 수정</p>
+            </div>
+        </div>
+    </div>
+    <div class="slide-number">14 / 30</div>
+</section>
+
+<!-- ===== 15: SECTION - AGENTS ===== -->
+<section class="slide centered" style="background:linear-gradient(135deg,#E8FFE8,#EDF2FB);">
+    <div class="deco-circle" style="width:clamp(160px,22vw,350px);height:clamp(160px,22vw,350px);background:var(--accent-mint);top:-5%;right:-5%;opacity:0.15;"></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <div class="reveal"><span class="pill pill-mint" style="margin-bottom:var(--element-gap);display:inline-block;">PART 3</span></div>
+        <h1 class="reveal reveal-delay-1">🤖 에이전트</h1>
+        <p class="reveal reveal-delay-2" style="font-size:var(--h3-size);color:var(--text-mid);">자동으로 일하는 AI 동료들</p>
+    </div>
+    <div class="slide-number">15 / 30</div>
+</section>
+
+<!-- ===== 16: KEY AGENTS ===== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-mint">에이전트</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <h2 class="reveal" style="margin-bottom:var(--content-gap);">ECC의 핵심 에이전트들</h2>
+        <div class="grid-3 reveal reveal-delay-1" style="max-width:min(90vw,850px);margin:0 auto;">
+            <div class="card" style="text-align:center;border-top:4px solid var(--ecc-purple);">
+                <div style="font-size:clamp(1.3rem,2vw,1.8rem);">📋</div>
+                <h3 style="font-size:var(--small-size);">planner</h3>
+                <p class="small">구현 계획 수립<br>복잡한 기능 분해</p>
+            </div>
+            <div class="card" style="text-align:center;border-top:4px solid var(--accent-mint);">
+                <div style="font-size:clamp(1.3rem,2vw,1.8rem);">🧪</div>
+                <h3 style="font-size:var(--small-size);">tdd-guide</h3>
+                <p class="small">테스트 먼저 작성<br>80% 커버리지 보장</p>
+            </div>
+            <div class="card" style="text-align:center;border-top:4px solid var(--accent-sky);">
+                <div style="font-size:clamp(1.3rem,2vw,1.8rem);">🔍</div>
+                <h3 style="font-size:var(--small-size);">code-reviewer</h3>
+                <p class="small">코드 품질 검사<br>개선 사항 제안</p>
+            </div>
+            <div class="card" style="text-align:center;border-top:4px solid var(--accent-coral);">
+                <div style="font-size:clamp(1.3rem,2vw,1.8rem);">🛡️</div>
+                <h3 style="font-size:var(--small-size);">security-reviewer</h3>
+                <p class="small">보안 취약점 탐지<br>OWASP Top 10</p>
+            </div>
+            <div class="card" style="text-align:center;border-top:4px solid var(--accent-lavender);">
+                <div style="font-size:clamp(1.3rem,2vw,1.8rem);">🔧</div>
+                <h3 style="font-size:var(--small-size);">build-error-resolver</h3>
+                <p class="small">빌드 에러 자동 수정<br>타입 에러 해결</p>
+            </div>
+            <div class="card" style="text-align:center;border-top:4px solid var(--accent-teal);">
+                <div style="font-size:clamp(1.3rem,2vw,1.8rem);">🏗️</div>
+                <h3 style="font-size:var(--small-size);">architect</h3>
+                <p class="small">시스템 설계<br>기술 의사결정</p>
+            </div>
+        </div>
+    </div>
+    <div class="slide-number">16 / 30</div>
+</section>
+
+<!-- ===== 17: HOW AGENTS WORK ===== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-mint">에이전트</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <h2 class="reveal" style="margin-bottom:var(--content-gap);">에이전트는 이렇게 동작합니다</h2>
+        <div class="card reveal reveal-delay-1" style="max-width:min(90vw,800px);margin:0 auto;">
+            <div class="flow-row" style="gap:clamp(0.4rem,1.2vw,1rem);">
+                <div class="diagram-box" style="border-color:var(--ecc-purple);color:var(--ecc-purple);font-size:var(--small-size);">
+                    💬 요청<br>"기능 추가해줘"
+                </div>
+                <span class="diagram-arrow">→</span>
+                <div class="diagram-box" style="border-color:var(--ecc-blue);color:var(--ecc-blue);font-size:var(--small-size);">
+                    📋 planner<br>계획 수립
+                </div>
+                <span class="diagram-arrow">→</span>
+                <div class="diagram-box" style="border-color:var(--accent-mint);color:var(--accent-mint);font-size:var(--small-size);">
+                    🧪 tdd-guide<br>테스트+구현
+                </div>
+                <span class="diagram-arrow">→</span>
+                <div class="diagram-box" style="border-color:var(--accent-sky);color:var(--accent-sky);font-size:var(--small-size);">
+                    🔍 reviewer<br>자동 리뷰
+                </div>
+            </div>
+        </div>
+        <div class="highlight-box reveal reveal-delay-2" style="max-width:min(90vw,600px);margin:var(--element-gap) auto 0;">
+            <p class="small">💡 여러 에이전트가 <strong>파이프라인처럼 자동으로 연결</strong>되어 동작합니다!</p>
+        </div>
+    </div>
+    <div class="slide-number">17 / 30</div>
+</section>
+
+<!-- ===== 18: PARALLEL AGENTS ===== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-mint">에이전트</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <h2 class="reveal" style="margin-bottom:var(--content-gap);">병렬 에이전트: 동시에 여러 작업</h2>
+        <div class="card reveal reveal-delay-1" style="max-width:min(90vw,800px);margin:0 auto;text-align:center;">
+            <p class="small" style="margin-bottom:var(--element-gap);">ECC는 독립적인 작업을 <strong>동시에 처리</strong>할 수 있습니다</p>
+            <div class="grid-3">
+                <div class="diagram-box" style="border-color:var(--accent-coral);color:var(--accent-coral);font-size:var(--small-size);">
+                    🛡️ 보안 검사<br>진행 중...
+                </div>
+                <div class="diagram-box" style="border-color:var(--accent-sky);color:var(--accent-sky);font-size:var(--small-size);">
+                    🔍 코드 리뷰<br>진행 중...
+                </div>
+                <div class="diagram-box" style="border-color:var(--accent-mint);color:var(--accent-mint);font-size:var(--small-size);">
+                    🧪 테스트 실행<br>진행 중...
+                </div>
+            </div>
+            <p class="small" style="margin-top:var(--element-gap);color:var(--ecc-purple);font-weight:700;">→ 3개 작업이 동시에! 시간 절약!</p>
+        </div>
+    </div>
+    <div class="slide-number">18 / 30</div>
+</section>
+
+<!-- ===== 19: SECTION - WORKFLOW ===== -->
+<section class="slide centered" style="background:linear-gradient(135deg,#FDE8EE,#EDF2FB);">
+    <div class="deco-circle" style="width:clamp(160px,22vw,350px);height:clamp(160px,22vw,350px);background:var(--accent-pink);top:-5%;left:-5%;opacity:0.12;"></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <div class="reveal"><span class="pill pill-pink" style="margin-bottom:var(--element-gap);display:inline-block;">PART 4</span></div>
+        <h1 class="reveal reveal-delay-1">🏗️ 실전 워크플로우</h1>
+        <p class="reveal reveal-delay-2" style="font-size:var(--h3-size);color:var(--text-mid);">홈페이지/앱을 처음부터 끝까지</p>
+    </div>
+    <div class="slide-number">19 / 30</div>
+</section>
+
+<!-- ===== 20: WORKFLOW STEP 1 ===== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-pink">실전</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <h2 class="reveal" style="margin-bottom:var(--content-gap);">Step 1: 기획 (/plan)</h2>
+        <div class="card reveal reveal-delay-1" style="max-width:min(90vw,800px);margin:0 auto;text-align:left;">
+            <div class="prompt-card" style="margin-bottom:var(--element-gap);">
+                <div class="prompt-label">Claude Code에서 입력</div>
+                <p class="small" style="color:var(--text-dark);"><strong>/plan</strong> 개인 포트폴리오 웹사이트를 만들어줘. 자기소개, 프로젝트 갤러리, 연락처 폼이 필요해. Next.js + Tailwind CSS로 만들어줘.</p>
+            </div>
+            <p class="small">Claude가 해주는 것:</p>
+            <p class="small">✅ 요구사항 분석 및 정리</p>
+            <p class="small">✅ 파일 구조 설계</p>
+            <p class="small">✅ 단계별 실행 계획</p>
+            <p class="small">✅ <strong>"이대로 진행할까요?"</strong> 확인 후 시작</p>
+        </div>
+    </div>
+    <div class="slide-number">20 / 30</div>
+</section>
+
+<!-- ===== 21: WORKFLOW STEP 2 ===== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-pink">실전</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <h2 class="reveal" style="margin-bottom:var(--content-gap);">Step 2: 개발 (/tdd)</h2>
+        <div class="card reveal reveal-delay-1" style="max-width:min(90vw,800px);margin:0 auto;text-align:left;">
+            <div class="prompt-card" style="margin-bottom:var(--element-gap);">
+                <div class="prompt-label">계획 승인 후 자동으로</div>
+                <p class="small" style="color:var(--text-dark);">TDD 방식으로 각 컴포넌트를 순차적으로 구현합니다</p>
+            </div>
+            <p class="small">Claude가 자동으로:</p>
+            <p class="small">🔴 테스트 먼저 작성</p>
+            <p class="small">🟢 테스트를 통과하는 코드 구현</p>
+            <p class="small">🔵 코드 정리 및 최적화</p>
+            <p class="small">📂 파일 생성, 패키지 설치 — <strong>모두 자동</strong></p>
+        </div>
+    </div>
+    <div class="slide-number">21 / 30</div>
+</section>
+
+<!-- ===== 22: WORKFLOW STEP 3 ===== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-pink">실전</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <h2 class="reveal" style="margin-bottom:var(--content-gap);">Step 3: 검증 (/verify)</h2>
+        <div class="card reveal reveal-delay-1" style="max-width:min(90vw,800px);margin:0 auto;text-align:left;">
+            <div class="prompt-card" style="margin-bottom:var(--element-gap);">
+                <div class="prompt-label">개발 완료 후</div>
+                <p class="small" style="color:var(--text-dark);"><strong>/verify</strong></p>
+            </div>
+            <p class="small">한 번의 명령으로 전체 검증:</p>
+            <p class="small">✅ 빌드 성공 여부</p>
+            <p class="small">✅ 모든 테스트 통과</p>
+            <p class="small">✅ 코드 스타일 검사 (린팅)</p>
+            <p class="small">✅ 보안 취약점 스캔</p>
+        </div>
+        <div class="highlight-box reveal reveal-delay-2" style="max-width:min(90vw,600px);margin:var(--element-gap) auto 0;">
+            <p class="small">💡 문제가 발견되면 <strong>자동으로 수정 제안</strong>까지 해줍니다!</p>
+        </div>
+    </div>
+    <div class="slide-number">22 / 30</div>
+</section>
+
+<!-- ===== 23: WORKFLOW STEP 4 ===== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-pink">실전</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <h2 class="reveal" style="margin-bottom:var(--content-gap);">Step 4: 배포 (Git + Vercel)</h2>
+        <div class="card reveal reveal-delay-1" style="max-width:min(90vw,800px);margin:0 auto;text-align:left;">
+            <div class="code-block" style="font-size:clamp(0.55rem,1vw,0.85rem);">
+                <span class="comment"># 검증 완료 후, 5강에서 배운 방법으로 배포!</span><br><br>
+                <span class="prompt">$</span> <span class="cmd">git add</span> <span class="flag">.</span><br>
+                <span class="prompt">$</span> <span class="cmd">git commit</span> <span class="flag">-m</span> <span class="str">"포트폴리오 사이트 완성"</span><br>
+                <span class="prompt">$</span> <span class="cmd">git push</span><br><br>
+                <span class="comment"># → Vercel이 자동으로 배포! 🚀</span>
+            </div>
+        </div>
+        <div class="highlight-box reveal reveal-delay-2" style="max-width:min(90vw,600px);margin:var(--element-gap) auto 0;">
+            <p class="small">🎉 <strong>/plan → /tdd → /verify → git push</strong> — 이것이 ECC 실전 워크플로우!</p>
+        </div>
+    </div>
+    <div class="slide-number">23 / 30</div>
+</section>
+
+<!-- ===== 24: FULL WORKFLOW DIAGRAM ===== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-ecc">전체 흐름</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <h2 class="reveal" style="margin-bottom:var(--content-gap);">ECC 개발 사이클 한눈에</h2>
+        <div class="card reveal reveal-delay-1" style="max-width:min(90vw,850px);margin:0 auto;">
+            <div class="flow-row" style="gap:clamp(0.3rem,0.8vw,0.6rem);">
+                <span class="pill pill-ecc" style="font-size:var(--small-size);">/plan</span>
+                <span class="diagram-arrow">→</span>
+                <span class="pill pill-mint" style="font-size:var(--small-size);">/tdd</span>
+                <span class="diagram-arrow">→</span>
+                <span class="pill pill-sky" style="font-size:var(--small-size);">/code-review</span>
+                <span class="diagram-arrow">→</span>
+                <span class="pill pill-teal" style="font-size:var(--small-size);">/verify</span>
+                <span class="diagram-arrow">→</span>
+                <span class="pill pill-dark" style="font-size:var(--small-size);">git push</span>
+                <span class="diagram-arrow">→</span>
+                <span class="pill pill-coral" style="font-size:var(--small-size);">🚀 배포</span>
+            </div>
+            <p style="text-align:center;margin-top:var(--content-gap);font-size:var(--h3-size);font-weight:700;color:var(--text-dark);">
+                기획 → 개발 → 리뷰 → 검증 → 배포
+            </p>
+        </div>
+    </div>
+    <div class="slide-number">24 / 30</div>
+</section>
+
+<!-- ===== 25: PRACTICAL EXAMPLES ===== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-ecc">예시</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <h2 class="reveal" style="margin-bottom:var(--content-gap);">이런 것들을 만들 수 있어요</h2>
+        <div class="grid-3 reveal reveal-delay-1" style="max-width:min(90vw,850px);margin:0 auto;">
+            <div class="card" style="text-align:center;border-top:3px solid var(--accent-pink);">
+                <div style="font-size:clamp(1.5rem,2.5vw,2rem);">🌐</div>
+                <p class="small"><strong>포트폴리오 사이트</strong></p>
+                <p class="small" style="color:var(--text-light);">/plan → 30분</p>
+            </div>
+            <div class="card" style="text-align:center;border-top:3px solid var(--accent-mint);">
+                <div style="font-size:clamp(1.5rem,2.5vw,2rem);">📝</div>
+                <p class="small"><strong>블로그</strong></p>
+                <p class="small" style="color:var(--text-light);">/plan → 1시간</p>
+            </div>
+            <div class="card" style="text-align:center;border-top:3px solid var(--accent-lavender);">
+                <div style="font-size:clamp(1.5rem,2.5vw,2rem);">🛒</div>
+                <p class="small"><strong>쇼핑몰</strong></p>
+                <p class="small" style="color:var(--text-light);">/plan → 수 시간</p>
+            </div>
+            <div class="card" style="text-align:center;border-top:3px solid var(--accent-sky);">
+                <div style="font-size:clamp(1.5rem,2.5vw,2rem);">📊</div>
+                <p class="small"><strong>대시보드</strong></p>
+                <p class="small" style="color:var(--text-light);">데이터 시각화</p>
+            </div>
+            <div class="card" style="text-align:center;border-top:3px solid var(--ecc-purple);">
+                <div style="font-size:clamp(1.5rem,2.5vw,2rem);">📱</div>
+                <p class="small"><strong>웹 앱</strong></p>
+                <p class="small" style="color:var(--text-light);">Todo, 가계부, 일정관리</p>
+            </div>
+            <div class="card" style="text-align:center;border-top:3px solid var(--accent-coral);">
+                <div style="font-size:clamp(1.5rem,2.5vw,2rem);">🎨</div>
+                <p class="small"><strong>프레젠테이션</strong></p>
+                <p class="small" style="color:var(--text-light);">/frontend-slides</p>
+            </div>
+        </div>
+    </div>
+    <div class="slide-number">25 / 30</div>
+</section>
+
+<!-- ===== 26: TIPS ===== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-ecc">팁</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <h2 class="reveal" style="margin-bottom:var(--content-gap);">ECC 효율적으로 쓰는 5가지 팁</h2>
+        <div style="display:flex;flex-direction:column;gap:var(--element-gap);max-width:min(90vw,800px);margin:0 auto;">
+            <div class="card reveal reveal-delay-1" style="text-align:left;">
+                <p><strong style="color:var(--ecc-purple);">1.</strong> 항상 <strong>/plan 먼저</strong> — 계획 없이 코딩하지 마세요</p>
+            </div>
+            <div class="card reveal reveal-delay-2" style="text-align:left;">
+                <p><strong style="color:var(--ecc-blue);">2.</strong> 프롬프트는 <strong>구체적으로</strong> — "웹사이트" 보다 "React + Tailwind 포트폴리오"</p>
+            </div>
+            <div class="card reveal reveal-delay-3" style="text-align:left;">
+                <p><strong style="color:var(--accent-teal);">3.</strong> <strong>/docs 활용</strong> — 라이브러리 사용법이 헷갈리면 문서부터 검색</p>
+            </div>
+            <div class="card reveal reveal-delay-4" style="text-align:left;">
+                <p><strong style="color:var(--accent-pink);">4.</strong> <strong>작게 나눠서</strong> 요청 — 한 번에 전체보다, 기능별로 하나씩</p>
+            </div>
+        </div>
+        <div class="highlight-box reveal reveal-delay-4" style="max-width:min(90vw,600px);margin:var(--element-gap) auto 0;">
+            <p class="small"><strong>5.</strong> 결과가 이상하면 <strong>/code-review</strong>로 바로 확인! 빠른 피드백이 핵심</p>
+        </div>
+    </div>
+    <div class="slide-number">26 / 30</div>
+</section>
+
+<!-- ===== 27: PRACTICE ===== -->
+<section class="slide centered" style="background:linear-gradient(135deg,#E8F4FD,#E8FFE8);">
+    <div class="slide-content centered" style="z-index:1;">
+        <div class="reveal"><span class="pill pill-ecc" style="margin-bottom:var(--element-gap);display:inline-block;">실습 타임!</span></div>
+        <h2 class="reveal reveal-delay-1" style="margin-bottom:var(--content-gap);">실습: ECC로 웹사이트 만들기</h2>
+        <div style="display:flex;flex-direction:column;gap:var(--element-gap);max-width:min(90vw,700px);margin:0 auto;text-align:left;">
+            <div class="prompt-card reveal reveal-delay-1">
+                <div class="prompt-label">Step 1: 터미널에서 Claude Code 실행</div>
+                <p class="small" style="color:var(--text-dark);font-family:monospace;">$ claude</p>
+            </div>
+            <div class="prompt-card reveal reveal-delay-2">
+                <div class="prompt-label">Step 2: 계획 세우기</div>
+                <p class="small" style="color:var(--text-dark);">/plan 내 이름, 취미, 좋아하는 것을 소개하는 개인 홈페이지를 만들어줘. HTML + CSS 하나의 파일로, 예쁘게 디자인해줘.</p>
+            </div>
+            <div class="prompt-card reveal reveal-delay-3">
+                <div class="prompt-label">Step 3: 계획 확인 후</div>
+                <p class="small" style="color:var(--text-dark);">네, 진행해주세요!</p>
+            </div>
+        </div>
+        <p class="reveal reveal-delay-4 small" style="margin-top:var(--element-gap);">⏱️ <strong>10분간</strong> 자유롭게 만들어보세요!</p>
+    </div>
+    <div class="slide-number">27 / 30</div>
+</section>
+
+<!-- ===== 28: CHEAT SHEET ===== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-ecc">치트시트</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <h2 class="reveal" style="margin-bottom:var(--content-gap);">ECC 핵심 정리</h2>
+        <div class="grid-2 reveal reveal-delay-1" style="max-width:min(90vw,900px);margin:0 auto;">
+            <div class="card" style="text-align:left;padding:clamp(0.5rem,1.2vw,1rem);">
+                <p class="small" style="font-weight:700;color:var(--ecc-purple);margin-bottom:0.2rem;">필수 슬래시 커맨드</p>
+                <p style="font-size:var(--small-size);"><code>/plan</code> — 계획 세우기</p>
+                <p style="font-size:var(--small-size);"><code>/tdd</code> — 테스트 주도 개발</p>
+                <p style="font-size:var(--small-size);"><code>/code-review</code> — 코드 리뷰</p>
+                <p style="font-size:var(--small-size);"><code>/verify</code> — 전체 검증</p>
+                <p style="font-size:var(--small-size);"><code>/docs</code> — 문서 검색</p>
+                <p style="font-size:var(--small-size);"><code>/build-fix</code> — 빌드 에러 수정</p>
+            </div>
+            <div class="card" style="text-align:left;padding:clamp(0.5rem,1.2vw,1rem);">
+                <p class="small" style="font-weight:700;color:var(--ecc-blue);margin-bottom:0.2rem;">개발 워크플로우</p>
+                <p style="font-size:var(--small-size);"><strong>1.</strong> /plan → 기획</p>
+                <p style="font-size:var(--small-size);"><strong>2.</strong> 승인 → 구현 시작</p>
+                <p style="font-size:var(--small-size);"><strong>3.</strong> /code-review → 리뷰</p>
+                <p style="font-size:var(--small-size);"><strong>4.</strong> /verify → 검증</p>
+                <p style="font-size:var(--small-size);"><strong>5.</strong> git push → 배포</p>
+                <p style="font-size:var(--small-size);"><strong>6.</strong> 반복! 🔄</p>
+            </div>
+        </div>
+        <p class="reveal reveal-delay-2 small" style="margin-top:var(--element-gap);">📸 스크린샷 찍어두세요!</p>
+    </div>
+    <div class="slide-number">28 / 30</div>
+</section>
+
+<!-- ===== 29: LEARNING PATH ===== -->
+<section class="slide" style="background:var(--bg-main);">
+    <div class="section-label"><span class="pill pill-ecc">다음 단계</span></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <h2 class="reveal" style="margin-bottom:var(--content-gap);">더 탐험할 ECC 기능들</h2>
+        <div style="display:flex;flex-direction:column;gap:var(--element-gap);max-width:min(90vw,700px);margin:0 auto;">
+            <div class="card reveal reveal-delay-1" style="text-align:left;border-left:4px solid var(--accent-mint);">
+                <p class="small" style="color:var(--accent-mint);font-weight:700;">초급 (오늘 배운 것)</p>
+                <p class="small">/plan, /tdd, /code-review, /verify, /docs</p>
+            </div>
+            <div class="card reveal reveal-delay-2" style="text-align:left;border-left:4px solid var(--accent-sky);">
+                <p class="small" style="color:var(--accent-sky);font-weight:700;">중급</p>
+                <p class="small">/e2e (E2E 테스트), /frontend-slides, /orchestrate (다중 에이전트)</p>
+            </div>
+            <div class="card reveal reveal-delay-3" style="text-align:left;border-left:4px solid var(--ecc-purple);">
+                <p class="small" style="color:var(--ecc-purple);font-weight:700;">고급</p>
+                <p class="small">/devfleet (병렬 에이전트), /continuous-learning, 커스텀 스킬 만들기</p>
+            </div>
+        </div>
+        <div class="highlight-box reveal reveal-delay-4" style="max-width:min(90vw,600px);margin:var(--element-gap) auto 0;">
+            <p class="small">💡 궁금한 스킬이 있으면 Claude Code에서 <strong>/help</strong>를 입력해보세요!</p>
+        </div>
+    </div>
+    <div class="slide-number">29 / 30</div>
+</section>
+
+<!-- ===== 30: CLOSING ===== -->
+<section class="slide centered" style="background:linear-gradient(135deg,#F0E8FF 0%,#EDF2FB 40%,#E8FFE8 100%);">
+    <div class="deco-circle" style="width:clamp(200px,28vw,450px);height:clamp(200px,28vw,450px);background:var(--ecc-purple);top:-8%;right:-5%;"></div>
+    <div class="deco-circle" style="width:clamp(150px,18vw,300px);height:clamp(150px,18vw,300px);background:var(--accent-mint);bottom:5%;left:-3%;"></div>
+    <div class="slide-content centered" style="z-index:1;">
+        <div class="reveal"><div style="font-size:clamp(3rem,6vw,5rem);margin-bottom:var(--element-gap);">⚡</div></div>
+        <h1 class="reveal reveal-delay-1" style="margin-bottom:var(--element-gap);">수고하셨습니다!</h1>
+        <p class="reveal reveal-delay-2" style="font-size:var(--h3-size);color:var(--text-mid);margin-bottom:var(--content-gap);">
+            이제 ECC로 <strong>전문 개발자처럼</strong><br>홈페이지와 앱을 만들 수 있습니다
+        </p>
+        <div class="card reveal reveal-delay-3" style="margin:0 auto;display:inline-block;">
+            <p><strong>/plan</strong>으로 첫 프로젝트를 시작해보세요! 🚀</p>
+        </div>
+    </div>
+    <div class="slide-number">30 / 30</div>
+</section>
+
+<script>
+(function(){
+    'use strict';
+    const s=document.querySelectorAll('.slide'),t=s.length,p=document.getElementById('progress'),n=document.getElementById('navDots');
+    let c=0;
+    s.forEach((_,i)=>{const d=document.createElement('button');d.className='nav-dot'+(i===0?' active':'');d.setAttribute('aria-label','Slide '+(i+1));d.addEventListener('click',()=>g(i));n.appendChild(d)});
+    const dots=n.querySelectorAll('.nav-dot');
+    function u(i){c=i;p.style.width=((i+1)/t*100)+'%';dots.forEach((d,j)=>d.classList.toggle('active',j===i))}
+    function g(i){if(i<0||i>=t)return;s[i].scrollIntoView({behavior:'smooth'});u(i)}
+    document.addEventListener('keydown',e=>{if(['ArrowDown','ArrowRight',' ','PageDown'].includes(e.key)){e.preventDefault();g(Math.min(c+1,t-1))}else if(['ArrowUp','ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();g(Math.max(c-1,0))}else if(e.key==='Home'){e.preventDefault();g(0)}else if(e.key==='End'){e.preventDefault();g(t-1)}});
+    let ty=0;
+    document.addEventListener('touchstart',e=>{ty=e.touches[0].clientY},{passive:true});
+    document.addEventListener('touchend',e=>{const d=ty-e.changedTouches[0].clientY;if(Math.abs(d)>50)g(d>0?Math.min(c+1,t-1):Math.max(c-1,0))},{passive:true});
+    const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){const i=Array.from(s).indexOf(e.target);if(i!==-1)u(i)}})},{threshold:0.6});
+    s.forEach(x=>obs.observe(x));
+    const ro=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')})},{threshold:0.15});
+    document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
+    u(0);
+})();
+</script>
+
+</body>
+</html>
