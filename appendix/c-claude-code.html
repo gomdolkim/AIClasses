@@ -34,7 +34,7 @@
     </div>
     <div class="callout callout--info reveal"><span>Claude Code는 <strong>Pro 이상</strong>(Pro·Max·Team·Enterprise) 요금제에 포함됩니다. 무료 요금제에서는 쓸 수 없어요. (2026-10 기준)</span></div>
   </div>
-  <aside class="notes">ECC 등 개발 도구 이야기 전에 '무엇을 할 수 있는 도구인가'만 확실히. 예: "봄날의 꽃 홈페이지 폴더를 열고, 가격표 부분만 고쳐 줘" → 실제 파일이 바뀜.</aside>
+  <aside class="notes">ECC 등 개발 도구 이야기 전에 '무엇을 할 수 있는 도구인가'만 확실히. 예: "봄날 에스테틱 홈페이지 폴더를 열고, 관리 메뉴 가격표 부분만 고쳐 줘" → 실제 파일이 바뀜.</aside>
 </section>
 
 <!-- 3. 세 가지 사용 방법 -->
@@ -107,12 +107,13 @@ claude</pre>
   <div class="slide-inner stack">
     <h2>실습 · 첫 작업 맡기기</h2>
     <div class="grid-2">
-      <div class="prompt reveal">꽃집 「봄날의 꽃」 한 페이지 홈페이지를 index.html 하나로 만들어 줘.
-- 영업: 화~일 10:00–20:00, 월요일 휴무
-- 위치: 망원역 2번 출구 도보 3분
-- 가격: 꽃다발 S 35,000 / M 55,000 / L 85,000원
-- 인스타 @bomnal_flower 링크
-따뜻한 봄 색감, 휴대폰에서도 보기 좋게.</div>
+      <div class="prompt reveal">피부관리 샵 「봄날 에스테틱」 한 페이지 홈페이지를 index.html 하나로 만들어 줘.
+- 영업: 화~토 11:00–21:00(마지막 예약 19:30), 일 11:00–18:00, 월요일 휴무
+- 위치: 홍대입구역 3번 출구 도보 5분, 건물 2층 (주차 불가)
+- 메뉴: 수분 진정 60분 70,000 / 트러블 케어 70분 90,000 / 리프팅 탄력 80분 120,000원
+- 네이버 예약 버튼, LINE 버튼(일본어 상담), 인스타 @bomnal_esthetic 링크
+- "치료·완치·재생" 같은 의료 표현은 쓰지 말 것
+차분하고 깨끗한 색감, 휴대폰에서도 보기 좋게.</div>
       <div class="stack reveal">
         <div class="chat">
           <div class="bubble bubble--bot">index.html 파일을 만들까요? <br>❯ Yes / Yes, 이번 세션 동안 계속 허용 / No</div>
@@ -135,7 +136,7 @@ claude</pre>
     <div class="analogy reveal">인테리어 기사님께 "바로 벽 뚫어 주세요" 대신 <strong>"먼저 도면부터 보여 주세요"</strong>라고 하는 것과 같아요.</div>
     <div class="grid-2">
       <div class="stack reveal">
-        <div class="prompt">/plan 홈페이지에 '오늘의 꽃' 섹션과 주문 문의 버튼을 추가하고 싶어</div>
+        <div class="prompt">/plan 홈페이지에 '첫 방문 체험 50,000원' 섹션과 예약 규정(24시간 전 무료 변경) 안내를 추가하고 싶어</div>
         <p class="small">또는 <kbd>Shift</kbd>+<kbd>Tab</kbd>을 눌러 입력창 아래가 plan mode로 바뀌면 그 상태로 부탁</p>
       </div>
       <ol class="steps reveal">
@@ -164,7 +165,7 @@ claude</pre>
         <tr><td><code>/plugin</code></td><td>플러그인 찾기·설치·관리</td></tr>
       </table>
     </div>
-    <div class="callout callout--tip reveal"><span><strong>CLAUDE.md</strong>는 프로젝트 지침(3회차)의 Claude Code 버전이에요. "이 폴더는 봄날의 꽃 홈페이지, 말투는 따뜻하게, 가격은 price-list.md 기준" 같은 내용을 적어 두면 매번 설명할 필요가 없습니다.</span></div>
+    <div class="callout callout--tip reveal"><span><strong>CLAUDE.md</strong>는 프로젝트 지침(3회차)의 Claude Code 버전이에요. "이 폴더는 봄날 에스테틱 홈페이지, 말투는 차분하고 따뜻하게, 가격은 price-list.md 기준, 의료 표현 금지" 같은 내용을 적어 두면 매번 설명할 필요가 없습니다.</span></div>
   </div>
   <aside class="notes"><code>/</code>만 입력하면 쓸 수 있는 명령 목록이 뜸. 외울 필요 없음. 커밋·푸시는 명령 대신 "커밋해 줘"라고 말로(부록 B).</aside>
 </section>
@@ -228,7 +229,7 @@ claude</pre>
     </div>
     <div class="grid-3 reveal">
       <div class="prompt">examples/messenger-bot 폴더를 읽고, 이 봇이 하는 일을 초보자에게 설명하듯 알려 줘.</div>
-      <div class="prompt">/plan FAQ 답변에 정기구독 안내를 추가하고 싶어.</div>
+      <div class="prompt">/plan FAQ 답변에 10회 회원권 안내를 추가하고 싶어. 환불 계산은 봇이 하지 말고 원장 연결로.</div>
       <div class="prompt">배포 전에 필요한 비밀값 목록과 등록 방법을 알려 줘. 값은 내가 직접 입력할게.</div>
     </div>
     <div class="callout callout--danger reveal"><span>API 키·LINE 채널 시크릿을 <strong>대화창이나 코드에 붙여넣지 마세요.</strong> 터미널에서 <code>npx wrangler secret put 이름</code>을 실행해 직접 입력합니다. 배포는 <code>npx wrangler deploy</code>.</span></div>

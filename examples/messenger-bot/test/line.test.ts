@@ -95,7 +95,7 @@ describe("handleLineWebhook (LINE 메시지 처리)", () => {
   it("불만이면 답장 후 Slack·Jira로 넘긴다", async () => {
     const fetchMock = mockFetch('{"answer":"죄송합니다. 담당자가 연락드릴게요","category":"불만","needs_human":true}');
     const { ctx, settle } = makeCtx();
-    await handleLineWebhook(await lineRequest([textEvent("꽃이 다 시들었어요")]), makeEnv(), ctx);
+    await handleLineWebhook(await lineRequest([textEvent("관리 받고 나서 트러블이 났어요")]), makeEnv(), ctx);
     await settle();
 
     expect(bodiesSentTo(fetchMock, "message/reply")).toHaveLength(1);
@@ -124,6 +124,22 @@ describe("handleLineWebhook (LINE 메시지 처리)", () => {
 
     const [reply] = bodiesSentTo(fetchMock, "message/reply") as Array<{ messages: Array<{ text: string }> }>;
     expect(reply?.messages[0]?.text).toMatch(/AI/);
+  });
+
+  it("친구 추가 인사는 봄날 에스테틱 이름을 한국어·일본어로 밝히고 네이버 예약을 안내한다", async () => {
+    const fetchMock = mockFetch("{}");
+    const { ctx, settle } = makeCtx();
+    const follow: LineEvent = { type: "follow", replyToken: "rt-follow", source: { type: "user", userId: "U1" } };
+    await handleLineWebhook(await lineRequest([follow]), makeEnv(), ctx);
+    await settle();
+
+    const [reply] = bodiesSentTo(fetchMock, "message/reply") as Array<{ messages: Array<{ text: string }> }>;
+    const text = reply?.messages[0]?.text ?? "";
+    expect(text).toContain("봄날 에스테틱");
+    expect(text).toContain("ポムナル・エステ");
+    expect(text).toContain("AI相談員");
+    expect(text).toMatch(/네이버 예약/);
+    expect(text).not.toMatch(/\uBC30\uC1A1|\u914D\u9001|\uAF43|\u82B1/); // 예전 업종 단어(유니코드 표기)
   });
 
   it("답장 토큰이 없는 이벤트(예: unfollow)와 빈 이벤트 목록(웹훅 검증)은 조용히 넘어간다", async () => {

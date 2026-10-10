@@ -64,9 +64,9 @@ describe("handleKakaoSkill (카카오 스킬 처리)", () => {
   });
 
   it("callbackUrl이 없으면 바로 답한다", async () => {
-    mockClaude('{"answer":"배송비는 5,000원이에요","category":"배송","needs_human":false}');
-    const res = await handleKakaoSkill(kakaoRequest({ utterance: "배송비?" }), makeEnv(), makeCtx().ctx);
-    expect(await res.json()).toEqual(kakaoTextResponse("배송비는 5,000원이에요"));
+    mockClaude('{"answer":"예약금은 10,000원이에요","category":"예약","needs_human":false}');
+    const res = await handleKakaoSkill(kakaoRequest({ utterance: "예약금 있어요?" }), makeEnv(), makeCtx().ctx);
+    expect(await res.json()).toEqual(kakaoTextResponse("예약금은 10,000원이에요"));
   });
 
   it("Claude가 너무 느리면 시간 안에 안내 문구로 답한다", async () => {

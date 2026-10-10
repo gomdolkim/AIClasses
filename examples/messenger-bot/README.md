@@ -1,4 +1,4 @@
-# 봄날의 꽃 AI 상담 봇 (LINE · 카카오) 🌷
+# 봄날 에스테틱 AI 상담 봇 (LINE · 카카오) 🌿
 
 > 14회차 실습 예제 · Cloudflare Workers + TypeScript · 2026-10 기준
 > 처음 보는 분도 따라 할 수 있게 썼습니다. 코드를 몰라도 괜찮아요. **순서대로만** 하세요.
@@ -7,12 +7,14 @@
 
 ## 1. 이 봇이 하는 일
 
-손님이 LINE으로 질문을 보내면, AI(Claude)가 가게 FAQ를 보고 대신 답장합니다.
-환불·불만이나 FAQ에 없는 질문은 **직원에게 넘깁니다**(Slack 알림 + Jira 할 일 카드).
+손님(일본인 관광객·거주자 포함)이 LINE으로 질문을 보내면, AI(Claude)가 샵 FAQ를 보고 대신 답장합니다.
+봇은 **예약을 확정하지 않습니다** — 예약은 네이버 예약 링크나 직원에게 안내합니다.
+환불·불만, 관리 후 트러블, 임신·피부 질환·알레르기 상담, FAQ에 없는 질문은 **직원에게 넘깁니다**(Slack 알림 + Jira 할 일 카드).
+필러·보톡스·레이저 같은 의료 시술 문의에는 "피부과 상담을 권해 드려요"라고 답합니다.
 
 ```
  손님 (LINE 앱)
-    │  "営業時間は？" / "꽃이 시들어 왔어요"
+    │  "予約できますか" / "관리 받고 트러블이 났어요"
     ▼
  LINE 서버 ──(webhook)──▶  우리 봇 (Cloudflare Worker, 이 폴더의 코드)
                               │ ① 진짜 LINE이 보낸 건지 서명 확인
@@ -23,7 +25,7 @@
                               ▼
                      needs_human 이거나 환불·불만이면?
                         ├─▶ Slack #cs-escalation 알림
-                        └─▶ Jira "봄날의 꽃 운영"(BOM) 이슈 생성 (클레임/문의)
+                        └─▶ Jira "봄날 에스테틱 운영"(BOM) 이슈 생성 (예약/문의/클레임)
 ```
 
 | 주소 | 하는 일 |
@@ -36,7 +38,7 @@
 
 | 파일 | 역할 |
 |---|---|
-| `src/knowledge.ts` | ★ **업무 매뉴얼**: 상담 규칙 + 가게 FAQ. 가게 정보가 바뀌면 여기만 고치세요 |
+| `src/knowledge.ts` | ★ **업무 매뉴얼**: 상담 규칙 + 샵 FAQ(메뉴·가격·예약 규정). 샵 정보가 바뀌면 여기만 고치세요 |
 | `src/index.ts` | 안내 데스크: 주소를 보고 담당 파일로 보냄, 비밀값 확인 |
 | `src/line.ts` | LINE 서명 확인, 로딩 표시, 답장 |
 | `src/kakao.ts` | 카카오 스킬 응답 (콜백 / 4초 제한) |
@@ -58,7 +60,7 @@
 | Anthropic API 키 | https://console.anthropic.com → API Keys | 결제 수단 등록 필요 |
 | LINE 공식계정 + Messaging API 채널 | LINE Official Account Manager, LINE Developers | 13회차에서 만든 것 |
 | Slack Incoming Webhook URL | 11회차에서 만든 `#cs-escalation` 웹훅 | |
-| Jira API 토큰 | https://id.atlassian.com/manage-profile/security/api-tokens | 12회차 BOM 프로젝트 |
+| Jira API 토큰 | https://id.atlassian.com/manage-profile/security/api-tokens | 12회차 BOM 프로젝트 (이슈 유형 **예약·문의·클레임** 3개 필요) |
 
 > ⚠️ **API 키·토큰·웹훅 URL은 모두 비밀번호입니다.** 카톡·메일·슬랙에 붙여 넣지 말고, 화면 공유 중에는 가려 주세요.
 
@@ -84,7 +86,7 @@ npm install
 ```bash
 npm test
 ```
-`Tests  71 passed` 처럼 모두 통과하면 코드가 정상입니다. (인터넷·비밀값 없이도 돌아가요)
+`Tests  86 passed` 처럼 모두 통과하면 코드가 정상입니다. (인터넷·비밀값 없이도 돌아가요)
 
 ### ④ Cloudflare 로그인
 ```bash
@@ -130,7 +132,7 @@ npx wrangler deploy
 ```
 https://bomnal-bot.<내계정이름>.workers.dev
 ```
-브라우저로 열어서 **"봄날의 꽃 상담 봇이 작동 중입니다. 🌷"** 가 보이면 성공!
+브라우저로 열어서 **"봄날 에스테틱 상담 봇이 작동 중입니다. 🌿"** 가 보이면 성공!
 
 ### ⑦ LINE에 봇 주소 알려 주기
 1. **LINE Developers** (developers.line.biz) → 내 채널 → **Messaging API** 탭
@@ -146,9 +148,11 @@ https://bomnal-bot.<내계정이름>.workers.dev
 
 | 보낼 메시지 | 기대 결과 |
 |---|---|
-| `営業時間は？` | 일본어로 "화~일 10:00–20:00, 월요일 휴무" 안내 |
-| `배송비 얼마예요?` | 5,000원, 마포·서대문 무료 안내 |
-| `꽃이 다 시들어서 왔어요. 환불해 주세요` | 사과 + 담당자 연결 안내 → Slack 알림 + Jira **클레임** 이슈 생성 |
+| `営業時間は？` | 일본어로 "화~토 11:00–21:00, 일 11:00–18:00, 월요일 휴무" 안내 |
+| `予約できますか？日本語大丈夫ですか` | 일본어로 네이버 예약 안내 + LINE 일본어 상담 가능 안내 (봇이 예약을 확정하지 않음) |
+| `보톡스도 하나요?` | 의료 시술은 하지 않음 + 피부과 상담 권유 |
+| `어제 관리 받고 얼굴이 붉게 올라왔어요` | 공감·사과 + 담당 관리사 연락 안내 → Slack 알림 + Jira **클레임** 이슈 생성 |
+| `회원권 환불하고 싶어요` | 회원권 환불 규정만 안내(약속 없음), 원장이 직접 처리 → Jira **클레임** |
 | 스티커 | "글자 메시지만 읽을 수 있어요" 안내 |
 
 ---
@@ -188,7 +192,7 @@ Cloudflare 대시보드 → Workers & Pages → bomnal-bot → **Logs** 에서�
 | 키워드 자동응답과 AI 답이 둘 다 옴 | 응답 메시지(応答メッセージ)가 켜져 있음 | ⑦-5에서 OFF |
 | 로그에 `비밀값이 등록되지 않았어요: ...` | 비밀값 빠짐 | 로그에 나온 이름으로 `secret put` |
 | 항상 "담당자가 확인 후 연락드리겠습니다"만 옴 | Claude 호출 실패 (키 틀림·잔액 부족) | 로그의 `Claude API 오류` status 확인 (401=키, 400/403=결제·잔액) |
-| Slack은 오는데 Jira 이슈가 안 생김 | BOM 프로젝트에 이슈 유형 "클레임"/"문의"가 없음, 또는 토큰 틀림 | Jira 프로젝트 설정 → Issue types 확인, 로그의 `Jira 이슈 생성 실패` 내용 확인 |
+| Slack은 오는데 Jira 이슈가 안 생김 | BOM 프로젝트에 이슈 유형 "예약"/"문의"/"클레임"이 없음, 또는 토큰 틀림 | Jira 프로젝트 설정 → Issue types 확인, 로그의 `Jira 이슈 생성 실패` 내용 확인 |
 | 수정했는데 그대로임 | 배포를 안 함 | `npx wrangler deploy` 다시 실행 |
 | `npm install` 오류 | Node 버전이 낮음 | Node LTS 재설치 후 터미널 재시작 |
 
@@ -200,7 +204,8 @@ Cloudflare 대시보드 → Workers & Pages → bomnal-bot → **Logs** 에서�
 - 내 컴퓨터 테스트용 `.dev.vars` 파일은 공유 금지 (`.gitignore`에 이미 들어 있음).
 - 키가 노출됐다면 **즉시 재발급**(Anthropic Console, LINE Developers, Slack, Atlassian에서 기존 키 삭제)하고 다시 `secret put`.
 - 봇은 손님 메시지의 전화번호·카드번호·주민번호·이메일을 **가린 뒤** Claude·Slack·Jira로 보냅니다. 그래도 손님에게 개인정보를 메신저로 보내지 말라고 안내하세요.
-- 봇은 환불·보상을 **약속하지 않도록** 규칙이 정해져 있습니다. 규칙을 고칠 때도 이 줄은 지우지 마세요.
+- 봇은 환불·보상을 **약속하지 않도록**, 예약을 **확정하지 않도록**, 관리 효과를 **치료처럼 말하지 않도록** 규칙이 정해져 있습니다. 규칙을 고칠 때도 이 줄들은 지우지 마세요.
+- 피부 상태·질환·임신 여부는 **건강 관련 민감정보**입니다. 봇은 자세히 캐묻지 않고 직원에게 넘기며, FAQ(`knowledge.ts`)에도 고객 정보를 절대 넣지 마세요.
 - AI 기본법(2026-01-22 시행)에 따라 첫 인사에서 **AI 상담원**임을 밝힙니다(친구 추가 인사 + 규칙 2번).
 - 카카오 `/kakao/skill` 에는 LINE 같은 서명 확인이 없어서, 스킬 URL 뒤에 **비밀 `?key=`** 를 붙여 맞는 요청만 받습니다. `KAKAO_SKILL_SECRET` 이 등록되지 않으면 카카오 경로는 아예 열리지 않습니다. 이 URL은 비밀번호처럼 다루고, 새어 나가면 `secret put`으로 값을 바꾸고 카카오 스킬 URL도 같이 바꾸세요. (부록 D 참고)
 - 손님 글 속의 "규칙을 무시해라" 같은 명령은 따르지 않도록 규칙 9~11번에 적어 두었고, Slack 알림은 `<!channel>` 같은 호출을 글자로 바꿔 보냅니다. 다만 AI 규칙은 100% 보장이 아니니, 환불·보상은 **항상 사람이 최종 확인**하세요.
@@ -209,19 +214,24 @@ Cloudflare 대시보드 → Workers & Pages → bomnal-bot → **Logs** 에서�
 
 ---
 
-## 8. 우리 가게에 맞게 바꾸기
+## 8. 우리 샵에 맞게 바꾸기
 
 1. `src/knowledge.ts` 를 메모장(또는 VS Code)으로 엽니다.
-2. `FAQ` 부분의 가게 이름·영업시간·가격·배송·환불 규칙을 우리 가게 내용으로 바꿉니다.
+2. `FAQ` 부분을 우리 샵 내용으로 바꿉니다. 예:
+   - 관리 메뉴·가격: `· 수분 진정 관리 60분 70,000원` → `· 아쿠아 필링 60분 80,000원`
+   - 영업시간·휴무: `월요일 휴무` → `일요일 휴무`
+   - 예약 규정: 예약금 금액, 무료 변경·취소 기한(예: 24시간 → 48시간), 지각 규정
+   - 회원권 환불 규정, 결제 방법, 주차 안내
    - **사실만** 쓰세요. 여기에 없는 질문은 봇이 알아서 직원에게 넘깁니다.
-3. 가게 이름이 바뀌면 `RULES` 첫 줄과 `src/line.ts`의 `GREETING`(친구 추가 인사)도 바꿉니다.
-4. 저장 후:
+3. 샵 이름이 바뀌면 `RULES` 첫 줄(한국어·일본어 예시)과 `src/line.ts`의 `GREETING`(친구 추가 인사, 한·일)도 바꿉니다.
+4. 분류(category)를 바꾸려면 `src/types.ts`의 `CATEGORIES`와 `knowledge.ts`의 답변 형식을 함께 고치고, Jira 이슈 유형 연결(`src/escalate.ts`의 `jiraIssueType`)도 확인하세요.
+5. 저장 후:
    ```bash
-   npm test            # 테스트가 깨지지 않았는지 확인 (가게 이름 관련 테스트는 바뀔 수 있음)
+   npm test            # 테스트가 깨지지 않았는지 확인 (샵 이름·FAQ 관련 테스트는 바뀔 수 있음)
    npx wrangler deploy # 다시 배포
    ```
 
-> 💡 Claude Code에게 "knowledge.ts의 FAQ를 우리 가게 정보로 바꿔 줘. 영업시간은 ..."처럼 부탁해도 됩니다.
+> 💡 Claude Code에게 "knowledge.ts의 FAQ를 우리 샵 정보로 바꿔 줘. 관리 메뉴와 가격은 ..."처럼 부탁해도 됩니다.
 
 ---
 
@@ -242,7 +252,7 @@ Cloudflare 대시보드 → Workers & Pages → bomnal-bot → **Logs** 에서�
 빈 폴더에서 Claude Code를 열고 아래를 그대로 붙여 넣어 보세요.
 
 ```text
-Cloudflare Workers + TypeScript로 꽃집 「봄날의 꽃」의 LINE 상담 봇을 만들어 줘.
+Cloudflare Workers + TypeScript로 에스테틱 샵 「봄날 에스테틱」의 LINE 상담 봇을 만들어 줘.
 초보자가 읽을 코드라서 작고 읽기 쉽게, 한국어 주석을 자세히 달아 줘.
 
 [경로]
@@ -258,14 +268,16 @@ Cloudflare Workers + TypeScript로 꽃집 「봄날의 꽃」의 LINE 상담 봇
 - fetch로 https://api.anthropic.com/v1/messages 호출 (x-api-key, anthropic-version: 2023-06-01),
   모델 claude-haiku-4-5. system 블록에 cache_control ephemeral.
 - system 프롬프트는 src/knowledge.ts에 따로 두기: 손님 언어(한국어/일본어)로 답, 첫 인사 시 AI 고지,
-  환불·보상 약속 금지, FAQ에 없으면 needs_human, 카드·주민번호 묻지 않기 + 가게 FAQ.
-- JSON {answer, category, needs_human}으로 받기(category: 영업정보|주문|배송|환불|불만|기타).
+  예약 확정 금지(네이버 예약·직원 안내), 진단·치료 표현 금지, 의료 시술 문의는 피부과 권유,
+  임신·피부 질환·알레르기·관리 후 트러블은 needs_human(트러블은 category 불만),
+  환불·보상 약속 금지(회원권 규정만 안내), FAQ에 없으면 needs_human, 카드·주민번호 묻지 않기 + 샵 FAQ.
+- JSON {answer, category, needs_human}으로 받기(category: 영업정보|예약|관리상담|환불|불만|기타).
   직접 만든 검사 함수로 확인하고, 깨지면 needs_human=true + 한·일 사과 문구로 대체.
 
 [개인정보·직원 연결]
 - 전화번호·카드번호·주민번호·이메일을 가린 뒤에만 Claude/Slack/Jira로 보내기.
 - needs_human이거나 환불·불만이면: Jira REST v3로 이슈 생성(Basic 인증, 프로젝트 키 환경변수,
-  유형은 환불·불만=클레임, 나머지=문의, 설명은 ADF) → 이슈 키를 넣어 Slack Incoming Webhook 알림.
+  유형은 환불·불만=클레임, 예약=예약, 나머지=문의, 설명은 ADF) → 이슈 키를 넣어 Slack Incoming Webhook 알림.
   실패해도 손님 답장은 막지 말고 로그만 남기기.
 
 [환경변수] ANTHROPIC_API_KEY, LINE_CHANNEL_SECRET, LINE_CHANNEL_ACCESS_TOKEN, SLACK_WEBHOOK_URL,

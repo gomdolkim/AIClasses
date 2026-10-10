@@ -75,7 +75,8 @@
         </ul>
       </div>
     </div>
-    <div class="callout callout--info"><span>모든 실습은 가상 회사 <strong>「봄날의 꽃」</strong>(망원동 꽃집, 직원 4명)으로 먼저 하고, 응용 실습에서 수강생 자기 회사로 바꿉니다. 회사 설정 숫자는 바꾸지 마세요 — 데이터셋·봇 예제와 맞물려 있습니다.</span></div>
+    <div class="callout callout--info"><span>모든 실습은 가상 회사 <strong>「봄날 에스테틱」</strong>(연남동 피부관리 샵, 직원 4명)으로 먼저 하고, 응용 실습에서 수강생 자기 회사로 바꿉니다. 회사 설정 숫자는 바꾸지 마세요 — 데이터셋·봇 예제와 맞물려 있습니다.</span></div>
+    <div class="callout callout--warn"><span>수강생이 실제 샵 원장님이면 실제 고객 차트·전후 사진을 올려 보고 싶어 합니다. 피부 상태·질환·임신 여부는 <strong>건강 관련 민감정보</strong>입니다. 수업에서는 dataset의 가상 데이터만 쓰고, 실제 데이터는 이니셜·마스킹 원칙(2회차)을 지킨 뒤에만 쓰게 하세요.</span></div>
   </section>
 
   <section aria-labelledby="schedule">
@@ -86,13 +87,13 @@
         <tbody>
           <tr><td>1</td><td>Claude 가입, 좋은 요청 4요소</td><td>가게 소개문 + 공지 3종</td><td>PC, 크롬, 휴대폰</td><td>없음</td></tr>
           <tr><td>2</td><td>할루시네이션, 개인정보</td><td>우리 회사 AI 사용 수칙 1쪽</td><td>Claude 계정</td><td>1회차 FAQ 10개 과제</td></tr>
-          <tr><td>3</td><td>프로젝트 & 스킬</td><td>봄날의 꽃 프로젝트 + 첫 스킬</td><td><strong>Claude Pro</strong>, dataset 파일</td><td>Pro 결제 완료</td></tr>
-          <tr><td>4</td><td>파일 요약·정리·양식</td><td>주간 매출 요약 + 견적서 양식</td><td>orders-sample.csv</td><td>3회차 프로젝트</td></tr>
-          <tr><td>5</td><td>브랜드 말투 콘텐츠</td><td>인스타 1주치 + 이벤트 문자</td><td>brand-voice.md</td><td>3회차 프로젝트</td></tr>
-          <tr><td>6</td><td>아티팩트로 홈페이지</td><td>1페이지 가게 소개 사이트</td><td>가게 사진(선택)</td><td>5회차 소개 문구</td></tr>
-          <tr><td>7</td><td>API·웹훅 원리</td><td>우리 가게 업무 흐름도</td><td>종이·펜 또는 Claude</td><td>없음</td></tr>
+          <tr><td>3</td><td>프로젝트 & 스킬</td><td>봄날 에스테틱 프로젝트 + 첫 스킬</td><td><strong>Claude Pro</strong>, dataset 파일</td><td>Pro 결제 완료</td></tr>
+          <tr><td>4</td><td>파일 요약·정리·양식</td><td>월간 예약·매출 요약 + 고객 관리 차트 양식</td><td>reservations-sample.csv</td><td>3회차 프로젝트</td></tr>
+          <tr><td>5</td><td>브랜드 말투 콘텐츠</td><td>인스타 1주치 + 예약 리마인드·이벤트 문자</td><td>brand-voice.md</td><td>3회차 프로젝트</td></tr>
+          <tr><td>6</td><td>아티팩트로 홈페이지</td><td>1페이지 샵 소개 사이트(예약 버튼)</td><td>샵 내부 사진(선택, 고객 얼굴 없는 것)</td><td>5회차 소개 문구</td></tr>
+          <tr><td>7</td><td>API·웹훅 원리</td><td>예약→관리→사후 연락 흐름도</td><td>종이·펜 또는 Claude</td><td>없음</td></tr>
           <tr><td>8</td><td>Slack 채널·워크플로</td><td>채널 구성 + 스탠드업 워크플로</td><td><strong>Slack Pro</strong> 워크스페이스</td><td>워크스페이스 생성</td></tr>
-          <tr><td>9</td><td>Jira 이슈·보드</td><td>주문→제작→배송 보드</td><td><strong>Jira Free</strong> 사이트</td><td>Atlassian 가입</td></tr>
+          <tr><td>9</td><td>Jira 이슈·보드</td><td>예약→관리→사후 연락 보드</td><td><strong>Jira Free</strong> 사이트</td><td>Atlassian 가입</td></tr>
           <tr><td>10</td><td>Slack↔Jira 자동화</td><td>문의→이슈→완료 알림</td><td>Jira Cloud for Slack 앱</td><td>8·9회차 완료</td></tr>
           <tr><td>11</td><td>Claude가 Jira 읽고 보고</td><td>자동 주간 보고</td><td>Atlassian·Slack 커넥터</td><td>10회차, Jira 이슈 10개 이상</td></tr>
           <tr><td>12</td><td>LINE 자동응답(코딩 없음)</td><td>FAQ 10개 자동응답</td><td><strong>LINE 공식계정</strong>, 테스트 폰</td><td>faq.md</td></tr>
@@ -107,17 +108,17 @@
     <h2 id="tips">3. 회차별 운영 팁</h2>
     <dl class="tip-list">
       <dt>1회차 · AI 비서 첫 출근</dt><dd>문자 인증이 가장 많이 막힙니다. 짝 실습으로 진행하고, Pro 결제는 과제로 넘기세요. FAQ 10개 과제가 3·12·13회차 재료입니다.</dd>
-      <dt>2회차 · 잘하는 일, 틀리는 일</dt><dd>일부러 틀리는 질문(“망원동 꽃집 매출 1위는?”)으로 할루시네이션을 직접 겪게 하세요. 개인정보 마스킹 연습을 꼭 넣습니다.</dd>
-      <dt>3회차 · 프로젝트 & 스킬</dt><dd>Pro 미결제자는 짝의 화면을 함께 봅니다. dataset 폴더의 faq.md·price-list.md·brand-voice.md를 미리 내려받게 하세요.</dd>
-      <dt>4회차 · 문서·엑셀</dt><dd>orders-sample.csv의 합계를 Claude가 계산하면 반드시 엑셀로 한 번 검산하게 합니다(숫자 검증 습관).</dd>
-      <dt>5회차 · 마케팅</dt><dd>“우리 말투” 비교가 핵심. brand-voice.md 적용 전/후를 나란히 보여 주세요.</dd>
-      <dt>6회차 · 홈페이지</dt><dd>아티팩트 공유 링크는 누구나 볼 수 있으니 개인 전화번호를 넣지 않게 합니다. 인터넷 주소 연결은 부록 A로 안내.</dd>
+      <dt>2회차 · 잘하는 일, 틀리는 일</dt><dd>일부러 틀리는 질문(“연남동 에스테틱 매출 1위는?”, “이 성분이 여드름을 치료하나요?”)으로 할루시네이션을 직접 겪게 하세요. 피부 상태·질환·임신 여부는 민감정보라 실명과 함께 넣지 않는 마스킹 연습, 전후 사진 동의 이야기를 꼭 넣습니다.</dd>
+      <dt>3회차 · 프로젝트 & 스킬</dt><dd>Pro 미결제자는 짝의 화면을 함께 봅니다. dataset 폴더의 faq.md·price-list.md·brand-voice.md를 미리 내려받게 하세요. 원장님 수강생은 실제 고객 차트를 올리고 싶어 하니 “가상 데이터로만”을 먼저 못 박으세요.</dd>
+      <dt>4회차 · 문서·엑셀</dt><dd>reservations-sample.csv로 노쇼율·재방문율·메뉴별 매출을 Claude가 계산하면 반드시 엑셀로 한 번 검산하게 합니다(숫자 검증 습관). 기준값: 50건 중 완료 40·노쇼 4·취소 4·변경 2, 완료 매출 3,170,000원.</dd>
+      <dt>5회차 · 마케팅</dt><dd>“우리 말투” 비교와 <strong>광고 표현 점검</strong>이 핵심. brand-voice.md 적용 전/후를 나란히 보여 주고, “치료·재생·주름 제거 보장” 같은 표현을 AI가 스스로 걸러 내게 하세요(규정은 수업 전 최신 확인).</dd>
+      <dt>6회차 · 홈페이지</dt><dd>아티팩트 공유 링크는 누구나 볼 수 있으니 개인 전화번호·고객 전후 사진을 넣지 않게 합니다. 예약 버튼은 네이버 예약 링크로 연결합니다. 인터넷 주소 연결은 부록 A로 안내.</dd>
       <dt>7회차 · API와 웹훅</dt><dd>코딩 없는 회차입니다. “식당 주문서(API)”와 “초인종(웹훅)” 비유로 그림만 그립니다. 8~14회차의 기초라 서두르지 마세요.</dd>
       <dt>8회차 · Slack</dt><dd>강사가 만든 실습 워크스페이스에 초대하는 방식이 가장 빠릅니다. Workflow Builder 사용 가능 플랜을 수업 전에 확인하세요.</dd>
-      <dt>9회차 · Jira</dt><dd>프로젝트 이름 “봄날의 꽃 운영”, 키 <code>BOM</code>, 열 4개(접수→제작 중→배송 중→완료)를 그대로 맞추게 하세요. 이후 회차 예제가 이 이름을 씁니다.</dd>
-      <dt>10회차 · Slack↔Jira</dt><dd>Jira Free Automation은 사이트 전체 월 150 steps입니다. 수강생이 같은 사이트를 공유하면 한도가 금방 찹니다 → 각자 사이트 권장.</dd>
-      <dt>11회차 · AI 주간 보고</dt><dd>Jira에 이슈가 적으면 보고서가 빈약합니다. 수업 전 샘플 이슈 10~15개를 만들어 두게 하세요.</dd>
-      <dt>12회차 · LINE 자동응답</dt><dd>일본어 계정 화면이 섞여 나옵니다. 메뉴명을 일본어·한국어로 병기한 화면 캡처를 미리 준비하세요.</dd>
+      <dt>9회차 · Jira</dt><dd>프로젝트 이름 “봄날 에스테틱 운영”, 키 <code>BOM</code>, 열 4개(접수→예약 확정→관리 완료→사후 연락 완료)를 그대로 맞추게 하세요. 이후 회차 예제가 이 이름을 씁니다.</dd>
+      <dt>10회차 · Slack↔Jira</dt><dd>Jira Free Automation은 사이트 전체 월 150 steps입니다. 수강생이 같은 사이트를 공유하면 한도가 금방 찹니다 → 각자 사이트 권장. “관리 완료 3일 뒤 사후 연락 이슈 자동 생성” 같은 지연·예약 규칙이 현재 플랜에서 되는지는 수업 전 확인하세요.</dd>
+      <dt>11회차 · AI 주간 보고</dt><dd>Jira에 이슈가 적으면 보고서가 빈약합니다. 수업 전 샘플 이슈 10~15개(예약·문의·클레임, 노쇼 포함)를 만들어 두게 하세요.</dd>
+      <dt>12회차 · LINE 자동응답</dt><dd>일본어 계정 화면이 섞여 나옵니다. 메뉴명을 일본어·한국어로 병기한 화면 캡처를 미리 준비하세요. 「予約できますか」처럼 예약 문의는 자동응답이 네이버 예약 링크로 안내만 하고 확정하지 않게 합니다.</dd>
       <dt>13회차 · Make 상담봇</dt><dd>API 키를 화면 공유 중에 노출하지 않도록 주의. Make 무료 credits가 테스트 반복으로 빨리 줄어듭니다.</dd>
       <dt>14회차 · 봇 서버 & 졸업</dt><dd>배포는 앞 45분, 발표는 뒤 45분으로 시간을 엄격히 나눕니다. 배포에 실패해도 13회차 Make 봇으로 발표할 수 있게 하세요.</dd>
     </dl>
@@ -130,8 +131,8 @@
         <h3>계정 · 환경</h3>
         <ul class="checklist">
           <li>강사용 Claude Pro 계정 (데모 전용, 개인 대화 기록 없는 것)</li>
-          <li>실습용 Slack 워크스페이스 + 채널 #공지 #주문 #문의 #스탠드업 #cs-escalation</li>
-          <li>강사용 Jira 사이트 + 프로젝트 “봄날의 꽃 운영”(BOM)</li>
+          <li>실습용 Slack 워크스페이스 + 채널 #공지 #예약 #문의 #스탠드업 #cs-escalation</li>
+          <li>강사용 Jira 사이트 + 프로젝트 “봄날 에스테틱 운영”(BOM)</li>
           <li>테스트용 LINE 공식계정 + 친구 추가한 테스트 폰(또는 두 번째 LINE 계정)</li>
           <li>Make 계정 + 13회차 완성본 시나리오</li>
           <li>Cloudflare 계정 + examples/messenger-bot/ 배포 확인</li>
@@ -163,7 +164,7 @@
           <tr><td>② 지난 시간 결과물 확인</td><td>2~3명 화면 공유 (2회차부터)</td><td>5분</td></tr>
           <tr><td>③ 비유로 개념 잡기</td><td>새 용어는 5개 이하, 비유 먼저</td><td>10분</td></tr>
           <tr><td>④ 강사 데모</td><td>완성된 모습을 먼저 보여 주기</td><td>10분</td></tr>
-          <tr><td>⑤ 따라 하기 실습</td><td>봄날의 꽃으로 단계별 진행</td><td>25분</td></tr>
+          <tr><td>⑤ 따라 하기 실습</td><td>봄날 에스테틱으로 단계별 진행</td><td>25분</td></tr>
           <tr><td>⑥ 응용 실습</td><td>우리 회사에 적용</td><td>20분</td></tr>
           <tr><td>⑦ 자주 겪는 문제 · 체크리스트</td><td>막힌 사람 정리</td><td>10분</td></tr>
           <tr><td>⑧ 과제 & 다음 예고</td><td>다음 회차 준비물 안내</td><td>5분</td></tr>

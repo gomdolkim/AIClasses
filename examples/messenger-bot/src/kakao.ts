@@ -17,8 +17,8 @@ import type { BotReply, Env, KakaoSkillRequest } from "./types";
 const KAKAO_TEXT_LIMIT = 1000; // simpleText 최대 글자 수
 const DEFAULT_SYNC_TIMEOUT_MS = 4000; // 카카오 제한 5초보다 여유 있게 4초
 
-const SLOW_MESSAGE = "질문이 접수되었어요. 잠시 후 다시 물어봐 주시면 답변드릴게요. 🌷";
-const EMPTY_MESSAGE = "궁금한 점을 글로 보내 주세요. 🌷";
+const SLOW_MESSAGE = "질문이 접수되었어요. 잠시 후 다시 물어봐 주시면 답변드릴게요. 🌿";
+const EMPTY_MESSAGE = "궁금한 점을 글로 보내 주세요. 🌿";
 
 /** 콜백을 쓸 때 즉시 돌려주는 응답 */
 export const KAKAO_CALLBACK_ACK = {

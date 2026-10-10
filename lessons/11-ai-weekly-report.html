@@ -14,11 +14,11 @@
   <div class="slide-inner">
     <span class="eyebrow reveal">파트 ③ 팀 업무 자동화 (Slack · Jira) · 11회차</span>
     <h1 class="reveal">AI가 주간 보고를 대신 쓴다</h1>
-    <p class="lead reveal">Claude가 Jira를 읽고, 표로 정리하고, Slack에 올릴 글까지 씁니다</p>
+    <p class="lead reveal">Claude가 Jira를 읽고, 예약·노쇼·클레임을 표로 정리하고, Slack에 올릴 글까지 씁니다</p>
     <p class="small reveal" style="margin-top:2rem">⌨️ 방향키·스페이스로 이동 · <kbd>N</kbd> 강사 노트 · <kbd>D</kbd> 어둡게</p>
   </div>
   <aside class="notes">
-    [0~2분] "금요일마다 이번 주 정리하는 데 몇 분 걸리세요?" 질문으로 시작. 파트 ③ 마지막 회차.
+    [0~2분] "이번 주 노쇼가 몇 건이었는지, 다음 주 토요일 예약이 몇 개 찼는지 바로 말할 수 있나요?" 질문으로 시작. 파트 ③ 마지막 회차.
     수업 전 강사 확인: Slack·Atlassian 커넥터가 둘 다 켜지는지, 예약 작업(Cowork) 메뉴와 플랜 조건, Claude Tag 제공 상태. 이 영역은 기능이 자주 바뀜.
   </aside>
 </section>
@@ -27,15 +27,15 @@
 <section class="slide">
   <div class="slide-inner stack">
     <h2>오늘의 목표 <span class="timebox">3분</span></h2>
-    <div class="goal reveal"><span class="goal-label">목표</span><span>Claude가 Jira BOM을 읽고 <strong>주간 보고</strong>를 쓰게 하고, 그 결과를 <strong>검증</strong>한 뒤 Slack #공지에 올린다</span></div>
+    <div class="goal reveal"><span class="goal-label">목표</span><span>Claude가 Jira BOM을 읽고 <strong>주간 보고</strong>(예약 수·노쇼·클레임·다음 주 예약)를 쓰게 하고, 그 결과를 <strong>검증</strong>한 뒤 Slack #공지에 올린다</span></div>
     <div class="goal reveal"><span class="goal-label">결과물</span><span>주간 보고 프롬프트 템플릿 + 프로젝트에 저장한 보고 형식 + 정기 실행 방법 1개 설정</span></div>
     <div class="grid-3 reveal">
       <div class="card card--sky"><span class="icon">📋</span><h3>템플릿</h3><p>매주 같은 부탁을 한 번에</p></div>
-      <div class="card card--lavender"><span class="icon">🔍</span><h3>검증</h3><p>숫자·이름 맞춰 보기</p></div>
-      <div class="card card--mint"><span class="icon">⏰</span><h3>정기화</h3><p>매주 금요일 자동으로</p></div>
+      <div class="card card--lavender"><span class="icon">🔍</span><h3>검증</h3><p>숫자·이니셜 맞춰 보기</p></div>
+      <div class="card card--mint"><span class="icon">⏰</span><h3>정기화</h3><p>매주 일요일 마감 후 자동으로</p></div>
     </div>
   </div>
-  <aside class="notes">자동화 사다리 L4(AI가 읽고 판단·작성). "AI가 쓰고, 사람이 확인하고, 사람이 올린다"가 오늘의 원칙.</aside>
+  <aside class="notes">자동화 사다리 L4(AI가 읽고 판단·작성). "AI가 쓰고, 사람이 확인하고, 사람이 올린다"가 오늘의 원칙. 월요일 휴무라 "한 주 = 화~일", 보고는 일요일 마감(18:00) 후가 자연스러움.</aside>
 </section>
 
 <!-- 3. 지난 시간 결과물 확인 -->
@@ -43,26 +43,26 @@
   <div class="slide-inner stack">
     <h2>지난 시간 결과물 확인 <span class="timebox">5분</span></h2>
     <div class="grid-2 reveal">
-      <div class="card"><h3>🔔 자동 알림 잘 왔나요?</h3><ul class="list"><li>완료 → #주문 알림이 몇 번 왔나요?</li><li>자동화 사용량은 계산과 비슷했나요?</li></ul></div>
-      <div class="card card--peach"><h3>📦 오늘의 재료</h3><p>일주일 동안 쌓인 <strong>BOM 이슈들</strong>. 이걸 Claude가 읽고 보고서를 씁니다. 이슈가 적으면 Claude로 연습 이슈를 만들어 두세요.</p></div>
+      <div class="card"><h3>🔔 자동 알림 잘 왔나요?</h3><ul class="list"><li>관리 완료 → #예약 알림과 사후 연락 기한이 몇 번 잡혔나요?</li><li>자동화 사용량은 계산과 비슷했나요?</li></ul></div>
+      <div class="card card--peach"><h3>📦 오늘의 재료</h3><p>일주일 동안 쌓인 <strong>BOM 이슈들</strong>(예약·문의·클레임, 노쇼 라벨). 이걸 Claude가 읽고 보고서를 씁니다. 이슈가 적으면 Claude로 연습 이슈를 만들어 두세요.</p></div>
     </div>
     <div class="callout callout--tip reveal"><span>사용량이 계산보다 많았다면 왜 그런지 같이 봅시다. "다른 칸으로 옮길 때도 트리거가 돌았다"가 가장 흔한 이유입니다.</span></div>
   </div>
-  <aside class="notes">사용량 화면을 1명 띄워서 함께 보기. 이슈가 5개 미만인 수강생은 9회차 프롬프트로 연습 이슈 10개(완료·지연 섞어서)를 만들게 하기 — 3분 이내.</aside>
+  <aside class="notes">사용량 화면을 1명 띄워서 함께 보기. 이슈가 5개 미만인 수강생은 9회차 프롬프트로 연습 이슈 10개(관리 완료·사후 연락 완료·노쇼 라벨·다음 주 예약 섞어서)를 만들게 하기 — 3분 이내.</aside>
 </section>
 
 <!-- 4. 비유와 용어 -->
 <section class="slide">
   <div class="slide-inner stack">
-    <h2>Claude = 금요일마다 보고서 쓰는 매니저 <span class="timebox">6분</span></h2>
-    <div class="analogy reveal">이 매니저는 Jira 보드(주문 꽂이)와 Slack(사무실 대화)을 <strong>출입증(커넥터)</strong>으로 드나들며 읽고, 정해진 양식대로 보고서를 씁니다. 단, <strong>가끔 숫자를 틀리는 신입</strong>이라 사장님이 마지막에 도장을 찍어야 합니다.</div>
+    <h2>Claude = 일요일마다 보고서 쓰는 실장 <span class="timebox">6분</span></h2>
+    <div class="analogy reveal">이 실장은 Jira 보드(예약 카드 보드)와 Slack(샵 대화)을 <strong>출입증(커넥터)</strong>으로 드나들며 읽고, 정해진 양식대로 보고서를 씁니다. 단, <strong>가끔 숫자를 틀리는 신입</strong>이라 원장님이 마지막에 도장을 찍어야 합니다.</div>
     <div class="grid-3 reveal">
       <dl class="term"><dt>프롬프트 템플릿</dt><dd>매번 같은 일을 시킬 때 쓰는 "빈칸 있는 부탁 양식". 날짜만 바꿔 다시 씀</dd></dl>
       <dl class="term"><dt>예약 작업 (Scheduled task)</dt><dd>정해진 요일·시간에 Claude가 저장된 부탁을 스스로 실행하는 기능</dd></dl>
       <dl class="term"><dt>교차 확인</dt><dd>AI 결과를 원본(Jira 보드)과 한 줄씩 맞춰 보는 것</dd></dl>
     </div>
   </div>
-  <aside class="notes">새 용어 3개. 커넥터는 8·9회차에 이미 씀. "신입 비서" 비유(1회차)를 다시 꺼내 연결.</aside>
+  <aside class="notes">새 용어 3개. 커넥터는 8·9회차에 이미 씀. "신입 비서" 비유(1회차)를 다시 꺼내 연결. "예약 작업"은 손님 예약이 아니라 Claude의 '정해 둔 시간에 하는 일'이라고 헷갈리지 않게 짚어 주기.</aside>
 </section>
 
 <!-- 5. 강사 데모 -->
@@ -70,13 +70,13 @@
   <div class="slide-inner stack">
     <h2>강사 데모 · 주간 보고가 만들어지는 길 <span class="timebox">6분</span></h2>
     <div class="flow reveal">
-      <div class="flow-node flow-node--accent"><span class="icon">🧾</span>Jira BOM 읽기<small>이번 주 이슈</small></div>
+      <div class="flow-node flow-node--accent"><span class="icon">🧾</span>Jira BOM 읽기<small>이번 주 + 다음 주 이슈</small></div>
       <span class="flow-arrow">→</span>
-      <div class="flow-node flow-node--accent"><span class="icon">📊</span>표로 정리<small>완료 · 지연 · 클레임</small></div>
+      <div class="flow-node flow-node--accent"><span class="icon">📊</span>표로 정리<small>예약 · 노쇼 · 클레임 · 사후 연락</small></div>
       <span class="flow-arrow">→</span>
       <div class="flow-node flow-node--accent"><span class="icon">✍️</span>#공지 글 초안<small>Slack 말투로</small></div>
       <span class="flow-arrow">→</span>
-      <div class="flow-node flow-node--human"><span class="icon">🔍</span>대표가 검증<small>교차 확인</small></div>
+      <div class="flow-node flow-node--human"><span class="icon">🔍</span>원장이 검증<small>교차 확인</small></div>
       <span class="flow-arrow">→</span>
       <div class="flow-node flow-node--human"><span class="icon">📣</span>#공지에 게시<small>사람이 승인</small></div>
     </div>
@@ -94,17 +94,19 @@
       <li>아래 템플릿을 복사해 <strong>[날짜]</strong>만 이번 주로 바꿔 실행</li>
       <li>Claude가 Jira를 읽는 과정(도구 사용 표시)을 지켜보기</li>
     </ol>
-    <div class="prompt reveal">[상황] 나는 꽃집 「봄날의 꽃」 대표야. 오늘은 [10월 16일 금요일]이고, 이번 주는 [10월 13일(화)~10월 18일(일)]이야.
-[할 일] Jira BOM 프로젝트에서 이번 주 이슈를 읽고 주간 보고를 써줘.
-1) 표: 이슈 키 / 유형 / 요약 / 담당자 / 상태 / 기한
-2) 이번 주 완료한 이슈 수, 기한이 지났는데 완료가 아닌 "지연" 이슈 목록, 클레임 수
-3) Slack #공지에 올릴 글: 팀에게 고마움 + 숫자 요약 + 다음 주 주의할 점 2개
-[조건] Jira에 없는 내용은 지어내지 말고 "확인 필요"라고 써줘. 손님 개인정보는 쓰지 마. Slack에는 아직 보내지 마.
-[형식] 표 → 요약 3줄 → Slack 글(10줄 이내, 이모지 3개 이하)</div>
+    <div class="prompt reveal">[상황] 나는 에스테틱 샵 「봄날 에스테틱」 원장이야. 오늘은 [10월 18일 일요일]이고, 이번 주는 [10월 13일(화)~10월 18일(일)], 다음 주는 [10월 20일(화)~10월 25일(일)]이야. 월요일은 휴무야.
+[할 일] Jira BOM 프로젝트의 이슈를 읽고 주간 보고를 써줘. 관리 날짜는 이슈 요약에 적힌 날짜 기준이야(기한은 사후 연락 날짜로 바뀌어 있을 수 있어).
+1) 이번 주 표: 이슈 키 / 유형 / 요약 / 담당자 / 상태 / 라벨
+2) 숫자: 이번 주 예약 수, 노쇼 수(라벨 "노쇼"), 클레임 수, 사후 연락이 기한을 넘겼는데 "사후 연락 완료"가 아닌 목록
+3) 다음 주 예약 현황: 요일별 예약 건수 표
+4) Slack #공지에 올릴 글: 팀에게 고마움 + 숫자 요약 + 다음 주 주의할 점 2개
+[조건] Jira에 없는 내용은 지어내지 말고 "확인 필요"라고 써줘. 손님은 이니셜만, 건강정보는 쓰지 마. Slack에는 아직 보내지 마.
+[형식] 표 → 숫자 요약 3줄 → 다음 주 표 → Slack 글(10줄 이내, 이모지 3개 이하)</div>
   </div>
   <aside class="notes">
-    막히는 곳: 커넥터 하나만 켜짐, Claude가 다른 프로젝트를 읽음("BOM 프로젝트"를 꼭 적게). 날짜를 적지 않으면 "이번 주"를 잘못 해석할 수 있음.
+    막히는 곳: 커넥터 하나만 켜짐, Claude가 다른 프로젝트를 읽음("BOM 프로젝트"를 꼭 적게). 날짜를 적지 않으면 "이번 주"를 잘못 해석할 수 있음. 요약에 날짜가 없는 카드가 섞이면 "확인 필요"로 나옴 → 9회차 요약 규칙의 중요성.
     예상 질문: "매주 이걸 붙여넣어야 하나요?" → 실습 3에서 프로젝트에 저장하면 한 줄로 끝남.
+    예상 질문: "노쇼율도 계산되나요?" → 노쇼 수 ÷ 이번 주 예약 수. Claude에게 계산식을 보여 달라고 하고 직접 검산.
   </aside>
 </section>
 
@@ -113,13 +115,13 @@
   <div class="slide-inner stack">
     <h2>실습 2 · 같은 대화에서 다듬기 <span class="timebox">6분</span></h2>
     <div class="grid-3 reveal">
-      <div class="prompt">지연 이슈마다 이유를 담당자에게 물어볼 질문을 한 줄씩 써줘</div>
-      <div class="prompt">Slack 글을 더 짧게, 휴대폰으로 한눈에 보이게 줄여줘</div>
-      <div class="prompt">지난주와 비교할 수 있게, 다음 주에도 같은 형식으로 쓸 표 머리글을 고정해줘</div>
+      <div class="prompt">사후 연락이 밀린 카드마다 담당자에게 물어볼 질문을 한 줄씩 써줘</div>
+      <div class="prompt">Slack 글을 더 짧게, 관리사가 휴대폰으로 한눈에 보이게 줄여줘</div>
+      <div class="prompt">지난주와 비교할 수 있게, 다음 주에도 같은 형식으로 쓸 표 머리글을 고정해줘 (예약 수·노쇼·노쇼율·클레임)</div>
     </div>
-    <div class="callout callout--warn reveal"><span>지연 이유를 Claude가 <strong>추측해서 쓰면 안 됩니다.</strong> 이유는 사람에게 묻고, Claude에게는 "질문 만들기"까지만 맡기세요.</span></div>
+    <div class="callout callout--warn reveal"><span>노쇼·클레임의 이유를 Claude가 <strong>추측해서 쓰면 안 됩니다.</strong> 이유는 사람에게 묻고, Claude에게는 "질문 만들기"까지만 맡기세요.</span></div>
   </div>
-  <aside class="notes">1회차 "고쳐 달라고 하기" 복습. 지연 이유를 지어내는 경우가 실제로 자주 있음 → 슬라이드 9 검증 체크리스트로 연결.</aside>
+  <aside class="notes">1회차 "고쳐 달라고 하기" 복습. "노쇼 원인: 비 오는 날씨" 같은 그럴듯한 이유를 지어내는 경우가 실제로 자주 있음 → 슬라이드 9 검증 체크리스트로 연결.</aside>
 </section>
 
 <!-- 8. 실습 3: 프로젝트에 저장 -->
@@ -128,18 +130,19 @@
     <h2>실습 3 · 보고 형식을 프로젝트에 저장하기 <span class="timebox">10분</span></h2>
     <div class="grid-2">
       <ol class="steps reveal">
-        <li>3회차에 만든 <strong>「봄날의 꽃」 프로젝트</strong> 열기</li>
+        <li>3회차에 만든 <strong>「봄날 에스테틱」 프로젝트</strong> 열기</li>
         <li><span class="path">프로젝트 지침(Instructions)</span> 편집 → 오른쪽 내용을 맨 아래에 붙여넣기 → 저장</li>
         <li>프로젝트 안에서 새 채팅 → <strong>"이번 주 주간 보고 써줘. 오늘은 ○월 ○일이야."</strong> 한 줄만 입력</li>
         <li>실습 1과 같은 형식이 나오면 성공 🎉</li>
       </ol>
       <pre class="code reveal" data-copy>## 주간 보고 규칙
-- "주간 보고"를 요청하면 Jira BOM 프로젝트에서 이번 주(화~일) 이슈를 읽는다.
-- 순서: ① 표(이슈 키/유형/요약/담당자/상태/기한) ② 완료 수·지연 목록·클레임 수 ③ Slack #공지용 글
-- 지연 = 기한이 지났는데 상태가 "완료"가 아닌 이슈.
+- "주간 보고"를 요청하면 Jira BOM 프로젝트에서 이번 주(화~일)와 다음 주 이슈를 읽는다.
+- 관리 날짜는 이슈 요약의 날짜 기준(기한은 사후 연락 날짜일 수 있음).
+- 순서: ① 이번 주 표(이슈 키/유형/요약/담당자/상태/라벨) ② 예약 수·노쇼 수(라벨 "노쇼")·클레임 수·사후 연락 밀림 목록 ③ 다음 주 요일별 예약 건수 ④ Slack #공지용 글
+- 사후 연락 밀림 = 기한이 지났는데 상태가 "사후 연락 완료"가 아닌 예약 이슈.
 - Jira에 없는 내용은 "확인 필요"로 표시하고 추측하지 않는다.
-- 손님 이름·연락처·주소는 쓰지 않는다.
-- Slack에는 대표가 "올려줘"라고 할 때만 보낸다.</pre>
+- 손님은 이니셜만. 연락처·피부 질환·알레르기 등 건강정보는 쓰지 않는다.
+- Slack에는 원장이 "올려줘"라고 할 때만 보낸다.</pre>
     </div>
   </div>
   <aside class="notes">3회차 프로젝트가 없는 수강생은 새 프로젝트를 만들어 지침만 넣어도 됨. 지침 = "이 프로젝트 안에서는 늘 지키는 규칙"이라고 복습.</aside>
@@ -152,18 +155,18 @@
     <div class="table-wrap reveal">
       <table class="table">
         <tr><th>확인할 것</th><th>어떻게</th></tr>
-        <tr><td>① 개수가 맞나</td><td>Jira 보드 "완료" 칸 카드 수 = 보고서 완료 수</td></tr>
+        <tr><td>① 개수가 맞나</td><td>보드에서 라벨 "노쇼"·유형 "클레임" 필터 → 카드 수 = 보고서 숫자. 예약 수는 네이버 예약 화면과도 대조</td></tr>
         <tr><td>② 빠진 이슈는 없나</td><td>보드 필터로 이번 주 이슈를 띄워 표와 한 줄씩 대조</td></tr>
-        <tr><td>③ 날짜·기간이 맞나</td><td>"이번 주"가 화~일로 잡혔는지, 기한 날짜가 그대로인지</td></tr>
-        <tr><td>④ 지어낸 말은 없나</td><td>지연 이유·손님 반응처럼 Jira에 없는 문장 찾기</td></tr>
-        <tr><td>⑤ 개인정보·약속은 없나</td><td>손님 이름·연락처, "환불해 드리겠습니다" 같은 약속 문장 삭제</td></tr>
+        <tr><td>③ 날짜·기간이 맞나</td><td>"이번 주"가 화~일로 잡혔는지, 다음 주 표에 월요일(휴무)이 끼어 있지 않은지</td></tr>
+        <tr><td>④ 지어낸 말은 없나</td><td>노쇼 이유·손님 반응·"피부가 좋아졌다" 같은 Jira에 없는 문장 찾기</td></tr>
+        <tr><td>⑤ 개인정보·약속은 없나</td><td>손님 실명·연락처·건강정보, "환불해 드리겠습니다" 같은 약속 문장 삭제</td></tr>
       </table>
     </div>
     <div class="callout callout--danger reveal"><span>#공지는 팀 전체가 봅니다. <strong>검증하지 않은 숫자는 올리지 마세요.</strong> 틀린 보고 한 번이 자동화 전체의 신뢰를 무너뜨립니다.</span></div>
   </div>
   <aside class="notes">
     실습 1 결과로 직접 5가지를 확인하게 하기(5분). 실제로 틀린 곳을 찾은 수강생에게 발표시키면 효과가 큼.
-    2회차 "AI 사용 수칙"에 이 5가지를 추가하라고 안내.
+    2회차 "AI 사용 수칙"에 이 5가지를 추가하라고 안내. 네이버 예약 수와 Jira 예약 수가 다르면 "Jira에 안 옮긴 예약"이 있다는 신호 — 그것도 좋은 발견.
   </aside>
 </section>
 
@@ -174,59 +177,59 @@
     <div class="table-wrap reveal">
       <table class="table">
         <tr><th>방법</th><th>필요한 것</th><th>이렇게 돌아가요</th><th>추천</th></tr>
-        <tr><td><strong>A. 알림 + 한 줄 부탁</strong></td><td>Slack Workflow Builder, Claude 프로젝트</td><td>금 17:00에 Slack이 대표에게 "보고 시간!" → 프로젝트에 한 줄 입력 → 검증 → 올리기(바로 또는 <strong>예약 전송</strong>)</td><td><span class="pill pill--mint">오늘 실습</span></td></tr>
+        <tr><td><strong>A. 알림 + 한 줄 부탁</strong></td><td>Slack Workflow Builder, Claude 프로젝트</td><td>일 18:30(마감 후)에 Slack이 원장에게 "보고 시간!" → 프로젝트에 한 줄 입력 → 검증 → 올리기(바로 또는 <strong>예약 전송</strong>)</td><td><span class="pill pill--mint">오늘 실습</span></td></tr>
         <tr><td><strong>B. Claude 예약 작업</strong></td><td>Claude 유료 플랜 + 데스크톱 앱 (Cowork)</td><td>저장한 부탁이 매주 정해진 시간에 실행되어 초안이 준비됨</td><td><span class="pill pill--sky">익숙해지면</span></td></tr>
         <tr><td><strong>C. Claude Tag</strong></td><td>Claude Team·Enterprise (베타)</td><td>Slack 채널 안의 Claude에게 @멘션으로 맡기고, 팀이 같이 봄</td><td><span class="pill pill--peach">팀 플랜일 때</span></td></tr>
       </table>
     </div>
-    <div class="callout callout--tip reveal"><span>작은 회사는 <strong>A로 시작</strong>하세요. 초안이 늘 정확하다는 믿음이 생기면 B로 넘어갑니다. 어떤 방법이든 <strong>올리기 전 검증</strong>은 사람이 합니다.</span></div>
+    <div class="callout callout--tip reveal"><span>작은 샵은 <strong>A로 시작</strong>하세요. 초안이 늘 정확하다는 믿음이 생기면 B로 넘어갑니다. 어떤 방법이든 <strong>올리기 전 검증</strong>은 사람이 합니다.</span></div>
     <p class="asof">2026-10 기준. 예약 작업은 Cowork에서 유료 플랜 대상(데스크톱 앱 필요), Claude Tag는 2026-06 공개된 Team·Enterprise 전용 베타입니다. 커넥터 사용 범위·메뉴는 바뀔 수 있어 수업 전 확인.</p>
   </div>
   <aside class="notes">
     B는 Claude Desktop의 Cowork에서 /schedule로 만들 수 있다고 안내되어 있음(컴퓨터가 꺼져 있어도 원격 실행). 예약 작업에서 Slack·Atlassian 커넥터가 그대로 쓰이는지는 수업 전 강사가 직접 확인.
     C는 조직 잔액 과금. Pro 개인 플랜 수강생에게는 "이런 게 있다" 정도로만.
-    Slack 예약 전송: 메시지 입력창 보내기 버튼 옆 ▾ → 나중에 보내기 예약.
+    Slack 예약 전송: 메시지 입력창 보내기 버튼 옆 ▾ → 나중에 보내기 예약. 월요일 휴무이므로 화요일 10:30 스탠드업 직전에 보이게 예약하면 좋음.
   </aside>
 </section>
 
 <!-- 11. 실습 4: 정기화 -->
 <section class="slide slide--alt">
   <div class="slide-inner stack">
-    <h2>실습 4 · 방법 A로 매주 금요일 보고 정기화 <span class="timebox">10분</span></h2>
+    <h2>실습 4 · 방법 A로 매주 일요일 보고 정기화 <span class="timebox">10분</span></h2>
     <div class="grid-2">
       <ol class="steps reveal">
-        <li>Slack <span class="path">자동화(Automations) → 새 워크플로</span> → 이름 "금요일 주간 보고"</li>
-        <li>시작: <span class="path">일정에 따라(On a schedule)</span> → <strong>매주 금요일 17:00</strong>, 시간대 서울</li>
-        <li>단계: <span class="path">메시지 → 사람에게 메시지 보내기</span> → 한봄(대표) → 오른쪽 문구</li>
-        <li>게시 → 시간을 1분 뒤로 바꿔 테스트 → 금 17:00으로 되돌리기</li>
-        <li>알림이 오면: 프로젝트에 한 줄 → 검증 5가지 → "#공지에 올려줘" 또는 Slack에서 <strong>예약 전송</strong>(토 09:00)</li>
+        <li>Slack <span class="path">자동화(Automations) → 새 워크플로</span> → 이름 "일요일 주간 보고"</li>
+        <li>시작: <span class="path">일정에 따라(On a schedule)</span> → <strong>매주 일요일 18:30</strong>, 시간대 서울</li>
+        <li>단계: <span class="path">메시지 → 사람에게 메시지 보내기</span> → 한봄(원장) → 오른쪽 문구</li>
+        <li>게시 → 시간을 1분 뒤로 바꿔 테스트 → 일 18:30으로 되돌리기</li>
+        <li>알림이 오면: 프로젝트에 한 줄 → 검증 5가지 → "#공지에 올려줘" 또는 Slack에서 <strong>예약 전송</strong>(화 10:00)</li>
       </ol>
       <div class="stack reveal">
-        <pre class="code" data-copy>📋 주간 보고 시간이에요!
-1) Claude 「봄날의 꽃」 프로젝트 → "이번 주 주간 보고 써줘. 오늘은 ○월 ○일이야."
+        <pre class="code" data-copy>📋 이번 주 마감! 주간 보고 시간이에요
+1) Claude 「봄날 에스테틱」 프로젝트 → "이번 주 주간 보고 써줘. 오늘은 ○월 ○일이야."
 2) 검증 5가지 확인 (개수·빠짐·날짜·지어낸 말·개인정보)
-3) #공지에 올리기</pre>
+3) #공지에 올리기 (화요일 오전 예약 전송 추천)</pre>
         <div class="callout callout--info"><span>Workflow Builder가 없는 플랜이면 Slack <code>/remind</code> 명령이나 휴대폰 알람으로 대신해도 됩니다.</span></div>
       </div>
     </div>
   </div>
-  <aside class="notes">8회차 스탠드업 워크플로와 같은 방법이라 빠르게 진행됨. 빨리 끝난 수강생(유료 플랜 + 데스크톱 앱): Cowork에서 /schedule로 B를 시도해 보기.</aside>
+  <aside class="notes">8회차 스탠드업 워크플로와 같은 방법이라 빠르게 진행됨. 일요일은 18:00 마감이라 18:30. 빨리 끝난 수강생(유료 플랜 + 데스크톱 앱): Cowork에서 /schedule로 B를 시도해 보기.</aside>
 </section>
 
 <!-- 12. 응용 실습 -->
 <section class="slide">
   <div class="slide-inner stack">
-    <h2>응용 실습 · 우리 회사 보고 템플릿 만들기 <span class="timebox">6분</span></h2>
+    <h2>응용 실습 · 우리 샵 보고 템플릿 만들기 <span class="timebox">6분</span></h2>
     <p class="lead">주간 보고 말고도 "매번 같은 정리"가 있나요? 하나 골라 템플릿으로 만드세요.</p>
     <div class="grid-3 reveal">
-      <div class="card card--pink"><span class="icon">🌙</span><h3>일일 마감</h3><p>오늘 완료·내일 배송 목록</p></div>
-      <div class="card card--lavender"><span class="icon">🗓️</span><h3>월간 정리</h3><p>유형별 건수, 클레임 원인</p></div>
+      <div class="card card--pink"><span class="icon">🌙</span><h3>일일 마감</h3><p>오늘 관리 완료·내일 예약·전날 리마인드 대상</p></div>
+      <div class="card card--lavender"><span class="icon">🗓️</span><h3>월간 정리</h3><p>메뉴별 건수, 노쇼율, 클레임 원인, 회원권 마지막 회차 손님</p></div>
       <div class="card card--sky"><span class="icon">💬</span><h3>문의 정리</h3><p>#문의에서 자주 나온 질문 → 12회차 FAQ</p></div>
     </div>
-    <div class="prompt reveal">아래 주간 보고 규칙을 참고해서, 우리 회사의 [일일 마감 / 월간 정리 / 문의 정리] 규칙을 같은 형식으로 만들어줘.
-읽을 곳(Jira 프로젝트 또는 Slack 채널), 표 머리글, 지어내지 않기·개인정보 규칙을 꼭 넣어줘.</div>
+    <div class="prompt reveal">아래 주간 보고 규칙을 참고해서, 우리 샵의 [일일 마감 / 월간 정리 / 문의 정리] 규칙을 같은 형식으로 만들어줘.
+읽을 곳(Jira 프로젝트 또는 Slack 채널), 표 머리글, 지어내지 않기·개인정보·건강정보 규칙을 꼭 넣어줘.</div>
   </div>
-  <aside class="notes">"문의 정리"를 고르면 12회차 LINE FAQ 자동응답의 재료가 됨 → 추천. 만든 규칙은 프로젝트 지침에 추가.</aside>
+  <aside class="notes">"문의 정리"를 고르면 12회차 LINE FAQ 자동응답의 재료가 됨 → 추천(주차, 당일 예약, 회원권, 일본어 상담 가능 여부가 많이 나옴). 만든 규칙은 프로젝트 지침에 추가.</aside>
 </section>
 
 <!-- 13. 자주 겪는 문제 -->
@@ -237,8 +240,9 @@
       <table class="table">
         <tr><th>이럴 때</th><th>이렇게</th></tr>
         <tr><td>Claude가 Jira를 안 읽고 일반론을 쓴다</td><td>커넥터가 켜져 있는지 확인, "Jira BOM 프로젝트에서"를 정확히 쓰기</td></tr>
-        <tr><td>"이번 주" 범위가 틀린다</td><td>날짜를 숫자로 적기 (10월 13일~18일)</td></tr>
-        <tr><td>이슈가 일부만 나온다</td><td>"모든 이슈를 빠짐없이, 개수부터 알려줘"라고 먼저 묻고 보드와 비교</td></tr>
+        <tr><td>"이번 주" 범위가 틀린다</td><td>날짜를 숫자로 적기 (10월 13일~18일), "월요일 휴무" 함께 적기</td></tr>
+        <tr><td>예약 수가 이상하다</td><td>기한이 사후 연락 날짜로 바뀐 카드 때문 → "요약의 날짜 기준"을 프롬프트에 적기</td></tr>
+        <tr><td>노쇼가 0건으로 나온다</td><td>노쇼 카드에 라벨 "노쇼"가 정확히 붙어 있는지 확인 (9회차)</td></tr>
         <tr><td>Slack에 바로 올라갈까 봐 걱정</td><td>"보내지 말고 초안만" 명시. 보내기 전 확인 창에서 거절 가능</td></tr>
         <tr><td>예약 작업 메뉴가 없다</td><td>플랜·데스크톱 앱 여부 확인. 없으면 방법 A로 충분</td></tr>
       </table>
@@ -255,13 +259,13 @@
     <ul class="checklist reveal">
       <li>Atlassian·Slack 커넥터를 함께 켜고 주간 보고를 받아 봤다</li>
       <li>검증 5가지로 보고서를 Jira 보드와 대조했다</li>
-      <li>보고 규칙을 「봄날의 꽃」 프로젝트 지침에 저장했다</li>
-      <li>금요일 17:00 보고 알림(또는 예약 작업)을 만들었다</li>
-      <li>우리 회사 보고 템플릿 1개를 만들었다</li>
+      <li>보고 규칙을 「봄날 에스테틱」 프로젝트 지침에 저장했다</li>
+      <li>일요일 18:30 보고 알림(또는 예약 작업)을 만들었다</li>
+      <li>우리 샵 보고 템플릿 1개를 만들었다</li>
     </ul>
-    <div class="callout callout--tip reveal"><span>🎉 파트 ③ 완료! 이제 우리 가게는 <strong>Slack으로 대화하고, Jira로 일을 보고, 자동으로 알리고, AI가 정리</strong>합니다.</span></div>
+    <div class="callout callout--tip reveal"><span>🎉 파트 ③ 완료! 이제 우리 샵은 <strong>Slack으로 대화하고, Jira로 예약 이후 할 일을 보고, 자동으로 알리고, AI가 정리</strong>합니다.</span></div>
   </div>
-  <aside class="notes">파트 ③ 전체를 7회차 흐름도와 비교하며 "주황 칸이 몇 개 보라 칸으로 바뀌었나" 1분 회고.</aside>
+  <aside class="notes">파트 ③ 전체를 7회차 흐름도와 비교하며 "주황 칸이 몇 개 보라 칸으로 바뀌었나" 1분 회고. 사후 연락 자체는 여전히 사람 칸 — 그게 맞다고 강조.</aside>
 </section>
 
 <!-- 15. 과제와 다음 회차 -->
@@ -272,19 +276,19 @@
       <div class="card">
         <h3>📝 과제</h3>
         <ul class="list">
-          <li>이번 금요일 실제로 주간 보고를 검증 후 #공지에 올리기</li>
-          <li>1회차 과제 "자주 묻는 질문 10개"를 다시 꺼내 답변까지 정리 (한국어 + 일본어)</li>
+          <li>이번 일요일 실제로 주간 보고를 검증 후 #공지에 올리기</li>
+          <li>1회차 과제 "자주 묻는 질문 10개"를 다시 꺼내 답변까지 정리 (한국어 + 일본어, 예: 「予約できますか」「日本語大丈夫ですか」)</li>
           <li>LINE 공식계정이 있으면 관리자 로그인 확인, 없으면 만들 준비</li>
         </ul>
       </div>
       <div class="card">
         <h3>🔜 12회차: 코딩 없이 LINE 자동응답</h3>
-        <p>파트 ④ 시작! 일본인 손님이 많은 LINE 공식계정에 "오늘 영업해요?" 같은 질문에 자동으로 답하는 FAQ 자동응답을 설정합니다.</p>
+        <p>파트 ④ 시작! 일본인 손님이 많은 LINE 공식계정에 「当日予約OK？」 같은 질문에 자동으로 답하는 FAQ 자동응답을 설정합니다. 예약은 네이버 예약 링크로 안내합니다.</p>
       </div>
     </div>
     <nav class="lesson-nav" data-auto aria-label="다음 강의"></nav>
   </div>
-  <aside class="notes">FAQ 10개(일본어 포함)가 12~14회차 봇의 재료. #문의 정리 템플릿을 만든 수강생은 그 결과로 FAQ를 보강하게 하기.</aside>
+  <aside class="notes">FAQ 10개(일본어 포함)가 12~14회차 봇의 재료. #문의 정리 템플릿을 만든 수강생은 그 결과로 FAQ를 보강하게 하기. FAQ에는 "의료 시술(필러·보톡스·레이저)은 하지 않아요 → 피부과 상담 권유" 답변도 꼭 넣게 하기.</aside>
 </section>
 
 <script src="../assets/course.js"></script>

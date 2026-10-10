@@ -2,7 +2,7 @@
   "name": "bomnal-bot",
   "version": "1.0.0",
   "private": true,
-  "description": "봄날의 꽃 LINE·카카오 AI 상담 봇 (Cloudflare Workers 교재 예제)",
+  "description": "봄날 에스테틱 LINE·카카오 AI 상담 봇 (Cloudflare Workers 교재 예제)",
   "type": "module",
   "scripts": {
     "dev": "wrangler dev",

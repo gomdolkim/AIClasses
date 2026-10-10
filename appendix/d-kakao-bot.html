@@ -82,7 +82,7 @@
     <div class="grid-2">
       <ol class="steps reveal">
         <li><span class="path">카카오비즈니스(business.kakao.com) → 카카오톡 채널 → 새 채널 만들기</span></li>
-        <li>채널 이름 <strong>봄날의 꽃</strong>, 검색용 아이디, 프로필 사진·소개 입력</li>
+        <li>채널 이름 <strong>봄날 에스테틱</strong>, 검색용 아이디, 프로필 사진·소개 입력</li>
         <li>운영 시간: 화~일 10:00–20:00 (월요일 휴무) 설정</li>
         <li><strong>채널 공개·검색 허용</strong> 켜기</li>
         <li>(필요 시) <span class="path">채널 관리자센터 → 설정 → 비즈니스 인증</span>에서 사업자등록증으로 신청</li>
@@ -109,7 +109,7 @@
         <li>휴대폰 카카오톡으로 채널 추가 → 직접 질문해 확인</li>
       </ol>
       <div class="prompt reveal">12회차에 만든 LINE 응답 메시지 표(키워드 | 답변)를 카카오톡 채널용으로 바꿔줘.
-[조건] 한국어만, 각 답변 2~3줄, 존댓말. 영업시간 화~일 10:00–20:00, 월요일 휴무. 모르는 내용은 [확인 필요].
+[조건] 한국어만, 각 답변 2~3줄, 존댓말. 영업시간 화~토 11:00–21:00(마지막 예약 19:30), 일 11:00–18:00, 월요일 휴무. 예약은 네이버 예약 링크로 안내. "치료·완치" 같은 의료 표현 금지. 모르는 내용은 [확인 필요].
 [형식] 표: 질문 | 손님이 쓸 만한 표현 3개 | 답변</div>
     </div>
     <div class="callout callout--warn reveal"><span>한국 AI 기본법(2026-01-22 시행)에 따라 AI가 답한다면 첫 인사에 <strong>"AI 상담원"</strong>임을 밝히세요.</span></div>
@@ -131,16 +131,16 @@
         </ul>
       </div>
       <div class="chat reveal">
-        <div class="bubble bubble--user">내일 꽃바구니 주문 가능해요?</div>
-        <div class="bubble bubble--bot">안녕하세요, 봄날의 꽃 AI 상담원입니다. 꽃바구니는 70,000원부터이며, 오후 3시까지 주문하시면 서울 당일 배송돼요.</div>
-        <div class="bubble bubble--user">리본 문구 바꿔 주실 수 있어요?</div>
+        <div class="bubble bubble--user">첫 방문인데 체험 관리 있어요?</div>
+        <div class="bubble bubble--bot">안녕하세요, 봄날 에스테틱 AI 상담원입니다. 첫 방문 체험(수분 진정)은 50,000원이에요(1인 1회). 예약은 네이버 예약에서 가능합니다.</div>
+        <div class="bubble bubble--user">지난주 관리 받고 계속 따가운데 어떡하죠?</div>
         <div class="bubble bubble--staff">(관리자 호출) 담당자가 확인 후 답변드릴게요!</div>
       </div>
     </div>
     <div class="callout callout--info reveal"><span>장점은 <strong>쉬움</strong>, 아쉬운 점은 우리 회사 <strong>Slack·Jira와 잇기 어려움</strong>. 둘 다 필요하면 다음 장의 챗봇 + 스킬로.</span></div>
     <p class="asof">2026-10 기준. 요금·신청 조건·메뉴 위치는 수업 전 확인.</p>
   </div>
-  <aside class="notes">카나나 상담매니저와 3단계 챗봇을 동시에 켜면 누가 답할지 충돌할 수 있음 — 하나만 선택하도록 안내. 정확한 요금은 확인 후 칠판에.</aside>
+  <aside class="notes">두 번째 질문(관리 후 따가움)은 AI가 "괜찮아요"라고 넘기면 안 되는 대표 사례 — 관리자 호출로 사람이 받는지 꼭 확인. 카나나 상담매니저에 가게 정보를 넣을 때도 의료 표현·손님 피부 정보는 넣지 않기. 카나나 상담매니저와 3단계 챗봇을 동시에 켜면 누가 답할지 충돌할 수 있음 — 하나만 선택하도록 안내. 정확한 요금은 확인 후 칠판에.</aside>
 </section>
 
 <!-- 8. 챗봇 관리자센터: 봇 만들기 + 폴백 -->
@@ -159,7 +159,7 @@
       <div class="flow-node"><span class="icon">🧠</span>Claude</div>
     </div>
     <ol class="steps reveal">
-      <li><span class="path">챗봇 관리자센터(chatbot.kakao.com) → 봇 만들기 → 카카오톡 챗봇</span>, 이름 <strong>봄날의 꽃 AI</strong></li>
+      <li><span class="path">챗봇 관리자센터(chatbot.kakao.com) → 봇 만들기 → 카카오톡 챗봇</span>, 이름 <strong>봄날 에스테틱 AI</strong></li>
       <li><span class="path">설정 → 카카오톡 채널 연결</span>에서 실습 1의 채널 선택</li>
       <li><span class="path">시나리오 → 기본 시나리오</span>에 <strong>웰컴 블록</strong>, <strong>폴백 블록</strong>이 이미 있는 것 확인</li>
     </ol>
@@ -173,7 +173,7 @@
     <h2>실습 4 · 폴백 블록에 우리 서버 연결 <span class="timebox">10분</span></h2>
     <div class="grid-2">
       <ol class="steps reveal">
-        <li><span class="path">스킬 → 스킬 목록 → 생성</span>: 이름 <strong>봄날의 꽃 AI 서버</strong></li>
+        <li><span class="path">스킬 → 스킬 목록 → 생성</span>: 이름 <strong>봄날 에스테틱 AI 서버</strong></li>
         <li>먼저 터미널에서 <code>npx wrangler secret put KAKAO_SKILL_SECRET</code> → 아무도 못 맞힐 긴 문자열 입력 (예: 비밀번호 생성기로 만든 32자)</li>
         <li>URL에 14회차 주소 + <code>/kakao/skill?key=</code> + 방금 만든 문자열 붙여넣기 → 저장</li>
         <li><span class="path">시나리오 → 폴백 블록</span> → 파라미터 설정의 <strong>스킬 선택</strong>에서 방금 만든 스킬</li>

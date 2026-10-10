@@ -20,7 +20,7 @@ describe("라우터 (주소별 길 안내)", () => {
   it("GET / 는 작동 확인 글을 보여 준다", async () => {
     const res = await worker.fetch(new Request("https://bot.test/"), makeEnv(), makeCtx().ctx);
     expect(res.status).toBe(200);
-    expect(await res.text()).toContain("봄날의 꽃");
+    expect(await res.text()).toContain("봄날 에스테틱");
   });
 
   it("모르는 주소는 404", async () => {

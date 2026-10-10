@@ -20,8 +20,8 @@ describe("parseBotReply (Claude 답변 읽기)", () => {
   });
 
   it("```json 코드 블록이나 앞뒤 설명이 붙어 있어도 읽는다", () => {
-    const text = '네!\n```json\n{"answer":"OK","category":"배송","needs_human":false}\n```';
-    expect(parseBotReply(text).category).toBe("배송");
+    const text = '네!\n```json\n{"answer":"OK","category":"예약","needs_human":false}\n```';
+    expect(parseBotReply(text).category).toBe("예약");
   });
 
   it("JSON이 깨졌으면 안전한 기본 답변(needs_human=true)을 돌려준다", () => {
@@ -33,8 +33,24 @@ describe("parseBotReply (Claude 답변 읽기)", () => {
     expect(parseBotReply('{"answer":"hi","category":"영업정보"}')).toEqual(FALLBACK_REPLY);
     expect(parseBotReply('{"answer":"","category":"영업정보","needs_human":false}')).toEqual(FALLBACK_REPLY);
     expect(parseBotReply('{"answer":"hi","category":"없는분류","needs_human":false}')).toEqual(FALLBACK_REPLY);
-    expect(parseBotReply('{"answer":"hi","category":"주문","needs_human":"no"}')).toEqual(FALLBACK_REPLY);
+    expect(parseBotReply('{"answer":"hi","category":"관리상담","needs_human":"no"}')).toEqual(FALLBACK_REPLY);
     expect(parseBotReply("[1,2]")).toEqual(FALLBACK_REPLY);
+  });
+
+  it("에스테틱 분류 6가지(영업정보·예약·관리상담·환불·불만·기타)를 모두 받아들인다", () => {
+    for (const category of ["영업정보", "예약", "관리상담", "환불", "불만", "기타"]) {
+      const reply = parseBotReply(`{"answer":"OK","category":"${category}","needs_human":false}`);
+      expect(reply.category).toBe(category);
+      expect(reply).not.toEqual(FALLBACK_REPLY);
+    }
+  });
+
+  it("예전 업종의 분류(유니코드 표기)는 거절하고 기본 답변을 돌려준다", () => {
+    const ORDER = "\uC8FC\uBB38";
+    const DELIVERY = "\uBC30\uC1A1";
+    for (const old of [ORDER, DELIVERY]) {
+      expect(parseBotReply(`{"answer":"OK","category":"${old}","needs_human":false}`)).toEqual(FALLBACK_REPLY);
+    }
   });
 
   it("기본 답변은 한국어와 일본어를 모두 담고 있다", () => {
@@ -53,6 +69,14 @@ describe("buildClaudeRequest (Claude에게 보낼 요청 만들기)", () => {
     ]);
     expect(body.messages).toEqual([{ role: "user", content: "영업시간 알려주세요" }]);
     expect(body.output_config.format.type).toBe("json_schema");
+    expect(body.output_config.format.schema.properties.category.enum).toEqual([
+      "영업정보",
+      "예약",
+      "관리상담",
+      "환불",
+      "불만",
+      "기타",
+    ]);
   });
 });
 

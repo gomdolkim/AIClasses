@@ -38,7 +38,7 @@ export default {
     const route = `${request.method} ${pathname}`;
 
     if (route === "GET /") {
-      return new Response("봄날의 꽃 상담 봇이 작동 중입니다. 🌷", {
+      return new Response("봄날 에스테틱 상담 봇이 작동 중입니다. 🌿", {
         headers: { "content-type": "text/plain; charset=utf-8" },
       });
     }

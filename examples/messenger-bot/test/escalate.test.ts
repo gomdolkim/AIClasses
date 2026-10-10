@@ -24,13 +24,13 @@ const reply = (over: Partial<BotReply> = {}): BotReply => ({
 
 const info = (over: Partial<BotReply> = {}): EscalationInfo => ({
   channel: "LINE",
-  maskedText: "꽃이 시들어 왔어요 [전화번호]",
+  maskedText: "관리 받은 뒤 얼굴이 붉어졌어요 [전화번호]",
   reply: reply(over),
 });
 
 describe("shouldEscalate (사람에게 넘길지 결정)", () => {
   it("needs_human이 true면 넘긴다", () => {
-    expect(shouldEscalate(reply({ category: "주문", needs_human: true }))).toBe(true);
+    expect(shouldEscalate(reply({ category: "관리상담", needs_human: true }))).toBe(true);
   });
   it("환불·불만은 needs_human이 false여도 넘긴다", () => {
     expect(shouldEscalate(reply({ category: "환불", needs_human: false }))).toBe(true);
@@ -42,10 +42,20 @@ describe("shouldEscalate (사람에게 넘길지 결정)", () => {
 });
 
 describe("jiraIssueType (Jira 이슈 유형)", () => {
-  it("환불·불만은 클레임, 나머지는 문의", () => {
+  it("환불·불만은 클레임", () => {
     expect(jiraIssueType("환불")).toBe("클레임");
     expect(jiraIssueType("불만")).toBe("클레임");
-    expect(jiraIssueType("배송")).toBe("문의");
+  });
+  it("예약은 예약", () => {
+    expect(jiraIssueType("예약")).toBe("예약");
+  });
+  it("영업정보·관리상담·기타는 문의", () => {
+    expect(jiraIssueType("영업정보")).toBe("문의");
+    expect(jiraIssueType("관리상담")).toBe("문의");
+    expect(jiraIssueType("기타")).toBe("문의");
+  });
+  it("예약 분류로 만든 Jira 이슈는 유형이 예약이다", () => {
+    expect(buildJiraPayload("BOM", info({ category: "예약" })).fields.issuetype).toEqual({ name: "예약" });
   });
 });
 
@@ -56,6 +66,12 @@ describe("buildSlackPayload / buildJiraPayload (알림 내용 만들기)", () =>
     expect(text).toContain("LINE");
     expect(text).toContain("[전화번호]");
     expect(text).toContain("BOM-12");
+  });
+
+  it("Slack 메시지 첫 줄에 가게 이름(봄날 에스테틱)이 들어간다", () => {
+    const [firstLine] = buildSlackPayload(info(), "BOM-12").text.split("\n");
+    expect(firstLine).toContain("봄날 에스테틱");
+    expect(firstLine).toContain("LINE");
   });
 
   it("Jira 키가 없으면 생성 실패를 표시한다", () => {

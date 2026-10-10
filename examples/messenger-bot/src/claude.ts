@@ -32,6 +32,7 @@ const REPLY_SCHEMA = {
   type: "object",
   properties: {
     answer: { type: "string" },
+    // 분류 6가지: "영업정보" | "예약" | "관리상담" | "환불" | "불만" | "기타" (types.ts의 CATEGORIES)
     category: { type: "string", enum: [...CATEGORIES] },
     needs_human: { type: "boolean" },
   },

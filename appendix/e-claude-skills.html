@@ -14,7 +14,7 @@
   <div class="slide-inner">
     <span class="eyebrow reveal">부록 E · 3회차 심화</span>
     <h1 class="reveal">Claude 스킬 설치·사용·직접 만들기</h1>
-    <p class="lead reveal">우리 가게 업무 매뉴얼을 AI 책장에 꽂아 두는 법</p>
+    <p class="lead reveal">우리 샵 업무 매뉴얼을 AI 책장에 꽂아 두는 법</p>
     <p class="small reveal" style="margin-top:2rem">⌨️ 방향키·스페이스로 이동 · <kbd>N</kbd> 강사 노트 · <kbd>D</kbd> 어둡게</p>
   </div>
   <aside class="notes">3회차에서 스킬 설치까지 해 본 수강생용 심화. 수업 중 다 다루지 말고, 질문이 나온 장만 골라 보여 줘도 됨. 혼자 읽어도 따라 할 수 있게 구성.</aside>
@@ -25,7 +25,7 @@
   <div class="slide-inner stack">
     <h2>이 부록에서 배울 것</h2>
     <div class="goal reveal"><span class="goal-label">목표</span><span>스킬을 켜고, 설치하고, <strong>대화로 직접 만들어</strong> 팀과 나눈다</span></div>
-    <div class="goal reveal"><span class="goal-label">결과물</span><span>우리 가게 업무 매뉴얼 스킬 1개 (예: 주문 확인 문자, 상품 설명 쓰기)</span></div>
+    <div class="goal reveal"><span class="goal-label">결과물</span><span>우리 샵 업무 매뉴얼 스킬 1개 (예: 예약 확정 문자, 사후 관리 안내문)</span></div>
     <div class="grid-4 reveal">
       <div class="card card--pink"><span class="icon">🔛</span><h3>켜기</h3><p>기본 스킬 확인</p></div>
       <div class="card card--lavender"><span class="icon">📦</span><h3>설치</h3><p>zip 올리기·지우기</p></div>
@@ -64,8 +64,8 @@
     <h2>지침·프로젝트·스킬·커넥터, 언제 무엇을?</h2>
     <div class="table-wrap reveal">
       <table class="table">
-        <tr><th></th><th>비유</th><th>언제 적용?</th><th>봄날의 꽃 예시</th></tr>
-        <tr><td><strong>프로필 지침</strong><br><span class="small">개인 설정</span></td><td>내 명함</td><td>모든 대화에 항상</td><td>"나는 꽃집 사장, 존댓말로"</td></tr>
+        <tr><th></th><th>비유</th><th>언제 적용?</th><th>봄날 에스테틱 예시</th></tr>
+        <tr><td><strong>프로필 지침</strong><br><span class="small">개인 설정</span></td><td>내 명함</td><td>모든 대화에 항상</td><td>"나는 피부관리 샵 원장, 존댓말로"</td></tr>
         <tr><td><strong>프로젝트</strong></td><td>회사 자료실</td><td>그 프로젝트 안 대화에만, 늘 펼쳐 둠</td><td>FAQ·가격표·말투 지침</td></tr>
         <tr><td><strong>스킬</strong></td><td>업무 매뉴얼 한 권</td><td>어느 대화든, <strong>그 일을 할 때만</strong> 꺼냄</td><td>공지문 작성법, 주간 보고 형식</td></tr>
         <tr><td><strong>커넥터</strong></td><td>다른 프로그램과 연결된 전화선</td><td>바깥 정보를 읽거나 쓸 때</td><td>Jira 이슈 읽기, Slack 메시지</td></tr>
@@ -156,12 +156,12 @@ my-skill.zip
         <li>화면의 저장(스킬에 추가) 버튼을 누르거나, 파일을 받아 zip으로 묶어 업로드</li>
         <li><strong>새 채팅</strong>에서 평소처럼 부탁해 시험 → 스킬을 읽는 표시 확인</li>
       </ol>
-      <div class="prompt reveal">스킬을 하나 만들고 싶어. 이름은 bomnal-order-confirm.
-할 일: 손님 주문을 받으면 '주문 확인 문자'를 써 주는 것.
-형식: 4줄 이내 — 인사 / 상품·가격 / 받는 날짜·시간 / 문의처.
-말투: 따뜻한 존댓말, 이모지 1개.
-규칙: 가격은 가격표대로, 배송비 규칙(오후 3시 마감, 마포·서대문 무료) 반영. 손님 전화번호는 문자에 넣지 않기.
-좋았던 예시: "안녕하세요, 봄날의 꽃이에요 🌷 / 꽃다발 M 55,000원 주문 확인했어요 / 5월 8일(목) 오후 2시에 받아 보실 수 있어요 / 궁금한 점은 인스타 @bomnal_flower 로 연락 주세요"
+      <div class="prompt reveal">스킬을 하나 만들고 싶어. 이름은 bomnal-booking-confirm.
+할 일: 예약이 들어오면 '예약 확정 문자'를 써 주는 것.
+형식: 4줄 이내 — 인사 / 관리 메뉴·가격 / 날짜·시간·담당 관리사 / 변경 규정·문의처.
+말투: 차분하고 따뜻한 존댓말, 이모지 1개.
+규칙: 가격은 가격표대로, 예약금 10,000원은 관리비에서 차감, 24시간 전까지 무료 변경·취소 반영. 손님 전화번호·피부 고민은 문자에 넣지 않기.
+좋았던 예시: "안녕하세요, 봄날 에스테틱이에요 🌿 / 수분 진정 관리 60분(70,000원) 예약 확정되었어요 / 9월 18일(금) 오후 2시, 담당 지수 관리사 / 변경·취소는 하루 전까지 무료예요. 문의는 인스타 @bomnal_esthetic 로 주세요"
 나한테 부족한 정보를 먼저 물어봐 줘.</div>
     </div>
     <p class="asof">저장 버튼 이름·위치는 화면마다 다를 수 있습니다(2026-10, 수업 전 확인). 버튼이 없으면 "SKILL.md 파일로 만들어 줘" → 내려받아 폴더에 넣고 zip으로 묶으세요.</p>
@@ -178,26 +178,27 @@ my-skill.zip
     <h2>SKILL.md 들여다보기</h2>
     <div class="grid-2">
       <pre class="code reveal" data-copy>---
-name: bomnal-order-confirm
-description: 봄날의 꽃 주문 확인 문자를 4줄로
-  쓰는 매뉴얼. 주문 확인, 예약 문자, 접수
-  안내를 요청받으면 사용.
+name: bomnal-booking-confirm
+description: 봄날 에스테틱 예약 확정 문자를
+  4줄로 쓰는 매뉴얼. 예약 확정, 예약 문자,
+  접수 안내를 요청받으면 사용.
 ---
 
-# 주문 확인 문자 매뉴얼
+# 예약 확정 문자 매뉴얼
 
 ## 순서
-1. 인사 (봄날의 꽃이에요 🌷)
-2. 상품명과 가격 — references/price.md 확인
-3. 받는 날짜·시간
-4. 문의처: 인스타 @bomnal_flower
+1. 인사 (봄날 에스테틱이에요 🌿)
+2. 관리 메뉴와 가격 — references/price.md 확인
+3. 날짜·시간·담당 관리사
+4. 변경 규정(24시간 전 무료) + 문의처
 
 ## 하지 말 것
-- 가격표에 없는 금액 지어내기
-- 손님 전화번호 적기
+- 가격표에 없는 금액·할인 지어내기
+- 손님 전화번호·피부 상태 적기
+- 치료·완치 같은 의료 표현
 
 ## 예시
-안녕하세요, 봄날의 꽃이에요 🌷 …</pre>
+안녕하세요, 봄날 에스테틱이에요 🌿 …</pre>
       <div class="stack reveal">
         <div class="card card--lavender"><h3>① 머리말 (--- 사이)</h3><p><code>name</code>: 영어 소문자·숫자·하이픈, 64자 이내. "claude"·"anthropic" 단어 금지<br><code>description</code>: <strong>무엇을</strong> + <strong>언제</strong>. 짧게(도움말 기준 200자 이내)</p></div>
         <div class="card card--sky"><h3>② 본문</h3><p>순서, 규칙, 하지 말 것, 예시. 신입에게 주는 매뉴얼처럼</p></div>
@@ -217,7 +218,7 @@ description: 봄날의 꽃 주문 확인 문자를 4줄로
     <h2>좋은 스킬을 쓰는 6가지 요령</h2>
     <div class="grid-3 reveal">
       <div class="card card--pink"><h3>1. 설명에 '언제'</h3><p>"공지, 안내문, 휴무 글을 요청받으면 사용"처럼 손님·직원이 실제 쓰는 말을 넣기</p></div>
-      <div class="card card--lavender"><h3>2. 한 스킬 = 한 업무</h3><p>공지문, 주간 보고, 견적서는 각각 따로</p></div>
+      <div class="card card--lavender"><h3>2. 한 스킬 = 한 업무</h3><p>공지문, 주간 보고, 사후 관리 안내는 각각 따로</p></div>
       <div class="card card--sky"><h3>3. 순서를 번호로</h3><p>"1. 확인 → 2. 작성 → 3. 점검" 단계로</p></div>
       <div class="card card--mint"><h3>4. 좋은 예시 1개</h3><p>실제로 만족했던 결과물을 붙여 넣기</p></div>
       <div class="card card--peach"><h3>5. 모르면 묻게</h3><p>"자료에 없으면 [확인 필요]로 표시" 규칙</p></div>
@@ -242,7 +243,7 @@ description: 봄날의 꽃 주문 확인 문자를 4줄로
     <div class="callout callout--warn reveal"><span>claude.ai, Claude Code, API에 올린 스킬은 <strong>서로 자동으로 옮겨지지 않습니다.</strong> 쓰는 곳마다 따로 넣어야 해요.</span></div>
     <p class="asof">공유 기능은 2026-10 도움말 기준이며, 개발자 문서에는 "claude.ai 스킬은 개인용"이라는 예전 설명이 남아 있습니다. 팀 공유 버튼은 수업 전 실제 화면에서 확인하세요.</p>
   </div>
-  <aside class="notes">봄날의 꽃 예: 대표가 공지문 스킬을 만들어 직원 3명에게 zip으로 전달. Team 요금제라면 Publish to org 한 번이면 끝. 스킬을 고치면 다시 나눠야 한다는 점도 짚기.</aside>
+  <aside class="notes">봄날 에스테틱 예: 원장이 공지문 스킬(광고 표현 점검 포함)을 만들어 관리사·실장 3명에게 zip으로 전달. Team 요금제라면 Publish to org 한 번이면 끝. 스킬을 고치면 다시 나눠야 한다는 점도 짚기.</aside>
 </section>
 
 <!-- 11. Claude Code에서 스킬 -->
@@ -314,11 +315,11 @@ description: 봄날의 꽃 주문 확인 문자를 4줄로
   <div class="slide-inner stack">
     <h2>작은 회사에서 써먹을 스킬 아이디어</h2>
     <div class="grid-3 reveal">
-      <div class="card card--pink"><span class="icon">📢</span><h3>공지문 작성</h3><p>휴무·이벤트·가격 변경 (3회차 예제)</p></div>
-      <div class="card card--lavender"><span class="icon">📊</span><h3>주간 보고</h3><p>Jira 이슈 → 정해진 5칸 보고 (11회차 예제)</p></div>
-      <div class="card card--sky"><span class="icon">💬</span><h3>리뷰 답글</h3><p>별점별 답글 규칙, 불만엔 사과 + 매장 연락 유도</p></div>
-      <div class="card card--mint"><span class="icon">🧾</span><h3>견적서</h3><p>가격표 기준 계산, 부가세·배송비 표기 형식</p></div>
-      <div class="card card--peach"><span class="icon">🛍️</span><h3>상품 설명</h3><p>스마트스토어 상세 문구 틀 + 금지 표현</p></div>
+      <div class="card card--pink"><span class="icon">📢</span><h3>공지문 작성</h3><p>휴무·이벤트·가격 변경 + 광고 표현 점검 (3회차 예제)</p></div>
+      <div class="card card--lavender"><span class="icon">📊</span><h3>주간 보고</h3><p>예약 수·노쇼·클레임·다음 주 예약 현황 (11회차 예제)</p></div>
+      <div class="card card--sky"><span class="icon">💬</span><h3>리뷰 답글</h3><p>네이버 예약 리뷰 별점별 규칙, 트러블 호소엔 사과 + 원장 연락 유도</p></div>
+      <div class="card card--mint"><span class="icon">🧴</span><h3>사후 관리 안내</h3><p>관리 3일 후 피부 상태 확인 문자, 메뉴별 홈케어 주의사항</p></div>
+      <div class="card card--peach"><span class="icon">🎟️</span><h3>회원권 안내</h3><p>잔여 횟수·유효 규정 안내 틀 (환불 계산은 원장에게)</p></div>
       <div class="card card--yellow"><span class="icon">🇯🇵</span><h3>일본어 응대</h3><p>LINE 문의 답변 말투·자주 쓰는 표현집</p></div>
     </div>
     <div class="callout callout--tip reveal"><span>고르는 기준: "<strong>매번 똑같이 설명하는 일</strong>"이 1순위입니다. 한 달에 세 번 이상 같은 설명을 했다면 스킬 후보!</span></div>
@@ -336,7 +337,7 @@ description: 봄날의 꽃 주문 확인 문자를 4줄로
         <tr><td>업로드하면 오류</td><td>폴더째 압축했는지, SKILL.md 맨 위 <code>---</code> 머리말과 name·description이 있는지 확인</td></tr>
         <tr><td>name 오류</td><td>영어 소문자·숫자·하이픈만. 한글·띄어쓰기·"claude" 단어 빼기</td></tr>
         <tr><td>스킬을 안 꺼내 쓴다</td><td>description에 실제로 쓰는 요청 말("공지", "안내문")을 추가</td></tr>
-        <tr><td>엉뚱할 때 끼어든다</td><td>description을 더 좁게: "봄날의 꽃 공지문에만"</td></tr>
+        <tr><td>엉뚱할 때 끼어든다</td><td>description을 더 좁게: "봄날 에스테틱 공지문에만"</td></tr>
         <tr><td>고쳤는데 그대로다</td><td>예전 스킬 삭제 → 새 zip 업로드 → 새 채팅에서 시험</td></tr>
       </table>
     </div>

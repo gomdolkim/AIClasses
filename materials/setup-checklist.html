@@ -54,7 +54,16 @@
       <li>Claude Pro 결제 (월 $20) — <span class="path">claude.ai → Settings(설정) → Billing(결제)</span></li>
       <li>해외 결제 가능한 카드 준비</li>
       <li>1회차 과제: 우리 회사 자주 묻는 질문 10개 적기</li>
-      <li>실습 데이터 내려받기: <a href="dataset/faq.md">faq.md</a>, <a href="dataset/price-list.md">price-list.md</a>, <a href="dataset/brand-voice.md">brand-voice.md</a>, <a href="dataset/orders-sample.csv">orders-sample.csv</a></li>
+      <li>실습 데이터 내려받기: <a href="dataset/faq.md">faq.md</a>, <a href="dataset/price-list.md">price-list.md</a>, <a href="dataset/brand-voice.md">brand-voice.md</a>, <a href="dataset/reservations-sample.csv">reservations-sample.csv</a>, <a href="dataset/tricky-questions.md">tricky-questions.md</a></li>
+    </ul>
+  </div>
+
+  <div class="card due">
+    <h3>6회차 전 <span class="pill pill--lavender">홈페이지 재료</span></h3>
+    <ul class="checklist">
+      <li>네이버 예약(스마트플레이스) 예약 페이지 링크 복사해 두기</li>
+      <li>LINE 공식계정 친구 추가 링크(있으면) 복사해 두기</li>
+      <li>샵 내부·관리실 사진 3장 — 손님 얼굴·전후 사진은 <strong>동의서 받은 것만</strong></li>
     </ul>
   </div>
 
@@ -104,18 +113,18 @@
   </div>
 
   <h2 id="cost">예상 월 비용</h2>
-  <p>봄날의 꽃(직원 4명)이 과정에서 배운 것을 모두 쓴다고 가정한 예시입니다.</p>
+  <p>봄날 에스테틱(원장 포함 4명)이 과정에서 배운 것을 모두 쓴다고 가정한 예시입니다.</p>
   <div class="table-wrap">
     <table class="table">
       <thead><tr><th scope="col">서비스</th><th scope="col">플랜</th><th scope="col" class="num">월 비용</th><th scope="col">메모</th></tr></thead>
       <tbody>
-        <tr><td>Claude</td><td>Pro × 1명(대표)</td><td class="num">$20</td><td>Claude Code 포함. 무료는 커스텀 커넥터 1개</td></tr>
+        <tr><td>Claude</td><td>Pro × 1명(원장)</td><td class="num">$20</td><td>Claude Code 포함. 무료는 커스텀 커넥터 1개</td></tr>
         <tr><td>Slack</td><td>Pro × 4명</td><td class="num">$29~35</td><td>1인 $7.25(연간)~$8.75(월간). 무료는 90일 기록·앱 10개</td></tr>
         <tr><td>Jira</td><td>Free</td><td class="num">$0</td><td>10명, 2GB, Automation 월 150 steps(사이트 전체)</td></tr>
         <tr><td>Make</td><td>Free</td><td class="num">$0</td><td>월 1,000 credits, 활성 시나리오 2개. 부족하면 Core $9</td></tr>
         <tr><td>LINE 공식계정</td><td>무료</td><td class="num">0엔</td><td>월 200통. 라이트 5,000엔 / 스탠더드 15,000엔. Reply API는 통수 미포함</td></tr>
         <tr><td>Claude API (봇)</td><td>Haiku 4.5 종량제</td><td class="num">$2~5</td><td>상담 1,000건 기준 약 $2~5 ($1 / $5 per MTok)</td></tr>
-        <tr><td>Cloudflare Workers</td><td>Free</td><td class="num">$0</td><td>작은 가게 봇은 무료 범위로 충분 (한도는 수업 전 확인)</td></tr>
+        <tr><td>Cloudflare Workers</td><td>Free</td><td class="num">$0</td><td>작은 샵 봇은 무료 범위로 충분 (한도는 수업 전 확인)</td></tr>
       </tbody>
       <tfoot><tr><td>합계(예시)</td><td></td><td class="num">약 $51~60</td><td>Make·LINE 유료 전환 시 추가</td></tr></tfoot>
     </table>
@@ -139,9 +148,11 @@
       <h3>⛔ 하지 마세요</h3>
       <ul class="list">
         <li>손님 전화번호·카드번호·주소를 프롬프트에 그대로 넣기</li>
+        <li>손님 피부 상태·질환·임신 여부를 실명과 함께 AI에 넣기 (건강 관련 민감정보)</li>
+        <li>전후 사진을 동의 없이 AI·SNS에 올리기</li>
         <li>비밀값을 단톡방·화면 공유·캡처·GitHub에 올리기</li>
         <li>AI가 환불·보상·할인을 약속하게 두기</li>
-        <li>AI 답변을 확인 없이 손님에게 보내기 (특히 가격·날짜)</li>
+        <li>AI 답변을 확인 없이 손님에게 보내기 (특히 가격·예약 날짜·성분 효능)</li>
         <li>퇴사한 직원 계정을 그대로 두기</li>
       </ul>
     </div>

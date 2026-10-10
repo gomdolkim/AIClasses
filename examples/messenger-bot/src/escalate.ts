@@ -1,8 +1,8 @@
 // ─────────────────────────────────────────────────────────────
 // escalate.ts — 사람(직원)에게 넘기기
 //
-// 봇이 혼자 처리하면 안 되는 문의(환불·불만·FAQ에 없는 질문)는
-//  1) Jira "봄날의 꽃 운영"(BOM) 프로젝트에 이슈(할 일 카드)를 만들고
+// 봇이 혼자 처리하면 안 되는 문의(환불·불만·관리 후 트러블·FAQ에 없는 질문)는
+//  1) Jira "봄날 에스테틱 운영"(BOM) 프로젝트에 이슈(할 일 카드)를 만들고
 //  2) Slack #cs-escalation 채널에 알림을 보냅니다.
 // 여기서 실패해도 손님 답장에는 영향이 없도록, 오류는 기록만 하고 넘어갑니다.
 // ─────────────────────────────────────────────────────────────
@@ -19,9 +19,13 @@ export function shouldEscalate(reply: BotReply): boolean {
   return reply.needs_human || ALWAYS_HUMAN.includes(reply.category);
 }
 
-/** Jira 이슈 유형: 환불·불만 → "클레임", 그 외 → "문의" */
-export function jiraIssueType(category: Category): "클레임" | "문의" {
-  return ALWAYS_HUMAN.includes(category) ? "클레임" : "문의";
+/** Jira 이슈 유형 (프로젝트에 이 3가지 유형을 미리 만들어 두세요) */
+export type JiraIssueType = "예약" | "문의" | "클레임";
+
+/** Jira 이슈 유형: 환불·불만 → "클레임", 예약 → "예약", 그 외 → "문의" */
+export function jiraIssueType(category: Category): JiraIssueType {
+  if (ALWAYS_HUMAN.includes(category)) return "클레임";
+  return category === "예약" ? "예약" : "문의";
 }
 
 /**
@@ -42,9 +46,9 @@ export function buildSlackPayload(
 ): { text: string; mrkdwn: false } {
   const jiraLine = jiraKey ? `Jira: ${jiraKey}` : "Jira 이슈 생성 실패 — 직접 만들어 주세요";
   const text = [
-    `🚨 [담당자 확인 필요] ${info.channel} 문의`,
+    `🚨 [봄날 에스테틱 · 담당자 확인 필요] ${info.channel} 고객 문의`,
     `• 분류: ${info.reply.category}`,
-    `• 손님 메시지(개인정보 가림): ${escapeSlack(info.maskedText.slice(0, SLACK_FIELD_LIMIT))}`,
+    `• 고객 메시지(개인정보 가림): ${escapeSlack(info.maskedText.slice(0, SLACK_FIELD_LIMIT))}`,
     `• 봇이 보낸 답변: ${escapeSlack(info.reply.answer.slice(0, SLACK_FIELD_LIMIT))}`,
     `• ${jiraLine}`,
   ].join("\n");

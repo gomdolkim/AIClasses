@@ -69,6 +69,7 @@
       <tr><td>답이 점점 이상해져요</td><td>대화가 너무 길어진 것. 지금까지 결과를 요약해 달라고 한 뒤 새 채팅에 붙여넣고 이어서.</td></tr>
       <tr><td>프로젝트 메뉴가 없어요</td><td>무료 플랜이면 제한이 있습니다. Pro 결제 여부 확인. 왼쪽 메뉴의 <span class="path">Projects(프로젝트)</span>.</td></tr>
       <tr><td>커넥터 연결이 안 돼요</td><td><span class="path">Settings(설정) → Connectors(커넥터)</span>에서 해당 서비스 <strong>연결 해제 후 다시 연결</strong>. 팝업 차단을 끄고, 로그인 창에서 Claude와 같은 회사 계정을 선택. 무료 플랜은 커스텀 커넥터 1개만 됩니다.</td></tr>
+      <tr><td>AI가 "여드름 치료", "주름 제거 보장" 같은 표현을 써요</td><td>에스테틱 홍보에는 의료·과장 표현을 쓰면 안 됩니다. 프로젝트 지침에 "치료·완치·시술·재생·효과 보장 표현 금지, 피부 상태는 진단하지 않기"를 넣고, 결과물마다 <a href="prompt-cards.html#p2">광고 표현 점검 카드</a>로 한 번 더 걸러 주세요. (최신 규정은 수업 전 확인)</td></tr>
       <tr><td>커넥터는 연결됐는데 "찾을 수 없음"</td><td>그 서비스에서 내 계정에 권한이 있는지 확인(예: Jira 프로젝트 BOM 멤버인지). 대화창의 도구 아이콘에서 커넥터가 켜져 있는지 확인.</td></tr>
     </tbody>
   </table></div>
@@ -90,6 +91,7 @@
     <thead><tr><th scope="col">증상</th><th scope="col">이렇게 해 보세요</th></tr></thead>
     <tbody>
       <tr><td>프로젝트가 안 보여요</td><td>사이트 관리자가 나를 초대했는지, 프로젝트 BOM의 접근 권한에 내가 있는지 확인. Free는 사용자 10명까지.</td></tr>
+      <tr><td>이슈 유형에 "예약"이 없어요</td><td><span class="path">프로젝트 설정 → 이슈 유형(작업 유형)</span>에서 <strong>예약·문의·클레임</strong> 3개를 추가. 보드 열은 접수 → 예약 확정 → 관리 완료 → 사후 연락 완료 순서인지 확인.</td></tr>
       <tr><td>이슈를 못 옮겨요(권한 없음)</td><td>프로젝트 설정의 권한/역할에서 내 역할이 "멤버" 이상인지 확인.</td></tr>
       <tr><td>Slack에서 "Create issue"가 안 보여요</td><td>"Jira Cloud for Slack" 앱 설치·로그인 확인. 메시지 <strong>⋯</strong> 메뉴 → 더 보기 → Create issue.</td></tr>
       <tr><td>자동화 규칙이 갑자기 멈췄어요</td><td>Automation 월 한도 초과 가능성. Free는 <strong>사이트 전체 월 150 steps</strong>(트리거·조건·액션 각 1 step), 한도에 닿으면 다음 달까지 정지. <span class="path">Automation → 사용량</span>에서 확인하고, 테스트 반복을 줄이세요.</td></tr>
@@ -116,7 +118,8 @@
       <tr><td>Webhook "검증(Verify)" 실패</td><td>URL이 <code>https://</code>로 시작하고 끝 경로(<code>/line/webhook</code>)까지 정확한지 확인. 서버(Make 시나리오/Worker)가 켜져 있고 <strong>200 응답</strong>을 바로 돌려주는지 확인. 서명 검증에 쓰는 Channel secret이 맞는지 확인.</td></tr>
       <tr><td>메시지를 보내도 봇이 응답 없음</td><td>LINE Developers 콘솔에서 <strong>Use webhook(Webhook 사용)</strong>이 켜져 있는지 확인. Channel access token이 맞는지, reply token을 1분 안에 한 번만 썼는지 확인. 서버 로그에서 오류 확인.</td></tr>
       <tr><td>답장이 두 번 와요(중복)</td><td>LINE Official Account Manager의 <strong>응답 메시지(応答メッセージ)를 OFF</strong>로 하세요. 자동응답과 봇이 동시에 답하고 있는 것입니다. 인사말(あいさつメッセージ)도 봇과 겹치지 않게 정리.</td></tr>
-      <tr><td>무료 메시지가 다 떨어졌대요</td><td>무료 플랜은 월 200통(보내는 홍보 메시지 기준). Reply API·응답 메시지는 통수에 포함되지 않습니다. 단체 발송을 줄이거나 라이트(5,000엔) 고려.</td></tr>
+      <tr><td>봇이 "예약 확정됐습니다"라고 답해요</td><td>봇은 예약을 확정할 수 없습니다. 시스템 프롬프트에 "예약은 네이버 예약 링크로 안내하고, 날짜·시간을 확정한다고 말하지 않는다"를 넣고, 짓궂은 질문(tricky-questions.md)으로 다시 시험하세요.</td></tr>
+      <tr><td>무료 메시지가 다 떨어졌대요</td><td>무료 플랜은 월 200통(보내는 홍보 메시지 기준). Reply API·응답 메시지는 통수에 포함되지 않습니다. 예약 리마인드·이벤트 단체 발송을 줄이거나 라이트(5,000엔) 고려.</td></tr>
       <tr><td>일본어 메뉴라 못 찾겠어요</td><td>설정(設定) → 응답 설정(応答設定) 순서. 브라우저 번역 기능을 켜도 됩니다.</td></tr>
     </tbody>
   </table></div>

@@ -14,7 +14,7 @@ export interface Env {
   JIRA_BASE_URL: string; // 예: https://내회사.atlassian.net
   JIRA_EMAIL: string; // Jira 로그인 이메일
   JIRA_API_TOKEN: string; // Jira API 토큰
-  JIRA_PROJECT_KEY: string; // Jira 프로젝트 키 (봄날의 꽃 = BOM)
+  JIRA_PROJECT_KEY: string; // Jira 프로젝트 키 (봄날 에스테틱 = BOM)
   KAKAO_SKILL_SECRET: string; // 카카오 스킬 URL 뒤에 붙이는 비밀 주소값 (?key=...)
 }
 
@@ -24,7 +24,7 @@ export function missingEnv(env: Env, keys: ReadonlyArray<keyof Env>): string[] {
 }
 
 /** 문의 분류 6가지 (교재 전체에서 같은 값을 씁니다) */
-export const CATEGORIES = ["영업정보", "주문", "배송", "환불", "불만", "기타"] as const;
+export const CATEGORIES = ["영업정보", "예약", "관리상담", "환불", "불만", "기타"] as const;
 export type Category = (typeof CATEGORIES)[number];
 
 /** Claude가 돌려주는 답변 형식: { answer, category, needs_human } */

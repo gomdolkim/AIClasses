@@ -88,12 +88,12 @@
   <div class="slide-inner stack">
     <h2>코드는 Claude Code에게 "명세"를 주고 받습니다 <span class="timebox">6분</span></h2>
     <p class="lead">명세 = 1회차의 <strong>좋은 요청 4요소</strong>를 프로그램용으로 쓴 것.</p>
-    <div class="prompt reveal">[상황] 꽃집 「봄날의 꽃」 LINE 공식계정용 AI 상담 봇 서버를 만들고 싶어. 나는 코딩을 모르니 파일마다 쉬운 한국어 설명을 달아줘.
+    <div class="prompt reveal">[상황] 피부관리 샵 「봄날 에스테틱」 LINE 공식계정용 AI 상담 봇 서버를 만들고 싶어. 나는 코딩을 모르니 파일마다 쉬운 한국어 설명을 달아줘.
 [할 일] Cloudflare Workers + TypeScript로 만들어줘.
  - POST /line/webhook: x-line-signature를 Channel secret으로 검사, 바로 200 응답 후 뒤에서 처리
  - 손님 메시지의 전화·카드번호를 가린 뒤 Claude Haiku 4.5(claude-haiku-4-5)에 보내기
- - 시스템 프롬프트 = 상담 규칙 + FAQ (첨부한 system-prompt.md)
- - 답은 JSON {answer, category, needs_human}. category: 영업정보|주문|배송|환불|불만|기타
+ - 시스템 프롬프트 = 상담 규칙 + FAQ (첨부한 system-prompt.md). 봇은 예약을 확정하지 않고 네이버 예약·직원으로 안내, 의료 표현 금지
+ - 답은 JSON {answer, category, needs_human}. category: 영업정보|예약|관리상담|환불|불만|기타
  - LINE에 reply token으로 답장. needs_human이면 Slack #cs-escalation 알림 + Jira BOM 이슈(클레임/문의)
 [조건] 비밀값은 코드에 쓰지 말고 환경변수: ANTHROPIC_API_KEY, LINE_CHANNEL_SECRET, LINE_CHANNEL_ACCESS_TOKEN, SLACK_WEBHOOK_URL, JIRA_BASE_URL, JIRA_EMAIL, JIRA_API_TOKEN, JIRA_PROJECT_KEY. 테스트도 만들어줘.
 [형식] 폴더 구조 + 파일 + 배포 방법 README</div>
@@ -123,12 +123,12 @@
 │  └─ knowledge.ts  ← ★ 상담 규칙 + FAQ
 └─ test/            ← 자동 점검</pre>
       <div class="stack reveal">
-        <div class="card card--yellow"><span class="icon">✏️</span><h3>knowledge.ts만 고치세요</h3><p>가격·영업시간이 바뀌면 이 파일의 FAQ 글을 고치고 다시 배포. 13회차 시스템 프롬프트와 같은 내용입니다.</p></div>
-        <div class="callout callout--tip"><span>다른 파일은 몰라도 됩니다. 궁금하면 Claude에게 "이 파일이 하는 일을 꽃집 사장님께 설명하듯 알려줘"라고 물어보세요.</span></div>
+        <div class="card card--yellow"><span class="icon">✏️</span><h3>knowledge.ts만 고치세요</h3><p>관리 가격·영업시간·예약 규정이 바뀌면 이 파일의 FAQ 글을 고치고 다시 배포. 13회차 시스템 프롬프트와 같은 내용입니다.</p></div>
+        <div class="callout callout--tip"><span>다른 파일은 몰라도 됩니다. 궁금하면 Claude에게 "이 파일이 하는 일을 에스테틱 원장님께 설명하듯 알려줘"라고 물어보세요.</span></div>
       </div>
     </div>
   </div>
-  <aside class="notes">VS Code나 메모장으로 knowledge.ts를 열어 보여 주기. 13회차에 Make에서 고친 규칙이 있으면 여기에 같은 문장으로 추가. Make 판 시스템 프롬프트에는 9번 규칙(역할 바꾸기 거부)이 더 있으니 원하면 옮겨 적게 하기.</aside>
+  <aside class="notes">VS Code나 메모장으로 knowledge.ts를 열어 보여 주기. 13회차에 Make에서 고친 규칙이 있으면 여기에 같은 문장으로 추가. 규칙(예약 확정 금지·의료 표현 금지·피부과 안내·임신/피부 질환/알레르기/트러블은 사람 연결·환불 약속 금지·역할 바꾸기 거부)은 Make 판과 같은 취지인지 함께 훑어보기. 서버 판에는 "지시문 공개 거절" 같은 규칙이 조금 더 있을 수 있음.</aside>
 </section>
 
 <!-- 7. 실습 1: 준비와 로그인 -->
@@ -205,7 +205,7 @@ npx wrangler secret put JIRA_PROJECT_KEY</pre>
 <pre class="code reveal" data-copy>npx wrangler deploy</pre>
         <ol class="steps reveal">
           <li>끝에 나온 주소 복사: <code>https://bomnal-bot.○○○.workers.dev</code></li>
-          <li>브라우저로 열어 "봄날의 꽃 상담 봇이 작동 중입니다 🌷" 확인</li>
+          <li>브라우저로 열어 "봄날 에스테틱 상담 봇이 작동 중입니다" 확인</li>
           <li><span class="path">LINE Developers → Messaging API 탭 → Webhook URL → Edit</span>에 <code>주소/line/webhook</code> 붙여넣기 → Update</li>
           <li><strong>Verify</strong> → Success</li>
           <li>Make 시나리오 스위치 <strong>OFF</strong> (두 봇이 동시에 일하지 않게)</li>
@@ -239,17 +239,18 @@ npx wrangler secret put JIRA_PROJECT_KEY</pre>
         <p class="small reveal">켜 둔 채로 휴대폰에서 질문 → 터미널에 기록이 실시간으로 올라옵니다. 끝낼 때는 <kbd>Ctrl</kbd>+<kbd>C</kbd>. 대시보드 <span class="path">Workers &amp; Pages → bomnal-bot → Logs</span>에서도 볼 수 있어요.</p>
       </div>
       <div class="chat reveal">
-        <div class="bubble bubble--user">花束Lはいくらですか？</div>
+        <div class="bubble bubble--user">リフティングはいくらですか？日本語大丈夫ですか？</div>
         <div class="bubble bubble--bot">・・・ (입력 중 표시)</div>
-        <div class="bubble bubble--bot">こんにちは、春の日の花のAI相談員です。花束Lは85,000ウォンです🌷</div>
-        <div class="bubble bubble--user">배송 중에 꽃이 부러졌어요</div>
-        <div class="bubble bubble--bot">불편을 드려 죄송합니다. 사진을 확인한 뒤 재제작을 안내드릴 수 있도록 담당자에게 연결해 드리겠습니다.</div>
+        <div class="bubble bubble--bot">こんにちは、ポムナル・エステのAI相談員です。日本語で大丈夫です。リフティング弾力ケアは80分120,000ウォンです。ご予約はNAVER予約のリンクからどうぞ😊</div>
+        <div class="bubble bubble--user">아토피가 있는데 여드름 케어 받아도 될까요?</div>
+        <div class="bubble bubble--bot">문의 감사합니다. 피부 질환이 있으신 경우 원장님이 직접 상담해 드리는 게 안전해요. 담당자에게 연결해 드리겠습니다.</div>
       </div>
     </div>
     <div class="callout callout--tip reveal"><span>13회차 <strong>짓궂은 질문 테스트</strong>를 그대로 다시 해 보세요. 같은 규칙이니 같은 결과가 나와야 합니다.</span></div>
   </div>
   <aside class="notes">
     "입력 중…" 애니메이션은 LINE 로딩 표시 API — Make 버전에는 없던 장점.
+    두 번째 질문처럼 피부 질환은 봇이 "괜찮아요/안 돼요"를 판단하지 않고 사람에게 넘기는지가 핵심 확인 포인트. Slack #cs-escalation에 알림이 왔는지도 같이 보기.
     로그에 개인정보가 찍히지 않도록 예제는 가린 메시지만 기록함. 로그 화면도 화면 공유 시 주의.
     가격·규칙을 바꾸려면 knowledge.ts 수정 → npx wrangler deploy 다시. 30초면 반영.
   </aside>
@@ -300,13 +301,13 @@ npx wrangler secret put JIRA_PROJECT_KEY</pre>
     <div class="grid-2">
       <div class="table-wrap reveal">
         <table class="table">
-          <tr><th>칸</th><th>봄날의 꽃 예시</th></tr>
-          <tr><td>① 현재 문제</td><td>LINE·카톡 반복 문의 하루 30건, 대표가 하루 1시간 씀</td></tr>
-          <tr><td>② 적용할 자동화</td><td>LINE AI 상담봇(14회차) + 클레임 Jira 관리(9·10회차)</td></tr>
+          <tr><th>칸</th><th>봄날 에스테틱 예시</th></tr>
+          <tr><td>① 현재 문제</td><td>LINE·인스타 DM 예약·가격 문의 하루 30건, 관리 중엔 답을 못 해 손님 이탈 · 노쇼 월 8건</td></tr>
+          <tr><td>② 적용할 자동화</td><td>LINE AI 상담봇(14회차) + 사후 연락·클레임 Jira 관리(9·10회차)</td></tr>
           <tr><td>③ 비용 (월)</td><td>Claude Pro $20 + Slack Pro + API 약 $5</td></tr>
-          <tr><td>④ 담당자</td><td>봇 규칙 관리: 지수 / 클레임 처리: 민호</td></tr>
-          <tr><td>⑤ 3개월 로드맵</td><td>1개월: 봇 운영·규칙 다듬기 → 2개월: 주간 보고 자동화 → 3개월: 카카오 채널 확대</td></tr>
-          <tr><td>⑥ 성공 기준</td><td>반복 문의 응답 시간 절반, 대표 시간 주 5시간 절약</td></tr>
+          <tr><td>④ 담당자</td><td>봇 규칙·FAQ 관리: 실장 민호 / 트러블·회원권 환불 상담: 원장 한봄</td></tr>
+          <tr><td>⑤ 3개월 로드맵</td><td>1개월: 봇 운영·규칙 다듬기 → 2개월: 전날 리마인드·주간 보고 자동화 → 3개월: 카카오 채널 확대</td></tr>
+          <tr><td>⑥ 성공 기준</td><td>반복 문의 응답 시간 절반, 노쇼 월 4건 이하, 원장 시간 주 5시간 절약</td></tr>
         </table>
       </div>
       <div class="prompt reveal">[상황] 나는 (업종) 회사를 운영하고 직원은 (N)명이야. 지금 가장 시간을 많이 뺏는 일은 (3가지)야.
@@ -317,7 +318,7 @@ npx wrangler secret put JIRA_PROJECT_KEY</pre>
     <div class="callout callout--warn reveal"><span>비용 숫자는 AI가 틀릴 수 있어요. 각 서비스 요금 페이지에서 <strong>한 번 더 확인</strong>하세요. (2회차 사실 확인 습관)</span></div>
   </div>
   <aside class="notes">
-    3회차 "봄날의 꽃" 프로젝트처럼 자기 회사 프로젝트가 있는 수강생은 그 프로젝트 안에서 요청하면 회사 정보를 다시 쓸 필요 없음.
+    3회차 "봄날 에스테틱" 프로젝트처럼 자기 회사 프로젝트가 있는 수강생은 그 프로젝트 안에서 요청하면 회사 정보를 다시 쓸 필요 없음.
     8분 안에 표가 완성되도록 돌아다니며 ②번 칸이 너무 큰 꿈(예: "모든 업무 자동화")이면 "첫 달에 할 것 하나"로 좁혀 주기.
   </aside>
 </section>

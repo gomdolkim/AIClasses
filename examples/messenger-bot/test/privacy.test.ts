@@ -27,7 +27,7 @@ describe("maskPersonalInfo (개인정보 가리기)", () => {
   });
 
   it("가격·날짜·시간 같은 평범한 숫자는 그대로 둔다", () => {
-    const text = "꽃다발 M 55,000원, 2026-10-10 오후 3시, 주문번호 12345";
+    const text = "수분 진정 관리 70,000원, 2026-10-10 오후 3시, 예약번호 12345";
     expect(maskPersonalInfo(text)).toBe(text);
   });
 
