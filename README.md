@@ -9,7 +9,7 @@ IT·AI를 전혀 모르는 사람이 **AI로 회사를 운영하고 자동화**�
 | ② 사장님 업무 맡기기 | 4–6 | 문서·엑셀, 마케팅 콘텐츠, 가게 홈페이지 |
 | ③ 팀 업무 자동화 | 7–11 | 연결의 원리, Slack, Jira, Slack↔Jira 자동화, AI 주간 보고 |
 | ④ 고객 문의 AI 상담봇 | 12–14 | LINE 자동응답 → Make + Claude 봇 → 봇 서버 배포 & 졸업 발표 |
-| 부록 | A–E | Vercel 배포, 버전 관리, Claude Code, 카카오톡 봇, Claude 스킬 |
+| 부록 | A–F | Vercel 배포, 버전 관리, Claude Code, 카카오톡 봇, Claude 스킬, **Slack·Jira MCP 연결** |
 
 ## 여는 방법
 `index.html`을 브라우저로 열면 됩니다. 로컬 서버로 열려면:
@@ -24,7 +24,7 @@ python3 -m http.server 8000   # → http://localhost:8000
 index.html            과정 목차 (assets/course.js 목록으로 자동 생성)
 assets/               공통 디자인(deck.css)·동작(deck.js)·강의 목록(course.js)
 lessons/              1–14회차 슬라이드
-appendix/             부록 A–E
+appendix/             부록 A–F
 materials/            강사 가이드, 용어집, 프롬프트 카드, 문제 해결, 준비 체크리스트, 실습 데이터(dataset/)
 examples/messenger-bot/   LINE·카카오 AI 상담봇 서버 (Cloudflare Workers + TypeScript, 테스트 포함)
 examples/make-scenarios/  Make 노코드 시나리오 따라 하기 가이드

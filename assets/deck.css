@@ -192,12 +192,13 @@ kbd { font-family: var(--mono); font-size: 0.85em; border: 1px solid var(--borde
 /* ---------- 체크리스트 (클릭하면 체크, 브라우저에 저장) ---------- */
 ul.checklist { list-style: none; }
 ul.checklist li {
-  display: flex; gap: 0.8rem; align-items: flex-start; cursor: pointer;
-  padding: 0.55rem 0.8rem; border-radius: 10px; user-select: none;
+  position: relative; cursor: pointer;
+  padding: 0.55rem 0.8rem 0.55rem 3.1rem; border-radius: 10px; user-select: none;
 }
 ul.checklist li:hover { background: var(--surface-2); }
 ul.checklist li::before {
-  content: ''; flex: 0 0 1.5rem; height: 1.5rem; margin-top: 0.15rem;
+  content: ''; position: absolute; left: 0.8rem; top: 0.7rem;
+  width: 1.5rem; height: 1.5rem; box-sizing: border-box;
   border: 2px solid var(--text-soft); border-radius: 6px;
 }
 ul.checklist li.done { color: var(--text-soft); text-decoration: line-through; }

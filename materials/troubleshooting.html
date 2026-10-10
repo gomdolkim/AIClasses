@@ -39,6 +39,7 @@
       <ul class="toc">
         <li><a href="#login">로그인·결제</a></li>
         <li><a href="#claude">Claude 한도·커넥터</a></li>
+        <li><a href="#mcp">MCP·커넥터 연결</a></li>
         <li><a href="#slack">Slack</a></li>
         <li><a href="#jira">Jira</a></li>
         <li><a href="#make">Make</a></li>
@@ -68,9 +69,25 @@
       <tr><td>"사용량 한도에 도달했습니다"</td><td>표시된 시간이 지나면 다시 쓸 수 있습니다. 긴 파일·긴 대화가 한도를 빨리 씁니다 → 새 채팅으로 시작하고, 파일은 필요한 부분만 올리기.</td></tr>
       <tr><td>답이 점점 이상해져요</td><td>대화가 너무 길어진 것. 지금까지 결과를 요약해 달라고 한 뒤 새 채팅에 붙여넣고 이어서.</td></tr>
       <tr><td>프로젝트 메뉴가 없어요</td><td>무료 플랜이면 제한이 있습니다. Pro 결제 여부 확인. 왼쪽 메뉴의 <span class="path">Projects(프로젝트)</span>.</td></tr>
-      <tr><td>커넥터 연결이 안 돼요</td><td><span class="path">Settings(설정) → Connectors(커넥터)</span>에서 해당 서비스 <strong>연결 해제 후 다시 연결</strong>. 팝업 차단을 끄고, 로그인 창에서 Claude와 같은 회사 계정을 선택. 무료 플랜은 커스텀 커넥터 1개만 됩니다.</td></tr>
+      <tr><td>커넥터 연결이 안 돼요</td><td><span class="path">Customize(사용자 지정) → Connectors(커넥터)</span>에서 해당 서비스 <strong>연결 해제 후 다시 연결</strong>(자세한 증상별 해결은 <a href="#mcp">MCP·커넥터 연결</a>). 팝업 차단을 끄고, 로그인 창에서 Claude와 같은 회사 계정을 선택. 무료 플랜은 커스텀 커넥터 1개만 됩니다.</td></tr>
       <tr><td>AI가 "여드름 치료", "주름 제거 보장" 같은 표현을 써요</td><td>에스테틱 홍보에는 의료·과장 표현을 쓰면 안 됩니다. 프로젝트 지침에 "치료·완치·시술·재생·효과 보장 표현 금지, 피부 상태는 진단하지 않기"를 넣고, 결과물마다 <a href="prompt-cards.html#p2">광고 표현 점검 카드</a>로 한 번 더 걸러 주세요. (최신 규정은 수업 전 확인)</td></tr>
-      <tr><td>커넥터는 연결됐는데 "찾을 수 없음"</td><td>그 서비스에서 내 계정에 권한이 있는지 확인(예: Jira 프로젝트 BOM 멤버인지). 대화창의 도구 아이콘에서 커넥터가 켜져 있는지 확인.</td></tr>
+      <tr><td>커넥터는 연결됐는데 "찾을 수 없음"</td><td>그 서비스에서 내 계정에 권한이 있는지 확인(예: Jira 프로젝트 BOM 멤버인지). 입력창 <strong>+</strong> → Connectors에서 커넥터가 켜져 있는지 확인.</td></tr>
+    </tbody>
+  </table></div>
+
+  <h2 id="mcp">🔌 MCP · 커넥터 연결 <span class="pill pill--sky">7·8·9·11회차 · 부록 F</span></h2>
+  <div class="callout callout--warn"><span>커넥터 화면·메뉴 이름은 자주 바뀝니다. ⚠️ 표시는 <strong>수업 전 확인</strong> 항목입니다. 자세한 연결 순서는 <a href="../appendix/f-mcp-slack-jira.html">부록 F</a>.</span></div>
+  <div class="table-wrap"><table class="table">
+    <thead><tr><th scope="col">증상</th><th scope="col">이렇게 해 보세요</th></tr></thead>
+    <tbody>
+      <tr><td>커넥터 목록에 Slack·Atlassian이 안 보여요</td><td><span class="path">Customize(사용자 지정) → Connectors(커넥터) → Discover</span>에서 검색했는지 확인(입력창 <strong>+</strong> → Manage connectors로도 진입). <strong>Team 플랜</strong>이면 Owner가 먼저 <span class="path">Organization settings → Connectors</span>에서 추가·활성화해야 멤버에게 보입니다 — 멤버 화면에 <strong>Request</strong>만 보이면 Owner에게 요청. ⚠️ Pro 개인 계정에서 Slack 커넥터가 연결되는지는 수업 전 강사가 실기 확인.</td></tr>
+      <tr><td>Slack 로그인 후 "관리자 승인 대기 / Request to install"</td><td>Slack은 <strong>워크스페이스 관리자가 MCP 연결을 승인</strong>해야 합니다. 원장님이 워크스페이스 소유자라면 본인이 승인하고, 직원은 승인될 때까지 기다리세요. 수업용 워크스페이스는 8회차 전에 강사가 미리 승인. ⚠️ Slack 관리자 화면의 정확한 메뉴 위치·Free 워크스페이스 사용 가능 여부는 수업 전 확인.</td></tr>
+      <tr><td>Atlassian 로그인·사이트 선택에서 막혀요</td><td>Claude와 같은 회사 계정으로 로그인했는지, 허용 화면에서 <strong>봄날 에스테틱 사이트</strong>(○○.atlassian.net)를 골랐는지 확인. <strong>Cloud</strong> 사이트만 됩니다(Data Center/Server 불가). 첫 연결은 Jira 접근권이 있는 <strong>사이트 관리자(원장님)</strong>가 하는 것이 안전. 그래도 막히면 관리자가 <span class="path">Atlassian Administration → Rovo → Rovo MCP server</span>에서 "Allow Atlassian supported domains"가 켜져 있는지 확인.</td></tr>
+      <tr><td>연결은 됐는데 Claude가 Slack·Jira를 안 쓰고 일반론만 말해요</td><td>그 대화에서 커넥터가 꺼져 있는 것. 입력창 <strong>+</strong> → <strong>Connectors</strong>에서 Slack·Atlassian 토글을 ON. 요청에 "Slack #예약 채널에서", "Jira BOM 프로젝트에서"처럼 <strong>어디서</strong>를 적어 주세요. 도구 권한이 <strong>Blocked</strong>로 돼 있지 않은지도 확인.</td></tr>
+      <tr><td>메시지 보내기·이슈 만들기 때마다 확인 창이 떠요</td><td><strong>정상입니다.</strong> 쓰기 도구를 <strong>Needs approval</strong>로 둔 덕분에 Claude가 마음대로 보내지 못하는 것. 내용(채널·받는 사람·이슈 요약)을 읽고 <strong>Allow once</strong>를 누르세요. 쓰기 도구에 Always allow는 권하지 않습니다(프롬프트 인젝션 대비).</td></tr>
+      <tr><td>연결을 끊거나 다시 연결하고 싶어요 / "Reconnect"가 떠요</td><td><span class="path">Customize → Connectors → 해당 커넥터</span>에서 <strong>Disconnect</strong>(목록엔 남음, 다시 Connect 가능) 또는 ⋯ → <strong>Remove</strong>(삭제). 권한이 끊기면 <strong>Reconnect</strong>를 눌러 허용 화면을 다시 거치면 됩니다. 퇴사자·공용 PC는 Disconnect하고, Slack 계정 비활성화·Atlassian <span class="path">Connected apps</span>에서도 회수.</td></tr>
+      <tr><td>Claude Code에서 <code>/mcp</code> 인증이 실패해요</td><td><code>/mcp</code>에서 서버를 골라 인증을 다시 시도 → 열리는 브라우저에서 로그인·허용. 브라우저에 다른 계정이 로그인돼 있으면 엉뚱한 계정으로 연결되니 확인. Slack을 직접 추가했다가 오류가 나면 <code>/plugin install slack</code>(공식 플러그인)이나, claude.ai에서 연결한 커넥터를 그대로 쓰는 방법이 가장 쉽습니다(claude.ai 구독 계정으로 로그인했을 때만 자동 표시, API 키 로그인은 X). 꼬였으면 <code>claude mcp remove 이름</code> 후 다시 추가.</td></tr>
+      <tr><td>옛 자료의 주소(<code>…/v1/sse</code>)로 Atlassian을 추가했더니 안 돼요</td><td><code>https://mcp.atlassian.com/v1/sse</code>는 <strong>2026-06-30 이후 지원 종료</strong>. <code>claude mcp remove atlassian</code> 후 <code>claude mcp add --transport http atlassian https://mcp.atlassian.com/v2/mcp</code> → <code>/mcp</code>에서 로그인. (v1/mcp는 아직 되지만 2027-03-01부터 v2로 전환 예정)</td></tr>
     </tbody>
   </table></div>
 

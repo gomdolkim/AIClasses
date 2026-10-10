@@ -19,7 +19,7 @@
   </div>
   <aside class="notes">
     [0~2분] "지난주 관리 받은 손님 중에 사후 연락을 아직 못 드린 분이 몇 명인지 바로 말할 수 있나요?"로 시작.
-    수업 전 강사 확인: Jira 가입 화면, '이슈/작업 항목', '프로젝트/스페이스' 등 화면 용어, Claude Atlassian 커넥터 연결 화면.
+    수업 전 강사 확인: Jira 가입 화면, '이슈/작업 항목', '프로젝트/스페이스' 등 화면 용어, Claude Atlassian 커넥터 연결 화면(Customize › Connectors, 사이트 관리자 계정으로 첫 연결, Rovo MCP server 허용 설정).
   </aside>
 </section>
 
@@ -27,15 +27,15 @@
 <section class="slide">
   <div class="slide-inner stack">
     <h2>오늘의 목표 <span class="timebox">3분</span></h2>
-    <div class="goal reveal"><span class="goal-label">목표</span><span>Jira에 가입해 <strong>BOM 보드</strong>를 만들고, 예약을 카드(이슈)로 만들어 옮기고, Claude에게 카드 만들기를 맡긴다</span></div>
-    <div class="goal reveal"><span class="goal-label">결과물</span><span>접수 → 예약 확정 → 관리 완료 → 사후 연락 완료 보드 + 이슈 유형 3개(예약·문의·클레임) + 예약 이슈 5개 이상</span></div>
+    <div class="goal reveal"><span class="goal-label">목표</span><span>Jira에 가입해 <strong>BOM 보드</strong>를 만들고, 예약을 카드(이슈)로 만들어 옮기고, Claude에 <strong>Atlassian 커넥터(MCP)</strong>를 연결해 카드 만들기를 맡긴다</span></div>
+    <div class="goal reveal"><span class="goal-label">결과물</span><span>접수 → 예약 확정 → 관리 완료 → 사후 연락 완료 보드 + 이슈 유형 3개(예약·문의·클레임) + 예약 이슈 5개 이상(손으로 + Claude로)</span></div>
     <div class="grid-3 reveal">
       <div class="card card--sky"><span class="icon">🧾</span><h3>예약 카드</h3><p>이슈 만들기</p></div>
       <div class="card card--lavender"><span class="icon">📌</span><h3>예약 보드</h3><p>칸 옮기기</p></div>
-      <div class="card card--mint"><span class="icon">🤖</span><h3>AI 비서</h3><p>Claude가 이슈 생성</p></div>
+      <div class="card card--mint"><span class="icon">🔌</span><h3>AI 비서</h3><p>Jira 커넥터로 이슈 생성</p></div>
     </div>
   </div>
-  <aside class="notes">자동화 사다리 L1(보드) + L4 맛보기(Claude가 Jira에 쓰기). 다음 시간 Slack과 연결하므로 프로젝트 키 BOM을 꼭 맞추게 하기. Jira는 예약 시스템(네이버 예약)을 대신하는 게 아니라 "예약 이후 할 일"을 보는 곳이라고 선 긋기.</aside>
+  <aside class="notes">자동화 사다리 L1(보드) + L4 맛보기(MCP 커넥터로 Claude가 Jira에 쓰기 — 8회차 Slack과 같은 방식). 다음 시간 Slack과 연결하므로 프로젝트 키 BOM을 꼭 맞추게 하기. Jira는 예약 시스템(네이버 예약)을 대신하는 게 아니라 "예약 이후 할 일"을 보는 곳이라고 선 긋기.</aside>
 </section>
 
 <!-- 3. 지난 시간 결과물 확인 -->
@@ -72,7 +72,7 @@
 <!-- 5. 실습 1: 가입 -->
 <section class="slide slide--alt">
   <div class="slide-inner stack">
-    <h2>실습 1 · Jira Cloud 무료 가입 <span class="timebox">10분</span></h2>
+    <h2>실습 1 · Jira Cloud 무료 가입 <span class="timebox">8분</span></h2>
     <div class="grid-2">
       <ol class="steps reveal">
         <li>크롬에서 <span class="path">atlassian.com → Jira → 무료로 시작(Get it free)</span></li>
@@ -138,7 +138,7 @@
 <!-- 8. 실습 4: 이슈 유형 -->
 <section class="slide">
   <div class="slide-inner stack">
-    <h2>실습 4 · 이슈 유형 만들기: 예약 · 문의 · 클레임 <span class="timebox">8분</span></h2>
+    <h2>실습 4 · 이슈 유형 만들기: 예약 · 문의 · 클레임 <span class="timebox">7분</span></h2>
     <div class="grid-2">
       <ol class="steps reveal">
         <li>왼쪽 아래 <span class="path">프로젝트 설정(Project settings) → 이슈 유형(Issue types)</span></li>
@@ -183,7 +183,7 @@
 <!-- 10. 실습 5: 이슈 만들고 옮기기 -->
 <section class="slide">
   <div class="slide-inner stack">
-    <h2>실습 5 · 예약 이슈 만들고 옮기기 <span class="timebox">10분</span></h2>
+    <h2>실습 5 · 예약 이슈 만들고 옮기기 <span class="timebox">9분</span></h2>
     <div class="grid-2">
       <ol class="steps reveal">
         <li>위쪽 <strong>+ 만들기(Create)</strong> → 프로젝트 BOM, 유형 <strong>예약</strong></li>
@@ -206,17 +206,46 @@
   <aside class="notes">손님은 이니셜 또는 성만. 회원권 잔여 횟수 같은 영업 정보는 적어도 됨(4회차 회원권 표와 연결). 원장님들이 "알레르기는 관리사가 꼭 알아야 하는데요?"라고 많이 물음 → 관리사는 관리 전에 고객 카드를 직접 보는 규칙으로. Jira·Slack·AI에는 "주의사항 있음" 신호만.</aside>
 </section>
 
-<!-- 11. 실습 6: Claude Atlassian 커넥터 -->
+<!-- 11. 실습 6: Claude에 Jira 연결 (Atlassian MCP) -->
 <section class="slide slide--alt">
   <div class="slide-inner stack">
-    <h2>실습 6 · Claude에게 이슈 만들기 맡기기 <span class="timebox">10분</span></h2>
+    <h2>실습 6 · Claude에 Jira 플러그 꽂기 (Atlassian 커넥터) <span class="timebox">8분</span></h2>
     <div class="grid-2">
       <ol class="steps reveal">
-        <li>claude.ai → <span class="path">설정(Settings) → 커넥터(Connectors)</span> → <strong>Atlassian</strong> → 연결(Connect)</li>
-        <li>Atlassian 로그인 → <code>bomnal</code> 사이트 선택 → <strong>허용(Accept)</strong></li>
-        <li>새 채팅에서 도구 메뉴에 Atlassian이 켜져 있는지 확인</li>
-        <li>오른쪽 프롬프트 실행 → Claude가 만들기 전에 묻는 내용 <strong>읽고 승인</strong></li>
-        <li>Jira 보드를 새로 고쳐서 5장이 생겼는지 확인</li>
+        <li>claude.ai → <span class="path">Customize(사용자 지정) › Connectors(커넥터) › Discover</span> → <code>Atlassian</code> 검색</li>
+        <li>만든 곳이 <strong>Atlassian</strong>인 커넥터(Atlassian MCP / Rovo) 클릭 → <strong>Connect to Claude</strong></li>
+        <li>Atlassian 계정(Jira 가입한 샵 메일)으로 로그인</li>
+        <li>사이트 선택에서 <strong>bomnal.atlassian.net</strong> 고르기</li>
+        <li>요청 권한(Jira 읽기·이슈 만들기·수정 등) 확인 → <strong>Accept(수락)</strong></li>
+        <li><strong>Connected</strong> 확인 → <span class="path">Atlassian › Tool permissions</span>: 읽기·검색 <span class="pill pill--mint">Always allow</span>, 만들기·수정·댓글 <span class="pill pill--peach">Needs approval</span></li>
+      </ol>
+      <div class="stack reveal">
+        <div class="callout callout--tip"><span><strong>사이트 관리자(원장님)가 먼저 연결하세요.</strong> 첫 연결 때 우리 Jira 사이트에 Claude 연결이 등록됩니다. 직원은 그다음에 각자 연결하면 돼요.</span></div>
+        <div class="callout callout--info"><span><strong>권한은 Jira 설정 그대로</strong>예요. 내가 못 보는 프로젝트는 Claude도 못 보고, 내가 못 만드는 이슈는 Claude도 못 만듭니다.</span></div>
+        <div class="callout callout--warn"><span>Slack 연결(8회차)과 같은 화면, 같은 순서예요. 플러그만 하나 더 꽂는 거라고 생각하세요.</span></div>
+      </div>
+    </div>
+    <p class="asof">2026-10 기준. 수업 전 확인: 커넥터 표시 이름, Jira Free 포함 여부·시간당 호출 한도(Free 약 500회로 알려짐), 첫 연결을 사이트 관리자가 해야 하는지. 자세히는 <a href="../appendix/f-mcp-slack-jira.html">부록 F</a>.</p>
+  </div>
+  <aside class="notes">
+    공식: Atlassian Rovo MCP 서버, Cloud 사이트만(Data Center/Server 불가), OAuth 로그인, 사용자의 기존 Jira 권한 그대로. 권장 주소 https://mcp.atlassian.com/v2/mcp — 옛 자료의 /v1/sse 주소는 2026-06-30 지원 종료라 쓰지 말 것(디렉터리 커넥터는 주소 입력 없이 클릭).
+    첫 사용자가 동의하면 사이트에 자동 설치되어 Atlassian Administration › Apps › Sites › 사이트 › Connected apps에 표시됨. "관리자가 먼저"는 비공식 권장 — 수업 전 확인.
+    막히는 곳: ① 다른 Atlassian 사이트 선택 → Disconnect 후 다시 ② 연결이 막힘 → Atlassian Administration › Rovo › Rovo MCP server의 "Allow Atlassian supported domains"가 꺼져 있는지(조직 관리자만 변경) ③ 팝업 차단.
+  </aside>
+</section>
+
+<!-- 12. 실습 7: Claude로 BOM 이슈 만들고 보드에서 확인 -->
+<section class="slide">
+  <div class="slide-inner stack">
+    <h2>실습 7 · Claude에게 BOM 이슈 만들기 맡기고 보드에서 확인 <span class="timebox">8분</span></h2>
+    <div class="grid-2">
+      <ol class="steps reveal">
+        <li>새 채팅 → 입력창 <strong>+</strong> › <strong>Connectors</strong> → Atlassian 토글 <strong>ON</strong></li>
+        <li>연결 테스트: <strong>"내가 볼 수 있는 Jira 프로젝트 알려 줘"</strong> → BOM이 나오면 OK</li>
+        <li>오른쪽 프롬프트 실행 → Claude가 보여 주는 표 확인 → "좋아"</li>
+        <li>이슈 만들기 승인 창 → 내용 읽고 <strong>Allow once</strong></li>
+        <li>Jira 보드 새로 고침 → 카드 5장(BOM-○○)이 생겼는지, 유형·기한·상태가 맞는지 <strong>한 장씩 클릭해 확인</strong></li>
+        <li>틀린 카드는 Jira에서 직접 고치기 (지우기는 사람이)</li>
       </ol>
       <div class="prompt reveal">Jira BOM 프로젝트에 내일 관리할 "예약" 유형 이슈 5개를 만들어줘.
 요약 형식: [예약] 관리 메뉴 · 날짜(요일) 시간 · 손님 이니셜
@@ -228,19 +257,19 @@
 5) 여드름·트러블 케어 · 18:00 · J님
 만들기 전에 표로 먼저 보여주고, 같은 시간에 겹치는 예약이 있으면 알려줘. 내가 "좋아"라고 하면 만들어줘.</div>
     </div>
-    <div class="callout callout--warn reveal"><span>AI가 만든 이슈는 <strong>한 장씩 확인</strong>하세요. 날짜·유형·시간이 틀릴 수 있습니다. 지우는 일은 맡기지 마세요. 내일이 <strong>월요일(휴무)</strong>이면 날짜를 바꿔서 실행하세요.</span></div>
-    <p class="asof">Atlassian 커넥터 이름·연결 화면은 2026-10 기준. 수업 전 확인.</p>
+    <div class="callout callout--warn reveal"><span>AI가 만든 이슈는 <strong>한 장씩 확인</strong>하세요. 날짜·유형·시간이 틀릴 수 있습니다. 내일이 <strong>월요일(휴무)</strong>이면 날짜를 바꿔서 실행하세요. 건강정보는 프롬프트에도 넣지 않습니다.</span></div>
   </div>
   <aside class="notes">
-    "표로 먼저 보여 주고 승인 후 실행"은 AI에게 쓰기 권한을 줄 때의 기본 습관. 꼭 따라 하게 하기.
-    막히는 곳: 사이트를 고르는 단계에서 다른 Atlassian 사이트 선택, 이슈 유형 "예약"을 못 찾음(실습 4 미완료), 상태 "예약 확정"으로 바로 못 만들고 "접수"로 생기는 경우 → 손으로 옮기면 됨.
+    "표로 먼저 보여 주고 승인 후 실행" + Needs approval 승인 창 = 이중 안전장치. AI에게 쓰기 권한을 줄 때의 기본 습관이니 꼭 따라 하게 하기.
+    막히는 곳: 이슈 유형 "예약"을 못 찾음(실습 4 미완료), 상태 "예약 확정"으로 바로 못 만들고 "접수"로 생김 → 손으로 옮기거나 "BOM-○○을 예약 확정으로 옮겨 줘"로 연습, 보드에 안 보임 → 보드 필터·다른 프로젝트 확인.
+    빨리 끝난 수강생: "BOM 프로젝트에서 담당자 없는 예약 이슈 목록 보여 줘"(읽기)로 검색도 연습.
   </aside>
 </section>
 
-<!-- 12. 응용 실습 -->
-<section class="slide">
+<!-- 13. 응용 실습 -->
+<section class="slide slide--alt">
   <div class="slide-inner stack">
-    <h2>응용 실습 · 우리 샵 보드 설계하기 <span class="timebox">6분</span></h2>
+    <h2>응용 실습 · 우리 샵 보드 설계하기 <span class="timebox">4분</span></h2>
     <div class="prompt reveal">나는 ○○(업종)을 운영하고 직원은 ○명이야. Jira 칸반 보드를 설계해줘.
 1) 보드 칸(상태) 4~5개: 우리 일의 실제 순서대로 (관리 후 사후 연락처럼 "끝난 뒤 할 일"도 포함)
 2) 이슈 유형 3개와 각각의 예시
@@ -251,8 +280,8 @@
   <aside class="notes">자기 샵 보드는 지금 만들 필요 없음. 설계표만 저장. 에스테틱이 아닌 수강생(네일·헤어·필라테스 등) 예시를 하나 같이 풀어 주면 좋음 — 대부분 "예약 → 서비스 → 사후 관리" 구조라 그대로 응용됨.</aside>
 </section>
 
-<!-- 13. 자주 겪는 문제 -->
-<section class="slide slide--alt">
+<!-- 14. 자주 겪는 문제 -->
+<section class="slide">
   <div class="slide-inner stack">
     <h2>자주 겪는 문제 <span class="timebox">4분</span></h2>
     <div class="table-wrap reveal">
@@ -262,16 +291,18 @@
         <tr><td>"프로젝트 설정"에 이슈 유형 메뉴가 없다</td><td>회사 관리형으로 만든 것. 팀 관리형으로 새로 만들기</td></tr>
         <tr><td>만든 이슈가 보드에 안 보인다</td><td>보드 위 필터 확인, 또는 이슈가 다른 프로젝트에 만들어졌는지 확인</td></tr>
         <tr><td>"관리 완료"로 옮겼더니 카드가 사라졌다</td><td>관리 완료 칸이 완료(Done) 계열로 설정됨 → 열 설정에서 상태 계열 확인</td></tr>
-        <tr><td>Claude가 BOM 프로젝트를 못 찾는다</td><td>커넥터에서 연결한 사이트 확인 → "BOM 프로젝트 목록 보여줘"로 테스트</td></tr>
+        <tr><td>Claude가 BOM 프로젝트를 못 찾는다</td><td>입력창 <strong>+</strong> › Connectors에서 Atlassian ON 확인 → 연결한 사이트가 bomnal인지 확인 → "내가 볼 수 있는 Jira 프로젝트 알려 줘"로 테스트</td></tr>
+        <tr><td>Atlassian 연결 화면에서 막힌다</td><td>사이트 관리자(원장) 계정으로 먼저 연결. Atlassian Administration › Rovo › Rovo MCP server에서 지원 도메인 허용이 켜져 있는지 확인</td></tr>
+        <tr><td>Claude가 이슈를 묻지도 않고 만들었다</td><td>Tool permissions에서 만들기·수정 도구를 Needs approval로 되돌리기. 승인 창에서 Always allow를 누르지 않기</td></tr>
         <tr><td>Claude가 날짜를 틀리게 넣었다</td><td>"오늘은 ○월 ○일 ○요일이야, 월요일은 휴무야"를 프롬프트에 함께 적기</td></tr>
       </table>
     </div>
   </div>
-  <aside class="notes">자세한 대응은 materials/troubleshooting.html 참고. "카드가 사라짐"은 보드 설정에 따라 완료 계열 카드가 일정 기간 뒤 숨겨지는 경우도 있음(수업 전 확인).</aside>
+  <aside class="notes">자세한 대응은 materials/troubleshooting.html, 커넥터 문제는 부록 F(../appendix/f-mcp-slack-jira.html) 참고. "카드가 사라짐"은 보드 설정에 따라 완료 계열 카드가 일정 기간 뒤 숨겨지는 경우도 있음(수업 전 확인).</aside>
 </section>
 
-<!-- 14. 체크리스트 -->
-<section class="slide">
+<!-- 15. 체크리스트 -->
+<section class="slide slide--alt">
   <div class="slide-inner stack">
     <h2>오늘의 체크리스트 ✅ <span class="timebox">3분</span></h2>
     <p class="small">한 일을 눌러서 체크하세요. (이 컴퓨터에 저장됩니다)</p>
@@ -281,13 +312,14 @@
       <li>보드 칸을 접수 → 예약 확정 → 관리 완료 → 사후 연락 완료로 바꿨다</li>
       <li>이슈 유형 예약·문의·클레임을 만들었다</li>
       <li>예약 이슈를 직접 만들어 칸을 옮기고, 노쇼 라벨도 달아 봤다</li>
-      <li>Claude에게 예약 이슈 5개를 만들게 하고 확인했다</li>
+      <li>Customize › Connectors에서 Atlassian 커넥터를 연결하고 권한(읽기 Always allow / 쓰기 Needs approval)을 정했다</li>
+      <li>Claude에게 BOM 예약 이슈 5개를 만들게 하고, Jira 보드에서 한 장씩 확인했다</li>
     </ul>
   </div>
   <aside class="notes">보드 설정을 못 끝낸 수강생은 다음 시간 전까지 꼭 완료 — 10회차 자동화가 "관리 완료" 칸과 유형 이름을 기준으로 함.</aside>
 </section>
 
-<!-- 15. 과제와 다음 회차 -->
+<!-- 16. 과제와 다음 회차 -->
 <section class="slide slide--title slide--center">
   <div class="slide-inner stack">
     <h2>과제 & 다음 시간 예고 <span class="timebox">4분</span></h2>
@@ -298,6 +330,7 @@
           <li>팀원을 Jira에 초대하고 3일 동안 실제 예약을 보드로 관리</li>
           <li>매일 마감 때 "관리 완료" 칸에 사후 연락 대상이 몇 장인지 확인하기</li>
           <li>Slack 워크스페이스 관리자 권한이 내 계정에 있는지 확인</li>
+          <li>Claude에서 Slack·Atlassian 커넥터가 둘 다 Connected인지 확인 (11회차 주간 보고에 둘 다 씀)</li>
         </ul>
       </div>
       <div class="card">

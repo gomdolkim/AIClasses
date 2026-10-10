@@ -237,7 +237,31 @@ claude</pre>
   <aside class="notes">비밀값 이름: ANTHROPIC_API_KEY, LINE_CHANNEL_SECRET, LINE_CHANNEL_ACCESS_TOKEN, SLACK_WEBHOOK_URL, JIRA_BASE_URL, JIRA_EMAIL, JIRA_API_TOKEN, JIRA_PROJECT_KEY(=BOM). Claude Code가 wrangler 명령 실행을 허락받으려 할 때 secret 값이 화면에 노출되지 않는지 확인.</aside>
 </section>
 
-<!-- 12. 안전 수칙 -->
+<!-- 12. Slack·Jira MCP -->
+<section class="slide">
+  <div class="slide-inner stack">
+    <h2>Claude Code에 Slack·Jira MCP 붙이기</h2>
+    <div class="grid-2">
+      <div class="stack reveal">
+        <pre class="code" data-copy># Jira (Atlassian 공식 서버)
+claude mcp add --transport http atlassian https://mcp.atlassian.com/v2/mcp</pre>
+        <pre class="code" data-copy>/plugin install slack@claude-plugins-official</pre>
+        <pre class="code" data-copy>/mcp</pre>
+      </div>
+      <ul class="list reveal">
+        <li>첫 명령은 터미널에서, <code>/plugin</code>·<code>/mcp</code>는 Claude Code 안에서 입력</li>
+        <li><code>/mcp</code> → 브라우저 로그인·허용하면 연결 끝</li>
+        <li>claude.ai에서 이미 연결한 커넥터는 <strong>자동으로</strong> 보여요</li>
+        <li>자세한 설명·권한 설정·보안 수칙은 <a href="f-mcp-slack-jira.html">부록 F</a></li>
+      </ul>
+    </div>
+    <div class="callout callout--warn reveal"><span>보내기·이슈 만들기는 실행 전 허락 질문을 꼭 읽고 승인하세요. <code>.mcp.json</code>에 토큰을 넣지 마세요.</span></div>
+    <p class="asof">2026-10 공식 문서 기준(code.claude.com, github.com/atlassian/atlassian-mcp-server, docs.slack.dev).</p>
+  </div>
+  <aside class="notes">옛 Atlassian 주소 /v1/sse는 2026-06-30 지원 종료 — 쓰지 말 것. Slack 플러그인은 Slack 공식 MCP(https://mcp.slack.com/mcp)를 쓰며 워크스페이스 관리자 승인이 필요. 범위: 기본 local, --scope user/project. 5분 이내로 짧게, 실습은 부록 F에서.</aside>
+</section>
+
+<!-- 13. 안전 수칙 -->
 <section class="slide">
   <div class="slide-inner stack">
     <h2>Claude Code 안전 수칙</h2>
@@ -253,7 +277,7 @@ claude</pre>
   <aside class="notes">'항상 허용' 옵션을 습관적으로 누르지 않도록 강조. 특히 삭제(rm), 강제 푸시 같은 명령은 매번 확인.</aside>
 </section>
 
-<!-- 13. 자주 겪는 문제 -->
+<!-- 14. 자주 겪는 문제 -->
 <section class="slide slide--title slide--center">
   <div class="slide-inner stack">
     <h2>자주 겪는 문제</h2>

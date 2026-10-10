@@ -30,7 +30,8 @@ window.COURSE = Object.freeze({
     { id: 'B', slug: 'b-version-control', title: '버전 관리 기초 (Git을 몰라도 되는 만큼만)' },
     { id: 'C', slug: 'c-claude-code', title: '심화: Claude Code로 직접 만들기' },
     { id: 'D', slug: 'd-kakao-bot', title: '카카오톡 채널 자동응답 & 챗봇' },
-    { id: 'E', slug: 'e-claude-skills', title: 'Claude 스킬 설치·사용·직접 만들기' }
+    { id: 'E', slug: 'e-claude-skills', title: 'Claude 스킬 설치·사용·직접 만들기' },
+    { id: 'F', slug: 'f-mcp-slack-jira', title: 'Claude에 Slack·Jira MCP 연결하기' }
   ],
   materials: [
     { slug: 'instructor-guide', title: '강사 가이드' },

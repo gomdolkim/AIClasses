@@ -19,7 +19,7 @@
   </div>
   <aside class="notes">
     [0~2분] "단톡방에서 예약 변경 메시지가 묻혀서 시간이 겹친 적 있나요?" 질문으로 시작. 손 드는 사람이 많을수록 오늘 수업이 쉬워짐.
-    수업 전 강사가 확인할 것: 데모용 워크스페이스, Pro 체험 제공 여부, Workflow Builder 메뉴 위치, Claude Slack 커넥터 연결 화면.
+    수업 전 강사가 확인할 것: 데모용 워크스페이스, Pro 체험 제공 여부, Workflow Builder 메뉴 위치, Claude Slack 커넥터 연결 화면(Customize › Connectors, Pro 개인 계정으로 연결되는지, Slack 관리자 승인 화면).
   </aside>
 </section>
 
@@ -28,15 +28,15 @@
   <div class="slide-inner stack">
     <h2>오늘의 목표 <span class="timebox">3분</span></h2>
     <div class="goal reveal"><span class="goal-label">목표</span><span>Slack 워크스페이스를 만들고, 채널·스레드 규칙을 정하고, <strong>매일 10:30 스탠드업 워크플로</strong>를 만든다</span></div>
-    <div class="goal reveal"><span class="goal-label">결과물</span><span>채널 5개 구성(#예약 포함) + 업무 규칙 고정 메시지 + 스탠드업 워크플로 + Claude로 #예약 요약 1번</span></div>
+    <div class="goal reveal"><span class="goal-label">결과물</span><span>채널 5개 구성(#예약 포함) + 업무 규칙 고정 메시지 + 스탠드업 워크플로 + Claude에 Slack 커넥터(MCP) 연결 → #예약 요약 1번</span></div>
     <div class="grid-4 reveal">
       <div class="card card--sky"><span class="icon">🏢</span><h3>만들기</h3><p>워크스페이스</p></div>
       <div class="card card--lavender"><span class="icon">🗂️</span><h3>나누기</h3><p>채널 5개</p></div>
       <div class="card card--mint"><span class="icon">⏰</span><h3>자동화</h3><p>스탠드업 봇</p></div>
-      <div class="card card--peach"><span class="icon">🤖</span><h3>AI 연결</h3><p>Claude로 요약</p></div>
+      <div class="card card--peach"><span class="icon">🔌</span><h3>AI 연결</h3><p>Slack 커넥터로 요약</p></div>
     </div>
   </div>
-  <aside class="notes">자동화 사다리로 보면 오늘은 L1(채널) + L2(Workflow Builder) + L4 맛보기(Claude 요약). 영업이 11:00 시작이라 스탠드업은 10:30으로 잡았다고 설명.</aside>
+  <aside class="notes">자동화 사다리로 보면 오늘은 L1(채널) + L2(Workflow Builder) + L4 맛보기(MCP 커넥터로 Claude 요약). 시간이 빠듯하면 실습 3을 강사 화면 따라 하기로 줄이고 실습 4·5는 꼭 손으로. 영업이 11:00 시작이라 스탠드업은 10:30으로 잡았다고 설명.</aside>
 </section>
 
 <!-- 3. 지난 시간 결과물 확인 -->
@@ -53,7 +53,7 @@
     </div>
     <div class="callout callout--tip reveal"><span>흐름도에 같은 "어디로"가 여러 번 나오면, 그게 바로 <strong>채널 하나</strong>가 됩니다.</span></div>
   </div>
-  <aside class="notes">흐름도를 안 가져온 수강생은 봄날 에스테틱 흐름도(7회차 슬라이드 9)를 기준으로 진행.</aside>
+  <aside class="notes">흐름도를 안 가져온 수강생은 봄날 에스테틱 흐름도(7회차 슬라이드 10)를 기준으로 진행.</aside>
 </section>
 
 <!-- 4. 비유와 용어 -->
@@ -100,7 +100,7 @@
 <!-- 6. 채널 설계 -->
 <section class="slide">
   <div class="slide-inner stack">
-    <h2>봄날 에스테틱 채널 설계 <span class="timebox">6분</span></h2>
+    <h2>봄날 에스테틱 채널 설계 <span class="timebox">5분</span></h2>
     <div class="table-wrap reveal">
       <table class="table">
         <tr><th>채널</th><th>무엇을 올리나</th><th>누가</th><th>알림</th></tr>
@@ -140,7 +140,7 @@
 <!-- 8. 업무 규칙 -->
 <section class="slide">
   <div class="slide-inner stack">
-    <h2>3가지 업무 규칙: 스레드 · 멘션 · 이모지 <span class="timebox">6분</span></h2>
+    <h2>3가지 업무 규칙: 스레드 · 멘션 · 이모지 <span class="timebox">5분</span></h2>
     <div class="grid-3 reveal">
       <div class="card card--sky"><span class="icon">🧵</span><h3>답은 스레드에</h3><p>예약 1건 = 메시지 1개. 시간 변경·메모는 그 메시지의 <strong>스레드</strong>에 달기</p></div>
       <div class="card card--lavender"><span class="icon">@</span><h3>부탁은 멘션으로</h3><p><strong>@유나</strong>처럼 이름을 부르면 그 사람에게만 알림. "누가 해 주세요"는 금지</p></div>
@@ -176,7 +176,7 @@
 <!-- 10. 실습 3: Workflow Builder -->
 <section class="slide">
   <div class="slide-inner stack">
-    <h2>실습 3 · 매일 10:30 스탠드업 워크플로 만들기 <span class="timebox">14분</span></h2>
+    <h2>실습 3 · 매일 10:30 스탠드업 워크플로 만들기 <span class="timebox">12분</span></h2>
     <div class="grid-2">
       <ol class="steps reveal">
         <li>사이드바 <span class="path">더 보기(More) → 자동화(Automations)</span> 또는 <span class="path">도구(Tools) → 워크플로(Workflows)</span></li>
@@ -206,39 +206,72 @@
   </aside>
 </section>
 
-<!-- 11. 실습 4: Claude Slack 커넥터 -->
+<!-- 11. 실습 4: Claude에 Slack 연결 (MCP) -->
 <section class="slide slide--alt">
   <div class="slide-inner stack">
-    <h2>실습 4 · Claude에 Slack 연결해서 요약 받기 <span class="timebox">10분</span></h2>
+    <h2>실습 4 · Claude에 Slack 플러그 꽂기 (MCP 커넥터) <span class="timebox">10분</span></h2>
     <div class="grid-2">
       <ol class="steps reveal">
-        <li>claude.ai → 왼쪽 아래 이름 → <span class="path">설정(Settings) → 커넥터(Connectors)</span></li>
-        <li>목록에서 <strong>Slack</strong> → <strong>연결(Connect)</strong></li>
-        <li>Slack 로그인 화면에서 "봄날 에스테틱" 워크스페이스 선택 → <strong>허용(Allow)</strong></li>
-        <li>새 채팅 → 입력창 아래 도구 메뉴에서 Slack이 <strong>켜져 있는지</strong> 확인</li>
-        <li>#예약에 연습용 예약 메시지를 3개쯤 올린 뒤 아래 프롬프트 실행<br><small>예: "K님 · 수분 진정 60분 · 14:00 · 지수 · 네이버 예약금 확인"</small></li>
+        <li>크롬에서 claude.ai → <span class="path">Customize(사용자 지정) › Connectors(커넥터)</span><br><small>입력창 <strong>+</strong> › Manage connectors 로도 갈 수 있어요</small></li>
+        <li><strong>Discover</strong> → <strong>Search connectors</strong>에 <code>Slack</code> 입력</li>
+        <li>만든 곳이 <strong>Slack</strong>이고 <strong>Verified</strong> 표시인 것 클릭 → <strong>Connect to Claude</strong></li>
+        <li>Slack 로그인 화면 → 오른쪽 위에서 <strong>봄날 에스테틱</strong> 워크스페이스 선택</li>
+        <li><strong>허용 화면</strong>을 읽고 <strong>허용(Allow)</strong> (오른쪽 설명 참고)</li>
+        <li><strong>Your connectors</strong>에 <strong>Connected</strong>가 보이면 성공 🎉</li>
+      </ol>
+      <div class="stack reveal">
+        <div class="card card--sky"><h3>🔐 허용 화면 읽는 법</h3><ul class="list"><li>"Claude가 <strong>내 Slack 계정으로</strong> 메시지·채널을 검색하고 읽기, 메시지 보내기…"를 요청합니다</li><li>비밀번호를 Claude에 주는 게 아니라 <strong>출입증</strong>을 내주는 것. 언제든 Disconnect로 회수</li><li>내가 멤버가 아닌 비공개 채널은 Claude도 못 봅니다</li></ul></div>
+        <div class="callout callout--info"><span><strong>"관리자 승인 필요"</strong>가 뜨면: Slack 워크스페이스 관리자가 MCP 연결을 승인해야 해요. 오늘 워크스페이스를 만든 원장님이 소유자 = 관리자이니 본인이 승인합니다. 직원 계정은 "설치 요청" 화면이 뜰 수 있어요.</span></div>
+        <div class="callout callout--warn"><span>이름이 비슷한 비공식 커넥터도 있어요. <strong>Slack이 만든 Verified 커넥터</strong>만 고르세요.</span></div>
+      </div>
+    </div>
+    <p class="asof">2026-10 기준 화면(예전 자료의 "Settings › Connectors"는 구버전). 수업 전 확인: ① Claude Pro 개인 계정에서 Slack 커넥터 연결 여부 ② Slack 무료 플랜에서 사용 가능 여부 ③ Slack 관리자 승인 메뉴 위치 ④ 한국어 메뉴명. 자세히는 <a href="../appendix/f-mcp-slack-jira.html">부록 F</a>.</p>
+  </div>
+  <aside class="notes">
+    7회차 "만능 콘센트(MCP) + 플러그(커넥터)" 비유를 먼저 한 줄로 복습하고 시작.
+    공식 근거: Slack이 운영하는 MCP 서버(mcp.slack.com/mcp), 디렉터리 "Slack" 커넥터(Anthropic verified). Slack 문서 전제조건 "MCP integration approved by your workspace admin".
+    막히는 곳: ① 여러 워크스페이스 중 개인/다른 회사 것을 선택 → Disconnect 후 다시 ② 팝업 차단 ③ 데스크톱 앱은 기본 브라우저로 로그인 창이 열려 다른 Slack 계정으로 연결되는 경우 ④ Team 플랜이면 "Request"만 보임 → Owner가 Connect for your team.
+    주의(문서 상충): claude.com의 예전 Slack 커넥터 문서는 Team/Enterprise 전용으로 적혀 있음. 강사가 Pro 계정으로 미리 실기 확인하고, 안 되면 강사 화면 데모로 대체.
+  </aside>
+</section>
+
+<!-- 12. 실습 5: 도구 권한 + #예약 요약 -->
+<section class="slide">
+  <div class="slide-inner stack">
+    <h2>실습 5 · 권한 정하고 #예약 요약 받기 <span class="timebox">8분</span></h2>
+    <div class="grid-2">
+      <ol class="steps reveal">
+        <li><span class="path">Customize › Connectors › Slack</span> → <strong>Tool permissions</strong></li>
+        <li>읽기·검색 도구 = <span class="pill pill--mint">Always allow</span>, 보내기·예약·캔버스 수정 등 쓰기 도구 = <span class="pill pill--peach">Needs approval</span></li>
+        <li>새 채팅 → 입력창 <strong>+</strong> › <strong>Connectors</strong> → Slack 토글 <strong>ON</strong></li>
+        <li>#예약에 연습용 예약 메시지 3개 올리기<br><small>예: "K님 · 수분 진정 60분 · 14:00 · 지수 · 네이버 예약금 확인"</small></li>
+        <li>오른쪽 프롬프트 실행 → 결과 시간·건수를 #예약 원문과 맞춰 보기</li>
+        <li>마지막 테스트: "#예약에 '오늘 예약 확인 완료' 올려 줘" → 승인 창이 뜨는지 확인 → <strong>Allow once</strong></li>
       </ol>
       <div class="stack reveal">
         <div class="prompt">Slack #예약 채널의 오늘 메시지를 읽고 요약해줘.
 - 예약별 표: 시간 / 관리 메뉴 / 손님 이니셜 / 담당 관리사 / 상태(이모지 기준)
 - 같은 관리사의 시간이 겹치는 예약, 담당자가 없는 예약은 따로 표시
 - 내일 예약 중 전날 리마인드가 필요한 목록
-- 내가 직접 확인해야 할 일 3줄</div>
-        <div class="callout callout--danger"><span>연결하면 Claude가 <strong>내가 볼 수 있는 채널</strong>을 읽을 수 있습니다. 개인정보·건강정보는 가려 쓰는 규칙을 꼭 지키세요. 메시지를 보낼 때는 Claude가 먼저 확인을 묻습니다.</span></div>
+- 내가 직접 확인해야 할 일 3줄
+채널에 아무것도 보내지 마.</div>
+        <div class="callout callout--warn"><span>대화 중 승인 창에서 <strong>Always allow</strong>를 누르면 그 쓰기 도구는 다음부터 묻지 않아요. 보내기는 <strong>Allow once</strong>로!</span></div>
+        <div class="callout callout--danger"><span>Claude는 <strong>내가 볼 수 있는 채널</strong>을 읽습니다. 이니셜·전화번호 가리기·건강정보 금지 규칙(실습 2)을 꼭 지키세요.</span></div>
       </div>
     </div>
-    <p class="asof">커넥터 화면·이름은 2026-10 기준. 회사 Slack에서 앱 설치에 관리자 승인이 필요할 수 있으니 수업 전 확인.</p>
   </div>
   <aside class="notes">
-    막히는 곳: 워크스페이스 관리자 승인 요청이 뜸(수강생이 관리자이면 바로 승인), 다른 회사 Slack을 선택함.
-    예상 질문: "Claude가 알아서 글을 올리나요?" → 아니요, 보내기 전에 확인을 받음. 요약 결과의 시간·건수는 원문과 한 번 맞춰 보게 하기(2회차 복습). 관리 시간(60·70·80분)을 고려해 겹침을 찾는지도 확인.
+    공식 옵션명: 커넥터 페이지 Tool permissions = Always allow / Needs approval / Blocked, 대화 중 승인 창 = Allow once / Always allow. 도구가 많으면 묶음 단위로 먼저 설정.
+    입력창 + › Connectors 토글을 끄면 연결은 유지되고 그 대화에서만 안 씀 — "개인 상담 메모 정리할 땐 꺼 두기" 같은 습관 안내.
+    예상 질문: "Claude가 알아서 글을 올리나요?" → Needs approval로 두면 보내기 전에 꼭 묻는다. 마지막 테스트 메시지는 연습이니 보낸 뒤 지워도 됨.
+    요약의 시간·건수는 원문과 대조(2회차 복습). 관리 시간(60·70·80분)을 고려해 겹침을 찾는지도 확인.
   </aside>
 </section>
 
-<!-- 12. 응용 실습 -->
-<section class="slide">
+<!-- 13. 응용 실습 -->
+<section class="slide slide--alt">
   <div class="slide-inner stack">
-    <h2>응용 실습 · 우리 샵 채널 설계하기 <span class="timebox">7분</span></h2>
+    <h2>응용 실습 · 우리 샵 채널 설계하기 <span class="timebox">5분</span></h2>
     <p class="lead">7회차 흐름도를 Claude에게 보여 주고 우리 샵 채널을 설계해 보세요.</p>
     <div class="prompt reveal">첨부한 흐름도는 우리 샵 업무야. 직원은 ○명이고 업종은 ○○(예: 에스테틱·네일·헤어)야.
 Slack 채널을 5개 이내로 설계해줘.
@@ -249,8 +282,8 @@ Slack 채널을 5개 이내로 설계해줘.
   <aside class="notes">시간이 남으면 실제로 자기 워크스페이스에 채널을 추가. 결과 표는 14회차 도입 계획서에 씀.</aside>
 </section>
 
-<!-- 13. 자주 겪는 문제 -->
-<section class="slide slide--alt">
+<!-- 14. 자주 겪는 문제 -->
+<section class="slide">
   <div class="slide-inner stack">
     <h2>자주 겪는 문제 <span class="timebox">4분</span></h2>
     <div class="table-wrap reveal">
@@ -260,16 +293,18 @@ Slack 채널을 5개 이내로 설계해줘.
         <tr><td>스탠드업이 이상한 시간에 온다</td><td>워크플로 일정의 <strong>시간대</strong>가 서울인지 확인</td></tr>
         <tr><td>월요일(휴무)에도 스탠드업이 온다</td><td>반복 요일에서 월요일 체크 해제</td></tr>
         <tr><td>팀원이 초대 메일을 못 받았다</td><td>스팸함 확인 → 초대 링크를 따로 보내기</td></tr>
-        <tr><td>Claude가 채널을 못 읽는다</td><td>커넥터 연결된 워크스페이스 확인, 비공개 채널이면 내가 멤버인지 확인</td></tr>
+        <tr><td>Slack 커넥터 연결 중 "관리자 승인 필요"</td><td>워크스페이스 소유자(원장)가 MCP 연결 승인. 직원은 설치 요청 후 기다리기</td></tr>
+        <tr><td>Claude가 채널을 못 읽는다 / Slack을 안 쓴다</td><td>입력창 <strong>+</strong> › Connectors에서 Slack이 ON인지, 연결된 워크스페이스가 맞는지, 비공개 채널이면 내가 멤버인지 확인</td></tr>
+        <tr><td>Connectors 화면에 Reconnect가 보인다</td><td>출입증이 끊긴 것. Reconnect → Slack에서 다시 허용</td></tr>
         <tr><td>관리 중에 알림이 너무 울린다</td><td>채널별 알림을 "멘션만"으로, 관리 시간엔 방해 금지 모드. #cs-escalation만 원장 전체 알림</td></tr>
       </table>
     </div>
   </div>
-  <aside class="notes">자세한 대응은 materials/troubleshooting.html 참고. 관리사는 관리 중 휴대폰을 못 보는 게 정상 — 급한 건 데스크(민호)가 직접 전달하는 규칙도 함께.</aside>
+  <aside class="notes">자세한 대응은 materials/troubleshooting.html, 커넥터 문제는 부록 F(../appendix/f-mcp-slack-jira.html) 참고. 관리사는 관리 중 휴대폰을 못 보는 게 정상 — 급한 건 데스크(민호)가 직접 전달하는 규칙도 함께.</aside>
 </section>
 
-<!-- 14. 체크리스트 -->
-<section class="slide">
+<!-- 15. 체크리스트 -->
+<section class="slide slide--alt">
   <div class="slide-inner stack">
     <h2>오늘의 체크리스트 ✅ <span class="timebox">3분</span></h2>
     <p class="small">한 일을 눌러서 체크하세요. (이 컴퓨터에 저장됩니다)</p>
@@ -278,13 +313,14 @@ Slack 채널을 5개 이내로 설계해줘.
       <li>채널 5개를 만들고 #cs-escalation 알림을 켰다</li>
       <li>스레드·멘션·이모지·민감정보 규칙을 #공지에 고정했다</li>
       <li>10:30 스탠드업 워크플로를 게시하고 테스트했다</li>
-      <li>Claude에 Slack을 연결해 #예약 요약을 받아 봤다</li>
+      <li>Customize › Connectors에서 Slack 커넥터를 연결했다 (Connected 확인)</li>
+      <li>Slack 도구 권한을 읽기 Always allow / 쓰기 Needs approval로 정하고 #예약 요약을 받아 봤다</li>
     </ul>
   </div>
-  <aside class="notes">워크플로가 안 된 수강생은 플랜 문제인지 메뉴 문제인지 구분해서 과제로.</aside>
+  <aside class="notes">워크플로가 안 된 수강생은 플랜 문제인지 메뉴 문제인지 구분해서 과제로. 커넥터 연결이 안 된 수강생은 막힌 단계(관리자 승인/플랜/워크스페이스 선택)를 메모해 오게 하고 부록 F를 과제로.</aside>
 </section>
 
-<!-- 15. 과제와 다음 회차 -->
+<!-- 16. 과제와 다음 회차 -->
 <section class="slide slide--title slide--center">
   <div class="slide-inner stack">
     <h2>과제 & 다음 시간 예고 <span class="timebox">4분</span></h2>
@@ -299,7 +335,7 @@ Slack 채널을 5개 이내로 설계해줘.
       </div>
       <div class="card">
         <h3>🔜 9회차: Jira로 할 일 관리하기</h3>
-        <p>예약 한 건을 "카드 한 장"으로 만들고, 접수 → 예약 확정 → 관리 완료 → 사후 연락 완료로 옮겨 봅니다.</p>
+        <p>예약 한 건을 "카드 한 장"으로 만들고, 접수 → 예약 확정 → 관리 완료 → 사후 연락 완료로 옮겨 봅니다. 오늘처럼 Claude에 <strong>Jira 플러그(Atlassian 커넥터)</strong>도 꽂습니다.</p>
       </div>
     </div>
     <nav class="lesson-nav" data-auto aria-label="다음 강의"></nav>

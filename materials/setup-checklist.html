@@ -73,6 +73,7 @@
       <li>Slack 워크스페이스 만들기 (또는 강사 워크스페이스 초대 수락)</li>
       <li>Slack Pro 결제 (1인당 월 $8.75, 연간 결제 시 $7.25) — 강사 안내에 따라</li>
       <li>PC용 Slack 앱과 휴대폰 앱 설치</li>
+      <li>MCP 연결 준비: Slack 워크스페이스 <strong>관리자(소유자)가 Claude 앱·커넥터(MCP 연결)를 승인</strong> — 원장님이 소유자면 본인이 승인, 수업용 워크스페이스는 강사가 승인 (<a href="../appendix/f-mcp-slack-jira.html">부록 F</a>, 관리자 화면 메뉴 위치는 수업 전 확인)</li>
     </ul>
   </div>
 
@@ -81,6 +82,8 @@
     <ul class="checklist">
       <li>Atlassian 계정 만들고 Jira Free 사이트 만들기 (무료, 10명까지)</li>
       <li>사이트 주소 메모해 두기 (예: <code>○○.atlassian.net</code>)</li>
+      <li>MCP 연결 준비: 내 계정이 <strong>사이트 관리자(조직 관리자)</strong>인지 확인 — Claude에 Jira를 처음 연결하는 사람은 관리자가 안전</li>
+      <li><span class="path">Atlassian Administration → Rovo → Rovo MCP server</span>에서 <strong>"Allow Atlassian supported domains"</strong>가 켜져 있는지 확인 (꺼져 있으면 claude.ai 연결이 막힘, 기본값은 수업 전 확인)</li>
     </ul>
   </div>
 
@@ -109,6 +112,17 @@
       <li>Cloudflare 무료 계정 만들기</li>
       <li>Node.js LTS 설치 → 터미널에서 <code>node -v</code> 확인</li>
       <li>졸업 발표 준비: 우리 회사 AI 도입 계획서 초안</li>
+    </ul>
+  </div>
+
+  <div class="card due">
+    <h3>강사 사전 테스트 (8회차 전) <span class="pill pill--peach">강사용 · MCP</span></h3>
+    <ul class="checklist">
+      <li><strong>Pro 개인 계정</strong>에서 <span class="path">Customize → Connectors → Discover</span>로 Slack(Slack 공식, Verified) 커넥터가 연결되는지 실기 확인 — 공식 문서끼리 설명이 달라 수업 전 확인 필수</li>
+      <li>Slack <strong>Free 워크스페이스</strong>에서도 MCP 연결이 되는지 확인 (공식 명시 없음)</li>
+      <li>Atlassian 커넥터 연결 → BOM 프로젝트 이슈 읽기·만들기 테스트, 화면(허용 화면·사이트 선택) 캡처</li>
+      <li>도구 권한을 읽기 Always allow / 쓰기 Needs approval / 삭제 Blocked로 맞춰 두고 승인 창이 뜨는지 확인</li>
+      <li>한국어 UI 메뉴 이름(“사용자 지정”, “커넥터”)과 모바일 앱에서 커넥터 사용 가능 여부 확인</li>
     </ul>
   </div>
 

@@ -27,10 +27,10 @@
 <section class="slide">
   <div class="slide-inner stack">
     <h2>오늘의 목표 <span class="timebox">3분</span></h2>
-    <div class="goal reveal"><span class="goal-label">목표</span><span>API·웹훅·트리거·키를 <strong>비유로 설명</strong>하고, 우리 샵 업무를 "누가→무엇→어디로" 그림으로 그린다</span></div>
+    <div class="goal reveal"><span class="goal-label">목표</span><span>API·웹훅·트리거·키·MCP를 <strong>비유로 설명</strong>하고, 우리 샵 업무를 "누가→무엇→어디로" 그림으로 그린다</span></div>
     <div class="goal reveal"><span class="goal-label">결과물</span><span>우리 샵 업무 흐름도 1장(예약 문의 → 사후 연락까지) + 자동화하고 싶은 일 3개</span></div>
     <div class="grid-3 reveal">
-      <div class="card card--sky"><span class="icon">🍽️</span><h3>이해하기</h3><p>식당·택배·초인종 비유</p></div>
+      <div class="card card--sky"><span class="icon">🍽️</span><h3>이해하기</h3><p>주문서·초인종·열쇠·콘센트 비유</p></div>
       <div class="card card--lavender"><span class="icon">✏️</span><h3>그리기</h3><p>예약 한 건의 여정</p></div>
       <div class="card card--mint"><span class="icon">🪜</span><h3>지도 보기</h3><p>자동화 사다리 L0~L5</p></div>
     </div>
@@ -91,7 +91,7 @@
       <span class="flow-arrow">→</span>
       <div class="flow-node"><span class="icon">🍝</span>음식<small>= 결과</small></div>
     </div>
-    <div class="callout callout--info reveal"><span>8~11회차에서 쓸 Claude의 <strong>커넥터</strong>도, Claude가 Slack·Jira의 "주문서(API)"를 대신 써 주는 것입니다.</span></div>
+    <div class="callout callout--info reveal"><span>8~11회차에서 Claude가 Slack·Jira를 읽고 쓰는 것도, 결국 이 "주문서(API)"를 Claude가 대신 써 주는 것입니다. 어떻게 연결하는지는 잠시 뒤 <strong>MCP</strong>에서 봅니다.</span></div>
   </div>
   <aside class="notes">
     "API를 직접 만들 일은 없다. 우리는 '주문서가 있다'는 것만 알면 된다"를 강조.
@@ -149,8 +149,33 @@
   </aside>
 </section>
 
-<!-- 9. 강사 데모: 업무 흐름도 -->
+<!-- 9. MCP -->
 <section class="slide slide--alt">
+  <div class="slide-inner stack">
+    <h2>MCP = AI용 만능 콘센트 🔌 <span class="timebox">5분</span></h2>
+    <div class="analogy reveal">해외여행 갈 때 챙기는 <strong>만능 어댑터</strong>를 떠올려 보세요. 나라마다 콘센트 모양이 달라도 하나면 다 꽂히죠. Claude도 Slack·Jira마다 주문서(API) 쓰는 법을 따로 배우지 않고, <strong>공통 콘센트</strong> 하나에 서비스별 <strong>플러그</strong>를 꽂아서 씁니다.</div>
+    <dl class="term reveal"><dt>MCP (엠씨피)</dt><dd>AI 앱이 Slack·Jira 같은 외부 서비스와 연결되는 <strong>공통 콘센트 규격</strong>. Claude 화면에서는 서비스별 플러그를 <strong>커넥터(Connector)</strong>라고 부른다.</dd></dl>
+    <div class="flow reveal">
+      <div class="flow-node flow-node--human"><span class="icon">🙋</span>원장님 질문<small>"오늘 #예약 요약해 줘"</small></div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-node flow-node--accent"><span class="icon">🤖</span>Claude<small>콘센트 = MCP</small></div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-node"><span class="icon">🔌</span>Slack 커넥터<small>8회차에 꽂음</small></div>
+      <span class="flow-arrow">+</span>
+      <div class="flow-node"><span class="icon">🔌</span>Atlassian(Jira) 커넥터<small>9회차에 꽂음</small></div>
+    </div>
+    <div class="callout callout--warn reveal"><span>플러그를 꽂을 때 비밀 열쇠를 복사해 붙여넣지 않습니다. 서비스 화면에서 <strong>"허용" 버튼으로 출입증</strong>을 내주고, 언제든 회수할 수 있어요. 자세한 설정은 <a href="../appendix/f-mcp-slack-jira.html">부록 F</a>.</span></div>
+  </div>
+  <aside class="notes">
+    오늘은 "콘센트와 플러그" 그림만 기억하면 충분. 이름 풀이(Model Context Protocol)는 묻는 사람에게만. 공식 사이트도 "AI 앱용 USB-C 포트"라고 비유함(modelcontextprotocol.io).
+    실제 연결은 8회차(Slack), 9회차(Jira)에서 직접 해 봄. 메뉴 위치는 2026-10 기준 claude.ai Customize › Connectors.
+    예상 질문: "Claude가 우리 Slack을 다 보나요?" → 로그인한 내 계정이 볼 수 있는 범위만, 그리고 대화마다 켜고 끌 수 있음.
+    예상 질문: "열쇠(API 키)랑 뭐가 달라요?" → 키는 복사해서 보관하는 비밀 글자, 커넥터는 "허용" 버튼으로 받는 출입증. 그래도 출입증도 함부로 내주지 않는다는 원칙은 같음.
+  </aside>
+</section>
+
+<!-- 10. 강사 데모: 업무 흐름도 -->
+<section class="slide">
   <div class="slide-inner stack">
     <h2>강사 데모 · 봄날 에스테틱 업무 흐름도 <span class="timebox">8분</span></h2>
     <p class="small">① 예약 한 건의 여정 (8~11회차에서 만들 것)</p>
@@ -186,10 +211,10 @@
   </aside>
 </section>
 
-<!-- 10. 따라 하기: 흐름도 그리는 법 -->
-<section class="slide">
+<!-- 11. 따라 하기: 흐름도 그리는 법 -->
+<section class="slide slide--alt">
   <div class="slide-inner stack">
-    <h2>실습 1 · 흐름도 그리는 법 (누가 → 무엇 → 어디로) <span class="timebox">10분</span></h2>
+    <h2>실습 1 · 흐름도 그리는 법 (누가 → 무엇 → 어디로) <span class="timebox">9분</span></h2>
     <div class="grid-2">
       <ol class="steps reveal">
         <li>종이에 우리 샵의 <strong>가장 자주 하는 일 1개</strong>를 고르기 (예: 예약 받기 → 사후 연락)</li>
@@ -210,10 +235,10 @@
   <aside class="notes">손으로 먼저 그리는 게 핵심. 바로 Claude에 맡기면 우리 샵 사정(예약금, 24시간 전 변경 규정, 월요일 휴무)이 빠진 '일반적인 흐름'이 나옴. 사진 업로드가 어려운 수강생은 글로 단계 나열해도 됨. 데스크 위에서 찍으면 예약 노트가 같이 찍히는 경우가 많으니 빈 종이 위에서 찍게 하기.</aside>
 </section>
 
-<!-- 11. 응용 실습 -->
-<section class="slide slide--alt">
+<!-- 12. 응용 실습 -->
+<section class="slide">
   <div class="slide-inner stack">
-    <h2>응용 실습 · 우리 샵 흐름도 완성하기 <span class="timebox">15분</span></h2>
+    <h2>응용 실습 · 우리 샵 흐름도 완성하기 <span class="timebox">13분</span></h2>
     <p class="lead">아래 표를 채우면 오늘의 결과물 완성입니다.</p>
     <div class="table-wrap reveal">
       <table class="table">
@@ -230,8 +255,8 @@
   <aside class="notes">자기 샵이 없는 수강생은 봄날 에스테틱 "문의 흐름"으로. 다 그린 사람 2명 발표. "자동화하고 싶은 일 3개"는 꼭 적어 가게 하기 — 14회차 도입 계획서의 재료. 자주 나오는 답: 전날 리마인드, 사후 연락 잊지 않기, 회원권 잔여 횟수 확인.</aside>
 </section>
 
-<!-- 12. 자동화 사다리 -->
-<section class="slide">
+<!-- 13. 자동화 사다리 -->
+<section class="slide slide--alt">
   <div class="slide-inner stack">
     <h2>🪜 자동화 사다리: 앞으로 7회의 지도 <span class="timebox">7분</span></h2>
     <div class="table-wrap reveal">
@@ -241,7 +266,7 @@
         <tr><td><span class="pill pill--pink">L1</span></td><td>앱 기본 기능</td><td>Slack 채널 나누기(#예약), Jira 예약 보드, LINE 키워드 자동응답</td><td>8 · 9 · 12</td></tr>
         <tr><td><span class="pill pill--lavender">L2</span></td><td>앱 안의 자동화</td><td>Slack Workflow Builder(스탠드업), Jira Automation(관리 완료 → 사후 연락 기한)</td><td>8 · 10</td></tr>
         <tr><td><span class="pill pill--sky">L3</span></td><td>연결 도구 Make·Zapier</td><td>홈페이지 상담 폼 → Slack + Jira, LINE → AI → Slack</td><td>10 · 13</td></tr>
-        <tr><td><span class="pill pill--mint">L4</span></td><td>AI(Claude)가 읽고 판단</td><td>Jira를 읽고 주간 보고(예약·노쇼·클레임) 작성, 손님 질문에 답변</td><td>11 · 13</td></tr>
+        <tr><td><span class="pill pill--mint">L4</span></td><td>AI(Claude)가 읽고 판단<br><small>MCP 커넥터로 Slack·Jira 연결</small></td><td>#예약 요약, BOM 이슈 만들기, Slack·Jira를 함께 읽고 주간 보고 작성, 손님 질문에 답변</td><td>8 · 9 · 11 · 13</td></tr>
         <tr><td><span class="pill pill--peach">L5</span></td><td>Claude가 짠 작은 코드</td><td>우리 전용 상담봇 서버</td><td>14</td></tr>
       </table>
     </div>
@@ -251,11 +276,12 @@
     수강생의 "자동화하고 싶은 일 3개"를 사다리 어느 칸에 놓을지 같이 정해 보기.
     예상 질문: "바로 L5부터 하면 안 되나요?" → 코드는 고장 나면 고칠 사람이 필요. 작은 샵은 L1~L3으로 80%가 해결됨.
     예상 질문: "네이버 예약 리마인드는요?" → 네이버 예약 자체 알림 기능이 있다면 그게 L1. 이미 있는 기능부터 확인(수업 전 확인).
+    L4의 MCP 커넥터는 코딩 없이 클릭으로 연결(8·9회차). L3(Make·Zapier)는 "정해진 대로 매번", L4는 "읽고 판단해서 정리" — 차이를 한 줄로 짚기.
   </aside>
 </section>
 
-<!-- 13. 자주 겪는 문제 -->
-<section class="slide slide--alt">
+<!-- 14. 자주 겪는 문제 -->
+<section class="slide">
   <div class="slide-inner stack">
     <h2>자주 겪는 문제 <span class="timebox">4분</span></h2>
     <div class="table-wrap reveal">
@@ -266,14 +292,15 @@
         <tr><td>"전부 자동으로"만 떠오른다</td><td>"언제 ~하면, ~한다" 한 문장씩 쪼개기</td></tr>
         <tr><td>Claude가 흐름을 지어낸다</td><td>"모르면 질문해줘"를 프롬프트에 넣기 (2회차 복습)</td></tr>
         <tr><td>키를 채팅방에 올려 버렸다</td><td>바로 그 서비스에서 키 삭제 → 새로 발급. 메시지 삭제만으론 부족</td></tr>
+        <tr><td>MCP·커넥터·API가 뒤섞인다</td><td>API = 주문서 / MCP = 만능 콘센트 / 커넥터 = 서비스별 플러그. 연결 실습은 8·9회차, 정리는 부록 F</td></tr>
       </table>
     </div>
   </div>
-  <aside class="notes">자세한 대응은 materials/troubleshooting.html 참고. 키 유출 대응 순서는 한 번 소리 내어 읽게 하기.</aside>
+  <aside class="notes">자세한 대응은 materials/troubleshooting.html 참고. 키 유출 대응 순서는 한 번 소리 내어 읽게 하기. MCP 관련 질문이 길어지면 부록 F(../appendix/f-mcp-slack-jira.html)로 넘기고 8회차에서 직접 해 보자고 마무리.</aside>
 </section>
 
-<!-- 14. 체크리스트 -->
-<section class="slide">
+<!-- 15. 체크리스트 -->
+<section class="slide slide--alt">
   <div class="slide-inner stack">
     <h2>오늘의 체크리스트 ✅ <span class="timebox">3분</span></h2>
     <p class="small">한 일을 눌러서 체크하세요. (이 컴퓨터에 저장됩니다)</p>
@@ -281,6 +308,7 @@
       <li>API를 "주문서"로, 웹훅을 "초인종"으로 설명할 수 있다</li>
       <li>자동화를 "언제 ~하면, ~한다" 문장으로 말할 수 있다</li>
       <li>API 키·토큰은 절대 공유하지 않는다는 것을 안다</li>
+      <li>MCP를 "만능 콘센트", 커넥터를 "플러그"로 설명할 수 있다</li>
       <li>예약 문의부터 사후 연락까지 우리 샵 흐름도 1장을 그렸다</li>
       <li>자동화하고 싶은 일 3개를 사다리 칸에 놓아 봤다</li>
     </ul>
@@ -288,7 +316,7 @@
   <aside class="notes">흐름도를 못 끝낸 수강생은 과제로. 다음 시간 첫 5분에 흐름도를 보며 Slack 채널을 정함.</aside>
 </section>
 
-<!-- 15. 과제와 다음 회차 -->
+<!-- 16. 과제와 다음 회차 -->
 <section class="slide slide--title slide--center">
   <div class="slide-inner stack">
     <h2>과제 & 다음 시간 예고 <span class="timebox">4분</span></h2>
@@ -299,11 +327,12 @@
           <li>흐름도 완성해서 사진으로 저장 → 8회차 채널 설계에 씀</li>
           <li>Slack Pro 결제 또는 무료 체험 가능 여부 확인 (회사 카드 준비)</li>
           <li>원장·관리사·실장 이메일 주소 모아 두기 (Slack 초대용)</li>
+          <li>claude.ai에 로그인되는지 확인 (8회차 Slack 커넥터 연결용)</li>
         </ul>
       </div>
       <div class="card">
         <h3>🔜 8회차: Slack으로 팀 소통하기</h3>
-        <p>단톡방을 졸업합니다. #예약 같은 주제별 채널을 만들고, 매일 10:30 오픈 전에 "오늘 예약·특이 고객"을 묻는 스탠드업 봇을 직접 만듭니다.</p>
+        <p>단톡방을 졸업합니다. #예약 같은 주제별 채널을 만들고, 매일 10:30 오픈 전에 "오늘 예약·특이 고객"을 묻는 스탠드업 봇을 만듭니다. 마지막엔 Claude에 <strong>Slack 플러그(커넥터)</strong>를 꽂아 #예약 요약을 받아 봅니다.</p>
       </div>
     </div>
     <nav class="lesson-nav" data-auto aria-label="다음 강의"></nav>
