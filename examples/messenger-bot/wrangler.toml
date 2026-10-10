@@ -1,0 +1,14 @@
+# Cloudflare Workers 설정 파일
+# name = 배포했을 때 주소에 들어가는 이름 → https://bomnal-bot.<내계정>.workers.dev
+name = "bomnal-bot"
+# main = 프로그램이 시작되는 파일
+main = "src/index.ts"
+# compatibility_date = "이 날짜 기준의 Workers 동작 방식을 쓰겠다"는 약속 (바꾸지 않아도 됩니다)
+compatibility_date = "2026-10-01"
+
+# 로그(npx wrangler tail, 대시보드 Logs)에서 기록을 볼 수 있게 켭니다.
+[observability]
+enabled = true
+
+# 비밀값(API 키 등)은 절대 이 파일에 쓰지 마세요!
+# 대신 터미널에서 `npx wrangler secret put 이름` 으로 등록합니다. (README 참고)

@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>부록 B · 버전 관리 기초 (Git을 몰라도 되는 만큼만) | AI로 작은 회사 운영하기</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Ctext y=%22.9em%22 font-size=%2290%22%3E%F0%9F%8C%B7%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="../assets/deck.css">
+</head>
+<body data-appendix="B">
+
+<!-- 1. 표지 -->
+<section class="slide slide--title slide--center">
+  <div class="slide-inner">
+    <span class="eyebrow reveal">부록 B</span>
+    <h1 class="reveal">버전 관리 기초</h1>
+    <p class="lead reveal">Git을 몰라도 되는 만큼만 — 단어 3개면 충분합니다</p>
+    <p class="small reveal" style="margin-top:2rem">⌨️ 방향키·스페이스로 이동 · <kbd>N</kbd> 강사 노트 · <kbd>D</kbd> 어둡게</p>
+  </div>
+  <aside class="notes">명령어 강의가 아님. 목표는 "저장소·커밋·푸시"를 알아듣고, 실제 작업은 GitHub 화면이나 Claude Code에게 맡기는 것. 30~40분.</aside>
+</section>
+
+<!-- 2. 목표 -->
+<section class="slide">
+  <div class="slide-inner stack">
+    <h2>이 부록에서 할 일</h2>
+    <div class="goal reveal"><span class="goal-label">목표</span><span>홈페이지·봇 파일의 <strong>변경 기록</strong>을 남기고, 망가지면 예전으로 되돌릴 수 있다</span></div>
+    <div class="goal reveal"><span class="goal-label">결과물</span><span>부록 A 저장소에 커밋 2개 이상 + 예전 버전 열어 보기</span></div>
+    <div class="grid-3 reveal">
+      <div class="card card--pink"><span class="icon">🌐</span><h3>방법 1</h3><p>GitHub 웹사이트에서 클릭으로</p></div>
+      <div class="card card--lavender"><span class="icon">🖥️</span><h3>방법 2</h3><p>GitHub Desktop 프로그램으로</p></div>
+      <div class="card card--mint"><span class="icon">🤖</span><h3>방법 3</h3><p>Claude Code에게 말로 맡기기</p></div>
+    </div>
+  </div>
+  <aside class="notes">세 방법 중 하나만 익혀도 됨. 비개발자에게는 방법 1(웹) → 익숙해지면 방법 3(Claude Code) 추천.</aside>
+</section>
+
+<!-- 3. 왜 필요 -->
+<section class="slide slide--alt">
+  <div class="slide-inner stack">
+    <h2>이런 파일, 본 적 있나요?</h2>
+    <div class="grid-2">
+      <pre class="code reveal">가격표.xlsx
+가격표_수정.xlsx
+가격표_최종.xlsx
+가격표_최종_진짜최종.xlsx
+가격표_최종_진짜최종(대표님확인).xlsx</pre>
+      <div class="stack reveal">
+        <p class="lead">어느 게 최신인지, 어제 뭘 바꿨는지 모릅니다.</p>
+        <div class="callout callout--tip"><span>버전 관리를 쓰면 파일은 <strong>하나</strong>, 기록은 <strong>전부</strong> 남습니다. 언제 누가 무엇을 바꿨는지 메모와 함께요.</span></div>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">웃음 포인트. 수강생에게 "최종_진짜최종" 경험을 물어보면 대부분 손을 듦. 홈페이지·봇 코드도 똑같은 문제가 생긴다고 연결.</aside>
+</section>
+
+<!-- 4. 비유와 용어 -->
+<section class="slide">
+  <div class="slide-inner stack">
+    <h2>구글 문서의 '변경 기록'과 같아요</h2>
+    <div class="analogy reveal">
+      구글 문서의 <strong>파일 → 버전 기록</strong>을 열면 "10월 3일 오후 2시, 한봄이 수정" 같은 기록이 쭉 보이죠.
+      버전 관리는 이걸 <strong>내가 원하는 순간에, 메모를 붙여서</strong> 저장하는 방법입니다.
+    </div>
+    <div class="grid-3 reveal">
+      <dl class="term"><dt>저장소 (Repository)</dt><dd>기록이 함께 보관되는 프로젝트 폴더. 홈페이지 하나 = 저장소 하나</dd></dl>
+      <dl class="term"><dt>커밋 (Commit)</dt><dd>"지금 상태를 저장 + 메모" 한 번. 게임의 세이브 포인트</dd></dl>
+      <dl class="term"><dt>푸시 (Push)</dt><dd>내 컴퓨터에 쌓인 커밋을 인터넷(GitHub)으로 올려 보내기</dd></dl>
+    </div>
+    <p class="small reveal">Git = 기록을 남기는 <strong>도구</strong>, GitHub = 그 기록을 인터넷에 보관하는 <strong>서비스</strong>. 카메라와 사진 클라우드 관계예요.</p>
+  </div>
+  <aside class="notes">브랜치·머지·풀 리퀘스트 같은 단어는 일부러 뺌. 질문이 나오면 "평행 세이브 슬롯 같은 것, 혼자 쓰는 작은 가게 사이트에선 몰라도 된다"로 정리.</aside>
+</section>
+
+<!-- 5. 흐름 -->
+<section class="slide slide--alt">
+  <div class="slide-inner stack">
+    <h2>세 단어로 보는 하루 흐름</h2>
+    <div class="flow reveal">
+      <div class="flow-node flow-node--human">✏️ 파일 고치기</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node">💾 커밋<br><span class="small">"영업시간 수정"</span></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node flow-node--accent">☁️ 푸시<br><span class="small">GitHub로</span></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node">🌐 Vercel 자동 반영</div>
+    </div>
+    <div class="table-wrap reveal">
+      <table class="table">
+        <tr><th>좋은 커밋 메모 👍</th><th>나쁜 커밋 메모 👎</th></tr>
+        <tr><td>메인 사진을 가을 꽃다발로 교체</td><td>수정</td></tr>
+        <tr><td>당일 배송 마감 시간 오후 3시로 변경</td><td>ㅇㅇ</td></tr>
+        <tr><td>LINE 봇 환불 답변 문구 다듬기</td><td>최종</td></tr>
+      </table>
+    </div>
+  </div>
+  <aside class="notes">GitHub 웹에서 직접 고치면 커밋과 푸시가 한 번에 일어남(이미 인터넷에 있으니까). 내 컴퓨터에서 작업할 때만 '푸시'가 따로 필요하다고 짚기.</aside>
+</section>
+
+<!-- 6. 방법 1: GitHub 웹 -->
+<section class="slide">
+  <div class="slide-inner stack">
+    <h2>방법 1 · GitHub 웹사이트에서</h2>
+    <div class="grid-2">
+      <ol class="steps reveal">
+        <li>부록 A 저장소 → <strong>index.html</strong> 클릭</li>
+        <li>오른쪽 위 연필(✏️ <strong>Edit</strong>) 아이콘 → 글자 수정</li>
+        <li><span class="path">Commit changes…</span> → 메모 입력 → <span class="path">Commit changes</span></li>
+        <li>저장소 첫 화면의 <span class="path">Commits</span>(시계 아이콘) → 기록 목록 확인</li>
+        <li>예전 커밋을 눌러 <strong>무엇이 바뀌었는지</strong> 보기 (빨강 = 지움, 초록 = 추가)</li>
+      </ol>
+      <div class="stack reveal">
+        <div class="card card--mint"><h3>👍 장점</h3><p>설치할 것 없음. 커밋과 푸시가 한 번에</p></div>
+        <div class="card card--peach"><h3>👎 단점</h3><p>파일이 많아지면 하나씩 고치기 번거로움</p></div>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">화면 이름은 2026-10 기준. 예전 버전으로 되돌리고 싶을 때: 예전 커밋에서 파일 내용을 복사해 다시 붙여넣고 커밋하는 게 초보자에게 가장 안전한 방법.</aside>
+</section>
+
+<!-- 7. 방법 2: GitHub Desktop -->
+<section class="slide slide--alt">
+  <div class="slide-inner stack">
+    <h2>방법 2 · GitHub Desktop 프로그램</h2>
+    <div class="grid-2">
+      <ol class="steps reveal">
+        <li><span class="path">desktop.github.com</span>에서 내려받아 설치 → GitHub 계정으로 로그인</li>
+        <li><span class="path">File → Clone repository</span> → bomnal-flower 선택 → 내 컴퓨터로 복사</li>
+        <li>평소처럼 폴더 안 파일을 고치고 저장</li>
+        <li>왼쪽 아래 메모 칸에 요약 입력 → <span class="path">Commit to main</span></li>
+        <li>위쪽 <span class="path">Push origin</span> 클릭 → GitHub로 올라감</li>
+      </ol>
+      <div class="stack reveal">
+        <div class="card card--sky"><h3>💡 Clone(클론)</h3><p>인터넷 저장소를 내 컴퓨터로 통째로 복사해 오기. 처음 한 번만</p></div>
+        <div class="card card--lavender"><h3>🕐 History 탭</h3><p>지금까지의 커밋 목록과 바뀐 줄을 한눈에</p></div>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">명령어 없이 '저장 → 커밋 → 푸시'를 버튼으로 체험하기 좋음. 메뉴 이름은 영어. 설치가 어려운 회사 PC에서는 방법 1로.</aside>
+</section>
+
+<!-- 8. 방법 3: Claude Code -->
+<section class="slide">
+  <div class="slide-inner stack">
+    <h2>방법 3 · Claude Code에게 말로 맡기기</h2>
+    <p class="lead">Claude Code(부록 C)는 파일을 고친 뒤 <strong>커밋 메모까지 대신 써서</strong> 저장해 줍니다.</p>
+    <div class="grid-2">
+      <div class="stack reveal">
+        <div class="prompt">지금까지 바꾼 내용을 확인하고, 알아보기 쉬운 한국어 메모로 커밋해 줘.</div>
+        <div class="prompt">GitHub에 푸시해 줘.</div>
+        <div class="prompt">최근 커밋 5개를 쉬운 말로 요약해 줘.</div>
+      </div>
+      <div class="stack reveal">
+        <div class="callout callout--info"><span>Claude Code는 실제 명령을 실행하기 전에 <strong>허락을 물어봅니다.</strong> 무엇을 하려는지 읽어 보고 승인하세요.</span></div>
+        <div class="callout callout--warn"><span>"되돌려 줘", "강제로 올려 줘"처럼 <strong>기록을 지우는</strong> 요청은 신중히. 먼저 "어떤 일이 생기는지 설명해 줘"라고 물어보세요.</span></div>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">Claude Code에서는 /rewind(되감기)로 대화와 코드를 이전 시점으로 돌릴 수도 있음(공식 문서 기준). 하지만 이미 푸시한 기록은 GitHub에 남아 있으니 안심해도 된다고 설명.</aside>
+</section>
+
+<!-- 9. 되돌리기 -->
+<section class="slide slide--alt">
+  <div class="slide-inner stack">
+    <h2>망가졌을 때 예전으로 돌아가기</h2>
+    <div class="table-wrap reveal">
+      <table class="table">
+        <tr><th>방법</th><th>이렇게</th></tr>
+        <tr><td>GitHub 웹</td><td>Commits → 멀쩡했던 커밋 → 파일 보기 → 내용 복사 → 지금 파일에 붙여넣고 커밋</td></tr>
+        <tr><td>GitHub Desktop</td><td>History → 잘못된 커밋 오른쪽 클릭 → <strong>Revert changes in commit</strong> → Push</td></tr>
+        <tr><td>Claude Code</td><td>"어제 오후 커밋 상태로 index.html만 되돌려 줘. 먼저 무엇이 바뀌는지 보여 줘."</td></tr>
+      </table>
+    </div>
+    <div class="callout callout--tip reveal"><span>되돌리기도 <strong>새 커밋</strong>으로 남기 때문에, 되돌린 것을 다시 되돌릴 수도 있어요. 기록은 지워지지 않습니다.</span></div>
+  </div>
+  <aside class="notes">Revert는 '취소 커밋'을 새로 만드는 안전한 방식. reset 같은 기록 삭제 방식은 초보자에게 권하지 않음.</aside>
+</section>
+
+<!-- 10. 비밀값 주의 -->
+<section class="slide">
+  <div class="slide-inner stack">
+    <h2>⚠️ 절대 올리면 안 되는 것</h2>
+    <div class="callout callout--danger reveal"><span>한 번 커밋해서 올린 파일은 지워도 <strong>기록에 남습니다.</strong> 공개 저장소라면 전 세계에 노출됩니다. API 키가 올라갔다면 즉시 해당 서비스에서 <strong>키를 폐기하고 새로 발급</strong>하세요.</span></div>
+    <div class="grid-2 reveal">
+      <ul class="checklist">
+        <li>API 키·비밀번호 (ANTHROPIC_API_KEY, LINE 채널 시크릿 등)</li>
+        <li>Slack Webhook 주소</li>
+        <li>고객 명단·주문 장부</li>
+        <li><code>.env</code> 파일</li>
+      </ul>
+      <div class="card card--yellow"><h3>🛡️ .gitignore</h3><p>"이 파일은 기록하지 마"라는 제외 목록 파일. Claude Code에게 "비밀값 파일이 올라가지 않게 .gitignore를 설정해 줘"라고 부탁하세요.</p></div>
+    </div>
+  </div>
+  <aside class="notes">14회차 봇 서버의 비밀값은 코드에 넣지 않고 `npx wrangler secret put 이름`으로 Cloudflare에 따로 저장함 — 이 장과 연결. 체크 항목을 눌러 보게 하기.</aside>
+</section>
+
+<!-- 11. 자주 겪는 문제 -->
+<section class="slide slide--title slide--center">
+  <div class="slide-inner stack">
+    <h2>자주 겪는 문제</h2>
+    <div class="table-wrap reveal" style="text-align:left">
+      <table class="table">
+        <tr><th>이럴 때</th><th>이렇게</th></tr>
+        <tr><td>Push가 거절된다</td><td>GitHub에 내 컴퓨터에 없는 새 커밋이 있음 → Desktop의 <strong>Fetch/Pull</strong> 먼저, 또는 Claude Code에게 상황 설명 요청</td></tr>
+        <tr><td>Commit 버튼이 회색</td><td>바뀐 파일이 없거나 메모 칸이 비어 있음</td></tr>
+        <tr><td>무엇을 바꿨는지 모르겠다</td><td>Commits/History에서 빨강·초록 줄 확인</td></tr>
+        <tr><td>"conflict(충돌)" 메시지</td><td>두 곳에서 같은 줄을 고친 것. 혼자 쓰면 한 곳(웹 또는 내 PC)에서만 고치기</td></tr>
+      </table>
+    </div>
+    <nav class="lesson-nav" data-auto aria-label="다른 부록"></nav>
+  </div>
+  <aside class="notes">충돌·거절은 처음엔 겁나지만 데이터가 사라진 게 아님. 화면을 캡처해 Claude에게 물어보는 습관을 다시 강조. 다음 부록 C에서 Claude Code 설치.</aside>
+</section>
+
+<script src="../assets/course.js"></script>
+<script src="../assets/deck.js"></script>
+</body>
+</html>

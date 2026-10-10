@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>부록 A · 홈페이지를 인터넷에 올리기 (GitHub + Vercel) | AI로 작은 회사 운영하기</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Ctext y=%22.9em%22 font-size=%2290%22%3E%F0%9F%8C%B7%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="../assets/deck.css">
+</head>
+<body data-appendix="A">
+
+<!-- 1. 표지 -->
+<section class="slide slide--title slide--center">
+  <div class="slide-inner">
+    <span class="eyebrow reveal">부록 A · 6회차 심화</span>
+    <h1 class="reveal">홈페이지를 인터넷에 올리기</h1>
+    <p class="lead reveal">6회차에 만든 가게 홈페이지에 나만의 인터넷 주소를 달아 줍니다</p>
+    <p class="small reveal" style="margin-top:2rem">⌨️ 방향키·스페이스로 이동 · <kbd>N</kbd> 강사 노트 · <kbd>D</kbd> 어둡게</p>
+  </div>
+  <aside class="notes">6회차 아티팩트 공유 링크만으로 충분한 수강생도 많음. "내 주소(도메인)로 운영하고 싶다", "네이버 검색에 걸리게 하고 싶다"는 수강생용 부록. 전체 40~50분.</aside>
+</section>
+
+<!-- 2. 목표 -->
+<section class="slide">
+  <div class="slide-inner stack">
+    <h2>이 부록에서 할 일</h2>
+    <div class="goal reveal"><span class="goal-label">목표</span><span>코딩 없이 <strong>클릭만으로</strong> 홈페이지 파일을 인터넷에 공개한다</span></div>
+    <div class="goal reveal"><span class="goal-label">결과물</span><span>bomnal-flower.vercel.app 같은 내 홈페이지 주소 (원하면 내 도메인까지)</span></div>
+    <div class="flow reveal">
+      <div class="flow-node flow-node--human">💻 index.html<br><span class="small">6회차 결과물</span></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node">🐙 GitHub<br><span class="small">파일 보관함</span></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node flow-node--accent">▲ Vercel<br><span class="small">인터넷 전시장</span></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node">🌐 손님<br><span class="small">누구나 접속</span></div>
+    </div>
+  </div>
+  <aside class="notes">흐름 그림 하나만 기억하면 됨. 한 번 연결해 두면 GitHub의 파일만 바꿔도 사이트가 자동으로 바뀐다는 점이 핵심 장점.</aside>
+</section>
+
+<!-- 3. 비유와 용어 -->
+<section class="slide slide--alt">
+  <div class="slide-inner stack">
+    <h2>보관함, 전시장, 간판 주소</h2>
+    <div class="analogy reveal">
+      <strong>GitHub</strong>는 홈페이지 파일을 넣어 두는 <strong>창고(구글 드라이브의 코드 버전)</strong>,
+      <strong>Vercel</strong>은 그 창고에서 물건을 꺼내 24시간 진열하는 <strong>전시장</strong>,
+      <strong>도메인</strong>은 전시장 앞에 다는 <strong>간판 주소</strong>입니다.
+    </div>
+    <div class="grid-3 reveal">
+      <dl class="term"><dt>GitHub (깃허브)</dt><dd>파일과 변경 기록을 인터넷에 보관하는 서비스. 무료 가입</dd></dl>
+      <dl class="term"><dt>배포 (Deploy)</dt><dd>내 컴퓨터에만 있던 사이트를 인터넷에 공개하는 일</dd></dl>
+      <dl class="term"><dt>도메인 (Domain)</dt><dd>bomnal.kr 같은 인터넷 주소. 1년 단위로 사서 씀</dd></dl>
+    </div>
+  </div>
+  <aside class="notes">용어 3개면 충분. Git(도구)과 GitHub(서비스)의 차이는 부록 B에서. "저장소(repository)" 단어는 다음 장에서 '프로젝트 폴더'로만 설명.</aside>
+</section>
+
+<!-- 4. 준비: 파일 받기 -->
+<section class="slide">
+  <div class="slide-inner stack">
+    <h2>준비 · 6회차 홈페이지를 파일로 받기</h2>
+    <div class="grid-2">
+      <ol class="steps reveal">
+        <li>6회차에 만든 홈페이지 대화(또는 프로젝트)를 엽니다</li>
+        <li>오른쪽 프롬프트로 <strong>한 파일짜리</strong> HTML을 요청</li>
+        <li>아티팩트 화면의 <span class="path">⋯ → Download(다운로드)</span>로 내려받기</li>
+        <li>파일 이름을 정확히 <strong>index.html</strong>로 바꾸기 (전부 소문자)</li>
+      </ol>
+      <div class="prompt reveal">이 홈페이지를 그대로 웹사이트에 올리려고 해. CSS와 스크립트를 모두 안에 넣은 index.html 한 파일로 정리해 줘. 사진은 무료 이미지 주소 대신 지금은 빈 칸으로 두고, 나중에 내가 바꿀 위치를 주석으로 표시해 줘.</div>
+    </div>
+    <div class="callout callout--warn reveal"><span>홈페이지에 <strong>개인 휴대폰 번호·집 주소</strong>가 들어 있지 않은지 확인하세요. 공개되면 누구나 봅니다. 가게 대표번호와 매장 주소만!</span></div>
+  </div>
+  <aside class="notes">다운로드 메뉴 위치는 수업 전 확인(2026-10). 메뉴가 안 보이면 코드 보기 → 전체 복사 → 메모장에 붙여넣고 index.html로 저장. Windows는 '파일 확장명 표시'를 켜야 .html.txt가 되는 실수를 막을 수 있음.</aside>
+</section>
+
+<!-- 5. GitHub 가입 + 저장소 -->
+<section class="slide slide--alt">
+  <div class="slide-inner stack">
+    <h2>실습 1 · GitHub 가입하고 보관함 만들기</h2>
+    <div class="grid-2">
+      <ol class="steps reveal">
+        <li><span class="path">github.com</span> → <strong>Sign up(가입)</strong> → 이메일·비밀번호·사용자 이름 → 이메일 인증</li>
+        <li>오른쪽 위 <span class="path">+ → New repository(새 저장소)</span></li>
+        <li>Repository name: <strong>bomnal-flower</strong> (영어 소문자·하이픈)</li>
+        <li><strong>Public</strong> 선택 → <span class="path">Create repository</span></li>
+      </ol>
+      <div class="stack reveal">
+        <div class="card card--sky"><h3>💡 저장소(repository) = 프로젝트 폴더</h3><p>홈페이지 하나당 저장소 하나. 줄여서 "레포"라고도 불러요.</p></div>
+        <div class="callout callout--danger"><span>Public(공개) 저장소의 파일은 <strong>전 세계 누구나</strong> 볼 수 있습니다. 비밀번호·API 키·고객 명단은 절대 올리지 마세요.</span></div>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">가입 시 2단계 인증(2FA) 설정을 요구할 수 있음 — 휴대폰 인증 앱 또는 문자. 사용자 이름은 가게 영문명 추천(예: bomnalflower). Private으로 해도 Vercel 배포는 가능하지만 처음엔 Public이 덜 헷갈림.</aside>
+</section>
+
+<!-- 6. 파일 올리기 -->
+<section class="slide">
+  <div class="slide-inner stack">
+    <h2>실습 2 · index.html 올리기</h2>
+    <ol class="steps reveal">
+      <li>저장소를 만든 직후 화면의 <span class="path">uploading an existing file</span> 링크 클릭 (또는 <span class="path">Add file → Upload files</span>)</li>
+      <li>index.html(사진이 있다면 사진 파일도)을 끌어다 놓기</li>
+      <li>아래 메모 칸에 "첫 홈페이지 업로드"라고 적기</li>
+      <li>초록색 <span class="path">Commit changes</span> 클릭 → 파일 목록에 index.html이 보이면 성공</li>
+    </ol>
+    <div class="callout callout--tip reveal"><span><strong>Commit changes</strong> = "이 상태로 저장하고 메모를 남긴다"는 뜻. 나중에 언제 무엇을 바꿨는지 기록이 남아요 (부록 B).</span></div>
+  </div>
+  <aside class="notes">가장 흔한 실수: Index.html, index.html.txt, 폴더째 올려서 index.html이 폴더 안에 들어감. 반드시 저장소 맨 위에 index.html이 있어야 함.</aside>
+</section>
+
+<!-- 7. Vercel 배포 -->
+<section class="slide slide--alt">
+  <div class="slide-inner stack">
+    <h2>실습 3 · Vercel로 공개하기</h2>
+    <div class="grid-2">
+      <ol class="steps reveal">
+        <li><span class="path">vercel.com</span> → <strong>Sign Up</strong> → <span class="path">Continue with GitHub</span></li>
+        <li>GitHub 화면에서 <strong>Authorize Vercel</strong>(권한 허용)</li>
+        <li>대시보드 <span class="path">Add New… → Project</span></li>
+        <li>bomnal-flower 옆 <strong>Import</strong> → 설정은 그대로 → <strong>Deploy</strong></li>
+        <li>1분쯤 뒤 축하 화면과 <strong>…vercel.app</strong> 주소 확인 🎉</li>
+      </ol>
+      <div class="stack reveal">
+        <div class="card card--mint"><h3>📱 바로 확인</h3><p>주소를 휴대폰 카톡 '나에게 보내기'로 보내 열어 보세요.</p></div>
+        <div class="callout callout--info"><span>GitHub 계정으로 가입해야 연결이 쉽습니다. 이메일로 따로 가입하면 연결 단계가 하나 더 생겨요.</span></div>
+      </div>
+    </div>
+    <p class="asof">버튼 이름은 2026-10 기준이며 바뀔 수 있습니다. 수업 전 강사가 확인하세요.</p>
+  </div>
+  <aside class="notes">가입 중 "Hobby / Pro" 선택이 나옴 → 다음 장의 상업적 이용 규정을 먼저 설명하고 고르게 할 것. 저장소가 목록에 안 보이면 "Adjust GitHub App Permissions"에서 저장소 접근 허용.</aside>
+</section>
+
+<!-- 8. 자동 반영 -->
+<section class="slide">
+  <div class="slide-inner stack">
+    <h2>고치면 저절로 바뀌어요</h2>
+    <div class="flow reveal">
+      <div class="flow-node flow-node--human">✏️ GitHub에서 수정</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node">📡 Vercel이 알아챔</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node flow-node--accent">🌐 1~2분 뒤 사이트 갱신</div>
+    </div>
+    <ol class="steps reveal">
+      <li>Claude에게 "영업시간 부분을 화~일 10:00–20:00로 고친 index.html 줘"라고 요청</li>
+      <li>GitHub 저장소 → <span class="path">Add file → Upload files</span>로 새 index.html을 올려 덮어쓰기 → <span class="path">Commit changes</span></li>
+      <li>1~2분 뒤 사이트 새로고침 (<kbd>Ctrl</kbd>/<kbd>Cmd</kbd>+<kbd>Shift</kbd>+<kbd>R</kbd>)</li>
+    </ol>
+  </div>
+  <aside class="notes">작은 글자 수정은 GitHub에서 index.html 클릭 → 연필(✏️) 아이콘으로 직접 고쳐도 됨. 이것이 'Claude로 만들고 → GitHub에 올리고 → Vercel이 공개'하는 운영 루틴.</aside>
+</section>
+
+<!-- 9. 상업적 이용 주의 -->
+<section class="slide slide--alt">
+  <div class="slide-inner stack">
+    <h2>⚠️ 가게 홈페이지는 '상업용'입니다</h2>
+    <div class="callout callout--warn reveal"><span>Vercel 무료 요금제(Hobby)는 <strong>개인·비상업용</strong>입니다. 상품 판매를 알리는 가게 홈페이지는 상업적 이용에 해당하므로, 규정상 <strong>유료 Pro</strong> 요금제가 필요합니다.</span></div>
+    <div class="table-wrap reveal">
+      <table class="table">
+        <tr><th>선택지</th><th>특징</th></tr>
+        <tr><td>Vercel Pro</td><td>지금 배운 방법 그대로. 월 요금 발생 (금액은 수업 전 확인)</td></tr>
+        <tr><td>Cloudflare Pages</td><td>무료 요금제로 상업용 사이트 가능. GitHub 연결 방식이 거의 같음 — 14회차에서 Cloudflare 계정을 만듦</td></tr>
+        <tr><td>6회차 아티팩트 공유 링크</td><td>가장 간단. 내 도메인 연결은 불가</td></tr>
+      </table>
+    </div>
+    <p class="asof">2026-10 Vercel Fair Use Guidelines 기준: 상품·서비스 판매 광고, 결제, 광고 게재 등은 상업적 이용. 요금·규정은 수업 전 확인하세요.</p>
+  </div>
+  <aside class="notes">연습·테스트로 잠깐 올려 보는 것은 Hobby로 해도 되지만, 실제 가게 운영용으로 계속 쓰려면 Pro 또는 Cloudflare Pages 권장. 다른 무료 호스팅도 상업 이용 규정은 꼭 확인하도록 안내(GitHub Pages도 상업적 온라인 사업 용도는 제한).</aside>
+</section>
+
+<!-- 10. 도메인 -->
+<section class="slide">
+  <div class="slide-inner stack">
+    <h2>(선택) 나만의 도메인 연결하기</h2>
+    <div class="grid-2">
+      <ol class="steps reveal">
+        <li>도메인 구입: Vercel에서 직접, 또는 가비아·호스팅KR(.kr 가능) 등 (.com 기준 보통 연 2만 원 안팎)</li>
+        <li>Vercel 프로젝트 → <span class="path">Settings → Domains</span> → 도메인 입력 → <strong>Add</strong></li>
+        <li>Vercel이 보여 주는 <strong>DNS 값</strong>을 도메인 산 곳의 'DNS 설정'에 그대로 입력</li>
+        <li>10분~몇 시간 뒤 접속 확인. 자물쇠(🔒 https)는 Vercel이 자동으로 달아 줌</li>
+      </ol>
+      <div class="analogy reveal"><strong>DNS</strong>는 인터넷의 <strong>전화번호부</strong>예요. "bomnal.kr"을 찾으면 "Vercel 전시장 몇 번지"라고 알려 주도록 번호부에 적어 넣는 일이 3단계입니다.</div>
+    </div>
+  </div>
+  <aside class="notes">DNS 값(A 레코드, CNAME)은 Vercel 화면에 나온 값을 그대로 복사 — 예전 강의 자료의 값을 외워서 쓰지 말 것. 반영은 최대 48시간까지 걸릴 수 있음. Vercel에서 도메인을 사면 3단계가 자동.</aside>
+</section>
+
+<!-- 11. 자주 겪는 문제 -->
+<section class="slide slide--alt">
+  <div class="slide-inner stack">
+    <h2>자주 겪는 문제</h2>
+    <div class="table-wrap reveal">
+      <table class="table">
+        <tr><th>이럴 때</th><th>이렇게</th></tr>
+        <tr><td>404 페이지가 나온다</td><td>파일 이름이 정확히 index.html이고 저장소 맨 위에 있는지 확인</td></tr>
+        <tr><td>Vercel에 저장소가 안 보인다</td><td>Import 화면의 <strong>Adjust GitHub App Permissions</strong>에서 접근 허용</td></tr>
+        <tr><td>고쳤는데 그대로다</td><td>Vercel 대시보드 Deployments에서 상태 확인 → 강력 새로고침</td></tr>
+        <tr><td>도메인이 연결 안 된다</td><td>DNS 값 오타 확인, 몇 시간 기다리기</td></tr>
+        <tr><td>모양이 깨진다</td><td>Claude에게 "CSS를 파일 안에 모두 넣은 한 파일로" 다시 요청</td></tr>
+      </table>
+    </div>
+  </div>
+  <aside class="notes">그 밖의 문제는 화면을 캡처해 Claude에게 "이 오류가 뭐야? 초보자에게 설명하듯 알려줘"라고 물어보게 하기 — 이 과정 전체의 문제 해결 습관.</aside>
+</section>
+
+<!-- 12. 체크리스트 -->
+<section class="slide slide--title slide--center">
+  <div class="slide-inner stack">
+    <h2>체크리스트 ✅</h2>
+    <ul class="checklist reveal" style="text-align:left">
+      <li>6회차 홈페이지를 index.html 한 파일로 받았다</li>
+      <li>GitHub 저장소에 올리고 Commit changes를 눌렀다</li>
+      <li>Vercel로 공개하고 휴대폰에서 주소를 열어 봤다</li>
+      <li>상업적 이용 규정을 확인하고 요금제를 골랐다</li>
+      <li>(선택) 내 도메인을 연결했다</li>
+    </ul>
+    <nav class="lesson-nav" data-auto aria-label="다른 부록"></nav>
+  </div>
+  <aside class="notes">다음 부록 B(버전 관리)에서 "Commit"의 의미와 예전 버전으로 되돌리는 법을 다룸.</aside>
+</section>
+
+<script src="../assets/course.js"></script>
+<script src="../assets/deck.js"></script>
+</body>
+</html>

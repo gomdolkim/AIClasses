@@ -3,227 +3,315 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI 클래스 - Claude 활용 웹 개발 강의</title>
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
+<title>AI로 작은 회사 운영하기 | 14회 과정 목차</title>
+<meta name="description" content="IT를 몰라도 AI로 회사를 운영하고 자동화하는 14회 과정">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Ctext y=%22.9em%22 font-size=%2290%22%3E%F0%9F%8C%B7%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="assets/deck.css">
 <style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
-
-:root {
-    --bg-main: #EDF2FB;
-    --card-bg: #FFFBF0;
-    --card-shadow: rgba(0,0,0,0.06);
-    --accent-pink: #F4A7BB;
-    --accent-mint: #A8E6CF;
-    --accent-lavender: #C3B1E1;
-    --accent-sky: #89CFF0;
-    --accent-peach: #FFDAB9;
-    --accent-coral: #F8A4A4;
-    --accent-yellow: #FFE066;
-    --accent-teal: #7EC8C8;
-    --text-dark: #2D3142;
-    --text-mid: #4F5D75;
-    --text-light: #8D99AE;
-}
-
-body {
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    background: var(--bg-main);
-    color: var(--text-dark);
-    min-height: 100vh;
-}
-
-.hero {
-    text-align: center;
-    padding: clamp(2rem, 6vw, 5rem) clamp(1rem, 4vw, 4rem) clamp(1.5rem, 3vw, 3rem);
-}
-
-.hero h1 {
-    font-size: clamp(1.8rem, 5vw, 3.5rem);
-    font-weight: 800;
-    margin-bottom: 0.5rem;
-    background: linear-gradient(135deg, var(--accent-pink), var(--accent-lavender), var(--accent-sky));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
-
-.hero p {
-    font-size: clamp(0.9rem, 2vw, 1.25rem);
-    color: var(--text-mid);
-    max-width: 600px;
-    margin: 0 auto;
-}
-
-.grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
-    gap: clamp(1rem, 2vw, 1.5rem);
-    padding: 0 clamp(1rem, 4vw, 6rem) clamp(2rem, 4vw, 4rem);
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-.card {
-    background: var(--card-bg);
-    border-radius: 16px;
-    padding: clamp(1.25rem, 2.5vw, 1.75rem);
-    box-shadow: 0 2px 12px var(--card-shadow);
-    text-decoration: none;
-    color: inherit;
-    display: flex;
-    gap: 1rem;
-    align-items: flex-start;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    cursor: pointer;
-    border: 2px solid transparent;
-}
-
-.card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 24px rgba(0,0,0,0.1);
-}
-
-.card:active {
-    transform: translateY(-1px);
-}
-
-.badge {
-    flex-shrink: 0;
-    width: 44px;
-    height: 44px;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 800;
-    font-size: 1.1rem;
-    color: #fff;
-}
-
-.card-body {
-    flex: 1;
-    min-width: 0;
-}
-
-.card-title {
-    font-size: clamp(1rem, 2vw, 1.15rem);
-    font-weight: 700;
-    margin-bottom: 0.35rem;
-    line-height: 1.4;
-}
-
-.card-desc {
-    font-size: clamp(0.8rem, 1.4vw, 0.9rem);
-    color: var(--text-mid);
-    line-height: 1.5;
-}
-
-.card:nth-child(1) .badge { background: var(--accent-pink); }
-.card:nth-child(2) .badge { background: var(--accent-lavender); }
-.card:nth-child(3) .badge { background: var(--accent-sky); }
-.card:nth-child(4) .badge { background: var(--accent-mint); }
-.card:nth-child(5) .badge { background: var(--accent-peach); color: var(--text-dark); }
-.card:nth-child(6) .badge { background: var(--accent-coral); }
-.card:nth-child(7) .badge { background: var(--accent-teal); }
-.card:nth-child(8) .badge { background: var(--accent-yellow); color: var(--text-dark); }
-
-.card:nth-child(1):hover { border-color: var(--accent-pink); }
-.card:nth-child(2):hover { border-color: var(--accent-lavender); }
-.card:nth-child(3):hover { border-color: var(--accent-sky); }
-.card:nth-child(4):hover { border-color: var(--accent-mint); }
-.card:nth-child(5):hover { border-color: var(--accent-peach); }
-.card:nth-child(6):hover { border-color: var(--accent-coral); }
-.card:nth-child(7):hover { border-color: var(--accent-teal); }
-.card:nth-child(8):hover { border-color: var(--accent-yellow); }
-
-footer {
-    text-align: center;
-    padding: 2rem 1rem;
-    color: var(--text-light);
-    font-size: 0.8rem;
-}
+  html { scroll-snap-type: none; }
+  .skip { position: absolute; left: -9999px; }
+  .skip:focus { left: 1rem; top: 1rem; z-index: 100; background: var(--surface); padding: 0.5rem 1rem; border-radius: 8px; }
+  .page-bar { display: flex; justify-content: flex-end; gap: 0.5rem; max-width: 1180px; margin: 0 auto; padding: 0.8rem 1rem 0; }
+  .page-bar button { font: inherit; font-size: 0.95rem; cursor: pointer; background: var(--surface); color: var(--text-mid); border: 1px solid var(--border); border-radius: 10px; padding: 0.35rem 0.8rem; min-height: 40px; }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 0 16px; }
+  .hero { background: linear-gradient(135deg, var(--pink-soft), var(--lavender-soft) 55%, var(--sky-soft)); }
+  .hero .wrap { padding-top: clamp(2.5rem, 8vw, 5.5rem); padding-bottom: clamp(2.5rem, 7vw, 5rem); }
+  .hero-meta { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.4rem; }
+  .hero-cta { display: flex; flex-wrap: wrap; gap: 0.8rem; margin-top: 1.8rem; }
+  .btn { display: inline-flex; align-items: center; gap: 0.4rem; text-decoration: none; font-weight: 700; padding: 0.75rem 1.3rem; border-radius: 12px; background: var(--surface); color: var(--text); border: 1px solid var(--border); box-shadow: var(--shadow); min-height: 44px; }
+  .btn--primary { background: var(--lavender); color: var(--surface); border-color: transparent; }
+  .btn:hover { border-color: var(--lavender); }
+  section.block { padding: clamp(2.2rem, 6vw, 4rem) 0; }
+  section.block--alt { background: var(--surface); }
+  .section-head { margin-bottom: 1.4rem; }
+  .section-head p { color: var(--text-mid); }
+  .part { margin-top: 2rem; }
+  .part:first-of-type { margin-top: 0; }
+  .part-head { display: flex; align-items: center; gap: 0.8rem; padding: 0.7rem 1.1rem; border-radius: 14px; margin-bottom: 1rem; }
+  .part-head h3 { margin: 0; font-size: var(--fs-h3); }
+  .part-head .part-no { font-weight: 800; font-size: 0.95rem; padding: 0.1em 0.7em; border-radius: 999px; background: var(--surface); }
+  .part--pink .part-head { background: var(--pink-soft); color: var(--pink); }
+  .part--lavender .part-head { background: var(--lavender-soft); color: var(--lavender); }
+  .part--sky .part-head { background: var(--sky-soft); color: var(--sky); }
+  .part--mint .part-head { background: var(--mint-soft); color: var(--mint); }
+  .lesson-card { display: flex; flex-direction: column; gap: 0.4rem; text-decoration: none; color: var(--text); height: 100%; border-top: 5px solid var(--border); transition: transform 0.15s ease, border-color 0.15s ease; }
+  .lesson-card:hover { transform: translateY(-2px); }
+  .part--pink .lesson-card { border-top-color: var(--pink); }
+  .part--lavender .lesson-card { border-top-color: var(--lavender); }
+  .part--sky .lesson-card { border-top-color: var(--sky); }
+  .part--mint .lesson-card { border-top-color: var(--mint); }
+  .lesson-card .no { font-size: var(--fs-small); font-weight: 800; color: var(--text-soft); }
+  .lesson-card h4 { font-size: var(--fs-h3); line-height: 1.35; }
+  .lesson-card .outcome { color: var(--text-mid); font-size: var(--fs-small); flex: 1; }
+  .lesson-card .deliv { font-size: var(--fs-small); color: var(--text); background: var(--surface-2); border-radius: 10px; padding: 0.45rem 0.7rem; }
+  .lesson-card .deliv b { color: var(--mint); margin-right: 0.3rem; }
+  .link-list { list-style: none; display: grid; gap: 0.6rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); }
+  .link-list a { display: flex; gap: 0.7rem; align-items: center; text-decoration: none; color: var(--text); background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 0.8rem 1rem; box-shadow: var(--shadow); min-height: 44px; height: 100%; }
+  .link-list a:hover { border-color: var(--lavender); }
+  .link-list .tag { flex: 0 0 auto; font-weight: 800; font-size: 0.9rem; color: var(--lavender); background: var(--lavender-soft); border-radius: 8px; padding: 0.15em 0.6em; }
+  .company dl { display: grid; grid-template-columns: max-content 1fr; gap: 0.35rem 1rem; font-size: var(--fs-small); }
+  .company dt { font-weight: 700; color: var(--text-soft); }
+  .company dd { color: var(--text-mid); }
+  .prep-table td:first-child { white-space: nowrap; font-weight: 700; }
+  footer { padding: 2rem 0 3rem; color: var(--text-soft); font-size: var(--fs-small); text-align: center; }
+  @media (max-width: 560px) {
+    .company dl { grid-template-columns: 1fr; }
+    .company dd { margin-bottom: 0.4rem; }
+  }
+  @media print { .page-bar, .hero-cta { display: none; } }
 </style>
 </head>
 <body>
+<a class="skip" href="#lessons">14회 목록으로 바로 가기</a>
 
 <header class="hero">
-    <h1>AI 클래스</h1>
-    <p>Claude를 활용한 웹 개발 — 기초부터 배포까지 8개 강의로 배우는 실전 가이드</p>
+  <div class="page-bar"><button type="button" id="themeBtn" aria-label="밝게/어둡게 전환">🌓 밝게/어둡게</button></div>
+  <div class="wrap">
+    <span class="eyebrow">성인 입문 · 90분 × 14회</span>
+    <h1 id="courseTitle">AI로 작은 회사 운영하기</h1>
+    <p class="lead">IT를 몰라도 AI로 회사를 운영하고 자동화하는 14회 과정</p>
+    <div class="hero-meta">
+      <span class="pill pill--pink">코딩 몰라도 OK</span>
+      <span class="pill pill--lavender">Claude · Slack · Jira · LINE</span>
+      <span class="pill pill--sky">매 회차 결과물 1개</span>
+      <span class="pill pill--mint">가상 회사로 연습 → 내 회사에 적용</span>
+    </div>
+    <div class="hero-cta">
+      <a class="btn btn--primary" href="lessons/01-ai-first-day.html">1회차부터 시작하기 →</a>
+      <a class="btn" href="#lessons">전체 목록 보기</a>
+      <a class="btn" href="materials/setup-checklist.html">준비물 체크리스트</a>
+    </div>
+  </div>
 </header>
 
-<main class="grid">
-    <a class="card" href="presentation-01-intro.html">
-        <div class="badge">01</div>
-        <div class="card-body">
-            <div class="card-title">Claude로 나만의 홈페이지 만들기</div>
-            <div class="card-desc">Claude AI를 활용한 웹사이트 제작 입문</div>
-        </div>
-    </a>
+<main>
+  <section class="block" aria-labelledby="h-outcomes">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="h-outcomes">이 과정을 마치면</h2>
+        <p>14회가 끝나면 우리 회사에서 바로 쓰는 4가지가 손에 남습니다.</p>
+      </div>
+      <div class="grid-4">
+        <div class="card card--pink"><span class="icon" aria-hidden="true">🤝</span><h3>우리 회사 전용 AI 비서</h3><p>회사 자료를 익힌 Claude가 공지·견적·홍보 글을 대신 씁니다.</p></div>
+        <div class="card card--lavender"><span class="icon" aria-hidden="true">🏠</span><h3>가게 홈페이지</h3><p>대화로 만든 1페이지 사이트를 링크로 공유합니다.</p></div>
+        <div class="card card--sky"><span class="icon" aria-hidden="true">🔁</span><h3>Slack · Jira 자동화</h3><p>문의가 할 일이 되고, 끝나면 팀에 알림이 가고, 주간 보고는 AI가 씁니다.</p></div>
+        <div class="card card--mint"><span class="icon" aria-hidden="true">💬</span><h3>LINE AI 상담봇</h3><p>손님 질문에 AI가 답하고, 어려운 문의는 사람에게 넘깁니다.</p></div>
+      </div>
+    </div>
+  </section>
 
-    <a class="card" href="presentation-02-terms.html">
-        <div class="badge">02</div>
-        <div class="card-body">
-            <div class="card-title">Claude 활용을 위한 AI 용어 사전</div>
-            <div class="card-desc">AI 핵심 개념과 용어 정리</div>
+  <section class="block block--alt" aria-labelledby="h-company">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="h-company">🌷 14회 동안 함께할 가상 회사 「봄날의 꽃」</h2>
+        <p>모든 실습은 이 꽃집으로 먼저 해 보고, 마지막에 내 회사로 바꿉니다.</p>
+      </div>
+      <div class="grid-2">
+        <div class="card company">
+          <h3>회사 정보</h3>
+          <dl>
+            <dt>위치</dt><dd>서울 마포구 망원동 · 망원역 2번 출구 도보 3분</dd>
+            <dt>영업</dt><dd>화~일 10:00–20:00 · 월요일 휴무</dd>
+            <dt>직원</dt><dd>4명 — 대표 한봄, 플로리스트 지수·유나, 배송·포장 민호</dd>
+            <dt>채널</dt><dd>매장, 네이버 스마트스토어, 인스타 @bomnal_flower, LINE 공식계정(일본인 손님)</dd>
+          </dl>
         </div>
-    </a>
+        <div class="card card--peach">
+          <h3>요즘 고민 😵</h3>
+          <ul class="list">
+            <li>"오늘 영업해요?" 같은 똑같은 문의가 하루 30건</li>
+            <li>주문이 메신저·메모지·엑셀에 흩어져서 누락</li>
+            <li>홍보 글 쓸 시간이 없음</li>
+            <li>일본어 문의에 답하기가 어려움</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
 
-    <a class="card" href="presentation-03-plugins.html">
-        <div class="badge">03</div>
-        <div class="card-body">
-            <div class="card-title">Claude 플러그인 & 생태계 완전 정복</div>
-            <div class="card-desc">MCP, 플러그인, 확장 생태계 활용법</div>
-        </div>
-    </a>
+  <section class="block" id="lessons" aria-labelledby="h-lessons">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="h-lessons">14회 강의 목록</h2>
+        <p>4개 파트로 나뉩니다. 카드를 누르면 슬라이드가 열립니다.</p>
+      </div>
+      <div id="lessonList" aria-live="polite"></div>
+      <noscript>
+        <div class="callout callout--info"><span>자바스크립트가 꺼져 있어 간단한 목록으로 보여 드립니다.</span></div>
+        <ol class="list" style="margin-top:1rem">
+          <li><a href="lessons/01-ai-first-day.html">1회차 · AI 비서 첫 출근</a></li>
+          <li><a href="lessons/02-ai-strengths-limits.html">2회차 · AI가 잘하는 일, 틀리는 일</a></li>
+          <li><a href="lessons/03-company-ai-project.html">3회차 · 우리 회사 전용 AI: 프로젝트 &amp; 스킬</a></li>
+          <li><a href="lessons/04-docs-and-sheets.html">4회차 · 문서·엑셀 업무 맡기기</a></li>
+          <li><a href="lessons/05-marketing-content.html">5회차 · 마케팅 콘텐츠 만들기</a></li>
+          <li><a href="lessons/06-shop-homepage.html">6회차 · 가게 홈페이지 만들기</a></li>
+          <li><a href="lessons/07-how-connections-work.html">7회차 · 연결의 원리: API와 웹훅</a></li>
+          <li><a href="lessons/08-slack-team.html">8회차 · Slack으로 팀 소통하기</a></li>
+          <li><a href="lessons/09-jira-tasks.html">9회차 · Jira로 할 일 관리하기</a></li>
+          <li><a href="lessons/10-slack-jira-automation.html">10회차 · Slack과 Jira 자동으로 잇기</a></li>
+          <li><a href="lessons/11-ai-weekly-report.html">11회차 · AI가 주간 보고를 대신 쓴다</a></li>
+          <li><a href="lessons/12-line-auto-reply.html">12회차 · 코딩 없이 LINE 자동응답</a></li>
+          <li><a href="lessons/13-nocode-ai-bot.html">13회차 · Make + Claude로 AI 상담봇</a></li>
+          <li><a href="lessons/14-bot-server-graduation.html">14회차 · Claude가 짜준 봇 서버 &amp; 졸업</a></li>
+        </ol>
+      </noscript>
+    </div>
+  </section>
 
-    <a class="card" href="presentation-04-dev-basics.html">
-        <div class="badge">04</div>
-        <div class="card-body">
-            <div class="card-title">소프트웨어 개발 기초 & IT 용어</div>
-            <div class="card-desc">개발 기초 지식과 IT 용어 이해</div>
-        </div>
-    </a>
+  <section class="block block--alt" aria-labelledby="h-appendix">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="h-appendix">부록</h2>
+        <p>더 해 보고 싶은 분을 위한 선택 강의입니다.</p>
+      </div>
+      <ul class="link-list" id="appendixList">
+        <li><a href="appendix/a-vercel-deploy.html"><span class="tag">A</span>홈페이지를 인터넷에 올리기 (GitHub + Vercel)</a></li>
+        <li><a href="appendix/b-version-control.html"><span class="tag">B</span>버전 관리 기초 (Git을 몰라도 되는 만큼만)</a></li>
+        <li><a href="appendix/c-claude-code.html"><span class="tag">C</span>심화: Claude Code로 직접 만들기</a></li>
+        <li><a href="appendix/d-kakao-bot.html"><span class="tag">D</span>카카오톡 채널 자동응답 &amp; 챗봇</a></li>
+        <li><a href="appendix/e-claude-skills.html"><span class="tag">E</span>Claude 스킬 설치·사용·직접 만들기</a></li>
+      </ul>
+    </div>
+  </section>
 
-    <a class="card" href="presentation-05-vercel.html">
-        <div class="badge">05</div>
-        <div class="card-body">
-            <div class="card-title">Vercel로 홈페이지 세상에 공개하기</div>
-            <div class="card-desc">Vercel 배포를 통한 웹사이트 공개</div>
-        </div>
-    </a>
+  <section class="block" aria-labelledby="h-materials">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="h-materials">강사 · 수강생 자료</h2>
+        <p>수업 중 옆에 띄워 두고 쓰는 자료입니다.</p>
+      </div>
+      <ul class="link-list" id="materialList">
+        <li><a href="materials/instructor-guide.html"><span class="tag">📋</span>강사 가이드</a></li>
+        <li><a href="materials/glossary.html"><span class="tag">📘</span>누적 용어집</a></li>
+        <li><a href="materials/prompt-cards.html"><span class="tag">💬</span>프롬프트 카드</a></li>
+        <li><a href="materials/troubleshooting.html"><span class="tag">🛠️</span>문제 해결 카드</a></li>
+        <li><a href="materials/setup-checklist.html"><span class="tag">✅</span>수업 전 준비·계정 체크리스트</a></li>
+      </ul>
+      <p class="small" style="margin-top:1rem">실습용 데이터(FAQ·가격표·말투 가이드·주문 샘플·봇 테스트 질문)는 <a href="materials/dataset/faq.md">materials/dataset/</a> 폴더에 있습니다.</p>
+    </div>
+  </section>
 
-    <a class="card" href="presentation-06-git.html">
-        <div class="badge">06</div>
-        <div class="card-body">
-            <div class="card-title">Git 사용법 완전 정복</div>
-            <div class="card-desc">버전 관리와 Git 워크플로우</div>
-        </div>
-    </a>
-
-    <a class="card" href="presentation-07-ecc.html">
-        <div class="badge">07</div>
-        <div class="card-body">
-            <div class="card-title">Everything Claude Code로 개발 자동화하기</div>
-            <div class="card-desc">Claude Code를 활용한 개발 자동화</div>
-        </div>
-    </a>
-
-    <a class="card" href="presentation-08-roadmap.html">
-        <div class="badge">08</div>
-        <div class="card-body">
-            <div class="card-title">프론트엔드 & 백엔드 학습 로드맵</div>
-            <div class="card-desc">웹 개발 학습 경로와 로드맵</div>
-        </div>
-    </a>
+  <section class="block block--alt" aria-labelledby="h-prep">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="h-prep">준비물 한눈에 보기</h2>
+        <p>한꺼번에 준비하지 않아도 됩니다. 필요한 회차 전까지만 준비하세요.</p>
+      </div>
+      <div class="table-wrap">
+        <table class="table prep-table">
+          <thead><tr><th scope="col">준비물</th><th scope="col">언제까지</th><th scope="col">비용 (2026-10 기준)</th></tr></thead>
+          <tbody>
+            <tr><td>PC + 크롬(Chrome)</td><td>1회차</td><td>—</td></tr>
+            <tr><td>Claude Pro</td><td>3회차 전</td><td>월 $20</td></tr>
+            <tr><td>Slack Pro</td><td>8회차 전</td><td>1인당 월 $8.75 (연간 결제 시 $7.25)</td></tr>
+            <tr><td>Jira Free</td><td>9회차 전</td><td>무료 (10명까지)</td></tr>
+            <tr><td>LINE 공식계정</td><td>12회차 전</td><td>무료 플랜 0엔 (월 200통)</td></tr>
+            <tr><td>Make</td><td>13회차 전</td><td>무료 (월 1,000 credits)</td></tr>
+            <tr><td>Cloudflare · LINE Developers · Node.js</td><td>14회차 전</td><td>무료로 시작</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="asof">요금·한도·화면은 <strong>2026-10 기준</strong>이며 바뀔 수 있습니다. 자세한 내용은 <a href="materials/setup-checklist.html">준비 체크리스트</a>를 보세요.</p>
+    </div>
+  </section>
 </main>
 
 <footer>
-    AI 클래스 &copy; 2026
+  <div class="wrap">
+    <p><span id="footTitle">AI로 작은 회사 운영하기</span> · <span id="footUpdated">2026-10 기준</span></p>
+    <p>슬라이드 안에서: 방향키·스페이스로 이동 · <kbd>N</kbd> 강사 노트 · <kbd>D</kbd> 어둡게</p>
+  </div>
 </footer>
 
+<script src="assets/course.js"></script>
+<script>
+(function () {
+  'use strict';
+  var course = window.COURSE;
+
+  function el(tag, cls, text) {
+    var node = document.createElement(tag);
+    if (cls) node.className = cls;
+    if (text) node.textContent = text;
+    return node;
+  }
+
+  function lessonCard(lesson) {
+    var li = el('li');
+    var a = el('a', 'card lesson-card');
+    a.href = 'lessons/' + lesson.slug + '.html';
+    a.appendChild(el('span', 'no', lesson.n + '회차'));
+    a.appendChild(el('h4', null, lesson.title));
+    a.appendChild(el('p', 'outcome', lesson.outcome));
+    var deliv = el('p', 'deliv');
+    deliv.appendChild(el('b', null, '결과물'));
+    deliv.appendChild(document.createTextNode(lesson.deliverable));
+    a.appendChild(deliv);
+    li.appendChild(a);
+    return li;
+  }
+
+  function renderLessons() {
+    var host = document.getElementById('lessonList');
+    course.parts.forEach(function (part) {
+      var lessons = course.lessons.filter(function (l) { return l.part === part.id; });
+      var first = lessons[0], last = lessons[lessons.length - 1];
+      var box = el('div', 'part part--' + part.color);
+      var head = el('div', 'part-head');
+      head.appendChild(el('span', 'part-no', '파트 ' + part.id));
+      var h3 = el('h3', null, part.name);
+      h3.id = 'part-' + part.id;
+      head.appendChild(h3);
+      if (first) head.appendChild(el('span', 'small', first.n + '~' + last.n + '회차'));
+      box.appendChild(head);
+      var ul = el('ul', 'grid-3');
+      ul.style.listStyle = 'none';
+      ul.setAttribute('aria-labelledby', h3.id);
+      lessons.forEach(function (l) { ul.appendChild(lessonCard(l)); });
+      box.appendChild(ul);
+      host.appendChild(box);
+    });
+  }
+
+  function renderLinks(id, items, prefix, tagOf) {
+    var ul = document.getElementById(id);
+    ul.textContent = '';
+    items.forEach(function (item) {
+      var li = el('li');
+      var a = el('a');
+      a.href = prefix + item.slug + '.html';
+      a.appendChild(el('span', 'tag', tagOf(item)));
+      a.appendChild(document.createTextNode(item.title));
+      li.appendChild(a);
+      ul.appendChild(li);
+    });
+  }
+
+  if (course) {
+    document.getElementById('courseTitle').textContent = course.title;
+    document.getElementById('footTitle').textContent = course.title;
+    document.getElementById('footUpdated').textContent = course.updated + ' 기준';
+    renderLessons();
+    renderLinks('appendixList', course.appendix, 'appendix/', function (a) { return a.id; });
+    var icons = { 'instructor-guide': '📋', glossary: '📘', 'prompt-cards': '💬', troubleshooting: '🛠️', 'setup-checklist': '✅' };
+    renderLinks('materialList', course.materials, 'materials/', function (m) { return icons[m.slug] || '📄'; });
+  }
+
+  /* 테마: 슬라이드(deck.js)와 같은 저장값(deck:theme)을 공유 */
+  var store = {
+    get: function (k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
+    set: function (k, v) { try { localStorage.setItem(k, v); } catch (e) { /* 저장 불가 환경 */ } }
+  };
+  var saved = store.get('deck:theme');
+  if (saved) document.documentElement.setAttribute('data-theme', saved);
+  document.getElementById('themeBtn').addEventListener('click', function () {
+    var cur = document.documentElement.getAttribute('data-theme');
+    var isDark = cur === 'dark' || (!cur && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    var next = isDark ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    store.set('deck:theme', next);
+  });
+})();
+</script>
 </body>
 </html>

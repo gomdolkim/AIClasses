@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>8회차 · Slack으로 팀 소통하기 | AI로 작은 회사 운영하기</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Ctext y=%22.9em%22 font-size=%2290%22%3E%F0%9F%8C%B7%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="../assets/deck.css">
+</head>
+<body data-lesson="8">
+
+<!-- 1. 표지 -->
+<section class="slide slide--title slide--center">
+  <div class="slide-inner">
+    <span class="eyebrow reveal">파트 ③ 팀 업무 자동화 (Slack · Jira) · 8회차</span>
+    <h1 class="reveal">Slack으로 팀 소통하기</h1>
+    <p class="lead reveal">단톡방을 졸업하고, 매일 아침 알아서 묻는 스탠드업 봇을 만듭니다</p>
+    <p class="small reveal" style="margin-top:2rem">⌨️ 방향키·스페이스로 이동 · <kbd>N</kbd> 강사 노트 · <kbd>D</kbd> 어둡게</p>
+  </div>
+  <aside class="notes">
+    [0~2분] "단톡방에서 주문 사진이 묻혀서 놓친 적 있나요?" 질문으로 시작. 손 드는 사람이 많을수록 오늘 수업이 쉬워짐.
+    수업 전 강사가 확인할 것: 데모용 워크스페이스, Pro 체험 제공 여부, Workflow Builder 메뉴 위치, Claude Slack 커넥터 연결 화면.
+  </aside>
+</section>
+
+<!-- 2. 오늘의 목표 -->
+<section class="slide">
+  <div class="slide-inner stack">
+    <h2>오늘의 목표 <span class="timebox">3분</span></h2>
+    <div class="goal reveal"><span class="goal-label">목표</span><span>Slack 워크스페이스를 만들고, 채널·스레드 규칙을 정하고, <strong>매일 09:30 스탠드업 워크플로</strong>를 만든다</span></div>
+    <div class="goal reveal"><span class="goal-label">결과물</span><span>채널 5개 구성 + 업무 규칙 고정 메시지 + 스탠드업 워크플로 + Claude로 채널 요약 1번</span></div>
+    <div class="grid-4 reveal">
+      <div class="card card--sky"><span class="icon">🏢</span><h3>만들기</h3><p>워크스페이스</p></div>
+      <div class="card card--lavender"><span class="icon">🗂️</span><h3>나누기</h3><p>채널 5개</p></div>
+      <div class="card card--mint"><span class="icon">⏰</span><h3>자동화</h3><p>스탠드업 봇</p></div>
+      <div class="card card--peach"><span class="icon">🤖</span><h3>AI 연결</h3><p>Claude로 요약</p></div>
+    </div>
+  </div>
+  <aside class="notes">자동화 사다리로 보면 오늘은 L1(채널) + L2(Workflow Builder) + L4 맛보기(Claude 요약).</aside>
+</section>
+
+<!-- 3. 지난 시간 결과물 확인 -->
+<section class="slide slide--alt">
+  <div class="slide-inner stack">
+    <h2>지난 시간 결과물 확인 <span class="timebox">5분</span></h2>
+    <p class="lead">7회차 <strong>업무 흐름도</strong>를 꺼내 주세요. 오늘은 그 그림의 "어디로" 칸을 Slack 채널로 바꿉니다.</p>
+    <div class="flow reveal">
+      <div class="flow-node"><span class="icon">🛒</span>새 주문<small>흐름도의 "무엇"</small></div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-node flow-node--accent"><span class="icon">#️⃣</span>#주문 채널<small>흐름도의 "어디로"</small></div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-node flow-node--human"><span class="icon">💐</span>지수·유나<small>흐름도의 "누가"</small></div>
+    </div>
+    <div class="callout callout--tip reveal"><span>흐름도에 같은 "어디로"가 여러 번 나오면, 그게 바로 <strong>채널 하나</strong>가 됩니다.</span></div>
+  </div>
+  <aside class="notes">흐름도를 안 가져온 수강생은 봄날의 꽃 흐름도(7회차 슬라이드 9)를 기준으로 진행.</aside>
+</section>
+
+<!-- 4. 비유와 용어 -->
+<section class="slide">
+  <div class="slide-inner stack">
+    <h2>Slack = 방이 나뉜 우리 가게 사무실 <span class="timebox">7분</span></h2>
+    <div class="analogy reveal">단톡방은 <strong>모두가 한 방에서 동시에 떠드는 것</strong>과 같습니다. Slack은 주문실·상담실·공지 게시판처럼 <strong>방을 나눈 사무실</strong>이에요. 필요한 방에만 들어가면 됩니다.</div>
+    <div class="grid-2 reveal">
+      <dl class="term"><dt>워크스페이스 (Workspace)</dt><dd>우리 회사 전용 Slack 건물. 주소는 <code>bomnal.slack.com</code>처럼 생김</dd></dl>
+      <dl class="term"><dt>채널 (Channel)</dt><dd>주제별 방. 이름 앞에 # 이 붙음 (#주문, #문의)</dd></dl>
+      <dl class="term"><dt>스레드 (Thread)</dt><dd>메시지 하나에 달리는 댓글 줄. 대화가 채널을 덮지 않게 해 줌</dd></dl>
+      <dl class="term"><dt>워크플로 (Workflow)</dt><dd>"언제 ~하면 ~한다"를 Slack 안에서 자동으로 해 주는 작은 봇</dd></dl>
+    </div>
+  </div>
+  <aside class="notes">새 용어 4개. 멘션(@)과 이모지 반응은 실습에서 자연스럽게 익힘. "워크플로 = 7회차의 트리거→액션"이라고 연결해 주기.</aside>
+</section>
+
+<!-- 5. 실습 1: 워크스페이스 만들기 -->
+<section class="slide slide--alt">
+  <div class="slide-inner stack">
+    <h2>실습 1 · 워크스페이스 만들기 <span class="timebox">8분</span></h2>
+    <div class="grid-2">
+      <ol class="steps reveal">
+        <li>크롬 주소창에 <span class="path">slack.com</span> → <strong>시작하기(Get started)</strong></li>
+        <li>회사 대표 메일 입력 → 메일로 온 <strong>6자리 코드</strong> 입력</li>
+        <li><span class="path">워크스페이스 만들기(Create a workspace)</span> → 회사 이름 "봄날의 꽃"</li>
+        <li>내 이름·사진 설정 → 팀원 초대는 <strong>건너뛰기</strong> (채널부터 만들고 초대)</li>
+        <li>플랜 선택 화면: <strong>Pro</strong> (체험이 보이면 체험으로 시작)</li>
+        <li>컴퓨터용 <strong>Slack 앱</strong>과 휴대폰 앱 설치 후 로그인</li>
+      </ol>
+      <div class="stack reveal">
+        <div class="callout callout--info"><span>Pro: 사용자당 월 $7.25(연간) / $8.75(월간). 무료 플랜은 기록 90일·앱 10개 제한이 있습니다.</span></div>
+        <div class="callout callout--warn"><span><strong>Workflow Builder(실습 3)</strong>는 도움말상 유료 플랜 기능입니다. 가격 페이지 표기와 다를 때가 있어 <strong>수업 전 확인</strong>이 필요합니다.</span></div>
+      </div>
+    </div>
+    <p class="asof">요금·화면은 2026-10 기준이며 바뀔 수 있습니다. Pro 무료 체험 제공 여부와 기간은 수업 전 확인하세요.</p>
+  </div>
+  <aside class="notes">
+    막히는 곳: 코드 메일이 스팸함에, 이미 다른 회사 Slack에 같은 메일로 가입돼 있어 화면이 다름 → "새 워크스페이스 만들기" 찾기.
+    결제가 안 된 수강생은 무료 플랜으로 계속 진행하고, 실습 3은 강사 화면을 보며 따라 하기.
+  </aside>
+</section>
+
+<!-- 6. 채널 설계 -->
+<section class="slide">
+  <div class="slide-inner stack">
+    <h2>봄날의 꽃 채널 설계 <span class="timebox">6분</span></h2>
+    <div class="table-wrap reveal">
+      <table class="table">
+        <tr><th>채널</th><th>무엇을 올리나</th><th>누가</th><th>알림</th></tr>
+        <tr><td><strong>#공지</strong></td><td>휴무·가격 변경·주간 보고</td><td>대표만 글쓰기</td><td>모든 메시지</td></tr>
+        <tr><td><strong>#주문</strong></td><td>새 주문, 배송 완료 알림</td><td>전원</td><td>멘션만</td></tr>
+        <tr><td><strong>#문의</strong></td><td>손님 문의 공유, 답변 상의</td><td>전원</td><td>멘션만</td></tr>
+        <tr><td><strong>#스탠드업</strong></td><td>매일 09:30 오늘 할 일</td><td>전원 + 워크플로</td><td>멘션만</td></tr>
+        <tr><td><strong>#cs-escalation</strong></td><td>봇이 사람에게 넘기는 어려운 문의 (13회차~)</td><td>봇 + 대표</td><td>모든 메시지 🔔</td></tr>
+      </table>
+    </div>
+    <div class="callout callout--tip reveal"><span>채널은 <strong>적을수록 좋습니다.</strong> "이 글 어디 올리지?" 고민이 생기면 채널이 너무 많은 거예요.</span></div>
+  </div>
+  <aside class="notes">채널 이름은 한글 가능. 단, 나중에 자동화에서 채널을 고를 때 한글이 검색 안 되는 화면이 가끔 있음 → 그때는 영어 이름(order, cs-escalation)으로 바꿔도 됨. #cs-escalation은 전 회차 공통 이름이니 그대로 쓰게 하기.</aside>
+</section>
+
+<!-- 7. 실습 2: 채널 만들기 -->
+<section class="slide slide--alt">
+  <div class="slide-inner stack">
+    <h2>실습 2 · 채널 5개 만들고 팀원 초대하기 <span class="timebox">7분</span></h2>
+    <div class="grid-2">
+      <ol class="steps reveal">
+        <li>왼쪽 사이드바 <span class="path">채널 추가(Add channels) → 채널 만들기(Create a new channel)</span></li>
+        <li>이름 "주문" → <strong>공개(Public)</strong> 선택 → 만들기</li>
+        <li>같은 방법으로 공지·문의·스탠드업·cs-escalation</li>
+        <li>#cs-escalation 채널 이름 클릭 → <span class="path">알림(Notifications) → 모든 새 메시지(All new messages)</span></li>
+        <li>사이드바 <span class="path">팀원 초대(Invite people)</span> → 팀원 메일 입력</li>
+      </ol>
+      <div class="stack reveal">
+        <div class="callout callout--warn"><span>#공지는 채널 설정에서 <strong>글쓰기 권한</strong>을 대표만으로 제한할 수 있습니다(플랜·권한에 따라 메뉴가 다를 수 있음).</span></div>
+        <div class="callout callout--danger"><span>손님 전화번호·카드번호는 채널에 그대로 올리지 마세요. "010-****-1234"처럼 가려서 씁니다. 나중에 Claude가 채널을 읽게 되기 때문입니다.</span></div>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">초대는 수업 중 실제로 보내도 되고, 과제로 넘겨도 됨. 팀원이 없는 수강생은 개인 메일 하나를 더 초대해 테스트.</aside>
+</section>
+
+<!-- 8. 업무 규칙 -->
+<section class="slide">
+  <div class="slide-inner stack">
+    <h2>3가지 업무 규칙: 스레드 · 멘션 · 이모지 <span class="timebox">6분</span></h2>
+    <div class="grid-3 reveal">
+      <div class="card card--sky"><span class="icon">🧵</span><h3>답은 스레드에</h3><p>주문 1건 = 메시지 1개. 질문·답은 그 메시지의 <strong>스레드</strong>에 달기</p></div>
+      <div class="card card--lavender"><span class="icon">@</span><h3>부탁은 멘션으로</h3><p><strong>@민호</strong>처럼 이름을 부르면 그 사람에게만 알림. "누가 해 주세요"는 금지</p></div>
+      <div class="card card--mint"><span class="icon">👀</span><h3>상태는 이모지로</h3><p>👀 확인 중 · ✅ 완료 · 🚨 급함. 답장 대신 반응 하나로 충분</p></div>
+    </div>
+    <div class="prompt reveal">우리 꽃집 팀 Slack 사용 규칙을 #공지에 고정할 글로 써줘.
+[상황] 직원 4명(대표, 플로리스트 2명, 배송 1명), 채널은 #공지 #주문 #문의 #스탠드업 #cs-escalation
+[조건] 스레드로 답하기, 부탁은 @멘션, 👀=확인 중 ✅=완료 🚨=급함, 손님 개인정보 가리기. 친근한 말투, 10줄 이내
+[형식] 제목 + 번호 목록</div>
+  </div>
+  <aside class="notes">Claude가 쓴 규칙을 #공지에 올리고 메시지 ⋯ → "채널에 고정(Pin)". 이모지 규칙은 10회차 자동화 아이디어로도 이어짐.</aside>
+</section>
+
+<!-- 9. 강사 데모: 스탠드업 워크플로 -->
+<section class="slide slide--alt">
+  <div class="slide-inner stack">
+    <h2>강사 데모 · 스탠드업 봇은 이렇게 움직여요 <span class="timebox">4분</span></h2>
+    <div class="flow reveal">
+      <div class="flow-node"><span class="icon">⏰</span>매일 09:30<small>트리거 (화~일)</small></div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-node flow-node--accent"><span class="icon">🤖</span>워크플로가 질문<small>#스탠드업에 메시지</small></div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-node flow-node--human"><span class="icon">✍️</span>팀원이 스레드에 답<small>어제 · 오늘 · 도움</small></div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-node flow-node--human"><span class="icon">👩‍💼</span>대표가 한눈에<small>회의 없이 파악</small></div>
+    </div>
+    <div class="analogy reveal">매일 아침 가게 문 열 때 "오늘 뭐 해요?" 하고 <strong>묻고 다니는 매니저</strong>를 하나 고용하는 것과 같습니다. 단, 이 매니저는 월급이 없어요.</div>
+  </div>
+  <aside class="notes">강사 화면에서 미리 만들어 둔 워크플로를 "지금 실행(Run)"으로 한 번 돌려 보여 주기. 월요일 휴무라 화~일만 도는 것을 강조.</aside>
+</section>
+
+<!-- 10. 실습 3: Workflow Builder -->
+<section class="slide">
+  <div class="slide-inner stack">
+    <h2>실습 3 · 매일 09:30 스탠드업 워크플로 만들기 <span class="timebox">14분</span></h2>
+    <div class="grid-2">
+      <ol class="steps reveal">
+        <li>사이드바 <span class="path">더 보기(More) → 자동화(Automations)</span> 또는 <span class="path">도구(Tools) → 워크플로(Workflows)</span></li>
+        <li><strong>새 워크플로(New workflow)</strong> → 이름 "매일 스탠드업"</li>
+        <li>시작 방법: <span class="path">일정에 따라(On a schedule)</span> → 시간 09:30, 반복 <strong>매주 화~일</strong>, 시간대 서울</li>
+        <li><span class="path">단계 추가(Add steps) → 메시지(Messages) → 채널에 메시지 보내기</span> → #스탠드업</li>
+        <li>메시지 내용에 오른쪽 문구 붙여넣기</li>
+        <li><strong>게시(Publish)</strong> → 강사 신호에 맞춰 시간을 1분 뒤로 바꿔 테스트 후 09:30으로 되돌리기</li>
+      </ol>
+      <div class="stack reveal">
+        <pre class="code" data-copy>☀️ 좋은 아침이에요! 오늘 스탠드업
+이 메시지의 스레드에 3줄로 남겨 주세요.
+① 어제 한 일
+② 오늘 할 일 (주문 번호도 함께)
+③ 도움이 필요한 일 → @이름</pre>
+        <div class="callout callout--info"><span>메뉴 이름·위치는 Slack 업데이트로 자주 바뀝니다. 영어 메뉴가 보이면 괄호 속 이름을 찾으세요.</span></div>
+      </div>
+    </div>
+    <p class="asof">2026-10 기준. Workflow Builder 사용 가능 플랜·메뉴 경로는 수업 전 확인.</p>
+  </div>
+  <aside class="notes">
+    가장 오래 걸리는 실습. 막히는 곳: 메뉴를 못 찾음(플랜 문제일 가능성 → 무료 플랜이면 메뉴가 없거나 잠겨 있음), 시간대가 서울이 아님, 반복 요일 설정.
+    빨리 끝난 수강생: 단계에 "양식(Form)"을 추가해 답을 양식으로 받아 보기(선택).
+  </aside>
+</section>
+
+<!-- 11. 실습 4: Claude Slack 커넥터 -->
+<section class="slide slide--alt">
+  <div class="slide-inner stack">
+    <h2>실습 4 · Claude에 Slack 연결해서 요약 받기 <span class="timebox">10분</span></h2>
+    <div class="grid-2">
+      <ol class="steps reveal">
+        <li>claude.ai → 왼쪽 아래 이름 → <span class="path">설정(Settings) → 커넥터(Connectors)</span></li>
+        <li>목록에서 <strong>Slack</strong> → <strong>연결(Connect)</strong></li>
+        <li>Slack 로그인 화면에서 "봄날의 꽃" 워크스페이스 선택 → <strong>허용(Allow)</strong></li>
+        <li>새 채팅 → 입력창 아래 도구 메뉴에서 Slack이 <strong>켜져 있는지</strong> 확인</li>
+        <li>#주문에 연습용 주문 메시지를 3개쯤 올린 뒤 아래 프롬프트 실행</li>
+      </ol>
+      <div class="stack reveal">
+        <div class="prompt">Slack #주문 채널의 오늘 메시지를 읽고 요약해줘.
+- 주문별로 표: 상품 / 배송 시간 / 담당자 / 상태(이모지 기준)
+- 아직 담당자가 없거나 👀도 ✅도 없는 주문은 따로 표시
+- 내가 직접 확인해야 할 일 3줄</div>
+        <div class="callout callout--danger"><span>연결하면 Claude가 <strong>내가 볼 수 있는 채널</strong>을 읽을 수 있습니다. 개인정보는 가려 쓰는 규칙을 꼭 지키세요. 메시지를 보낼 때는 Claude가 먼저 확인을 묻습니다.</span></div>
+      </div>
+    </div>
+    <p class="asof">커넥터 화면·이름은 2026-10 기준. 회사 Slack에서 앱 설치에 관리자 승인이 필요할 수 있으니 수업 전 확인.</p>
+  </div>
+  <aside class="notes">
+    막히는 곳: 워크스페이스 관리자 승인 요청이 뜸(수강생이 관리자이면 바로 승인), 다른 회사 Slack을 선택함.
+    예상 질문: "Claude가 알아서 글을 올리나요?" → 아니요, 보내기 전에 확인을 받음. 요약 결과의 숫자는 원문과 한 번 맞춰 보게 하기(2회차 복습).
+  </aside>
+</section>
+
+<!-- 12. 응용 실습 -->
+<section class="slide">
+  <div class="slide-inner stack">
+    <h2>응용 실습 · 우리 회사 채널 설계하기 <span class="timebox">7분</span></h2>
+    <p class="lead">7회차 흐름도를 Claude에게 보여 주고 우리 회사 채널을 설계해 보세요.</p>
+    <div class="prompt reveal">첨부한 흐름도는 우리 회사 업무야. 직원은 ○명이고 업종은 ○○야.
+Slack 채널을 5개 이내로 설계해줘.
+표: 채널 이름 / 올릴 내용 / 글쓰는 사람 / 알림 설정 추천
+그리고 매일 아침 자동으로 물어보면 좋을 질문 3개를 추천해줘.</div>
+    <div class="callout callout--tip reveal"><span>봄날의 꽃 채널 이름 중 <strong>#cs-escalation</strong>은 13회차 봇과 연결되니 회사가 달라도 그대로 만들어 두세요.</span></div>
+  </div>
+  <aside class="notes">시간이 남으면 실제로 자기 워크스페이스에 채널을 추가. 결과 표는 14회차 도입 계획서에 씀.</aside>
+</section>
+
+<!-- 13. 자주 겪는 문제 -->
+<section class="slide slide--alt">
+  <div class="slide-inner stack">
+    <h2>자주 겪는 문제 <span class="timebox">4분</span></h2>
+    <div class="table-wrap reveal">
+      <table class="table">
+        <tr><th>이럴 때</th><th>이렇게</th></tr>
+        <tr><td>Workflow 메뉴가 없다 / 잠겨 있다</td><td>플랜 확인. 무료 플랜이면 Pro 체험·결제 후 다시</td></tr>
+        <tr><td>스탠드업이 이상한 시간에 온다</td><td>워크플로 일정의 <strong>시간대</strong>가 서울인지 확인</td></tr>
+        <tr><td>팀원이 초대 메일을 못 받았다</td><td>스팸함 확인 → 초대 링크를 따로 보내기</td></tr>
+        <tr><td>Claude가 채널을 못 읽는다</td><td>커넥터 연결된 워크스페이스 확인, 비공개 채널이면 내가 멤버인지 확인</td></tr>
+        <tr><td>알림이 너무 많다</td><td>채널별 알림을 "멘션만"으로. #cs-escalation만 전체 알림</td></tr>
+      </table>
+    </div>
+  </div>
+  <aside class="notes">자세한 대응은 materials/troubleshooting.html 참고.</aside>
+</section>
+
+<!-- 14. 체크리스트 -->
+<section class="slide">
+  <div class="slide-inner stack">
+    <h2>오늘의 체크리스트 ✅ <span class="timebox">3분</span></h2>
+    <p class="small">한 일을 눌러서 체크하세요. (이 컴퓨터에 저장됩니다)</p>
+    <ul class="checklist reveal">
+      <li>"봄날의 꽃"(또는 내 회사) 워크스페이스를 만들었다</li>
+      <li>채널 5개를 만들고 #cs-escalation 알림을 켰다</li>
+      <li>스레드·멘션·이모지 규칙을 #공지에 고정했다</li>
+      <li>09:30 스탠드업 워크플로를 게시하고 테스트했다</li>
+      <li>Claude에 Slack을 연결해 #주문 요약을 받아 봤다</li>
+    </ul>
+  </div>
+  <aside class="notes">워크플로가 안 된 수강생은 플랜 문제인지 메뉴 문제인지 구분해서 과제로.</aside>
+</section>
+
+<!-- 15. 과제와 다음 회차 -->
+<section class="slide slide--title slide--center">
+  <div class="slide-inner stack">
+    <h2>과제 & 다음 시간 예고 <span class="timebox">4분</span></h2>
+    <div class="grid-2" style="text-align:left">
+      <div class="card">
+        <h3>📝 과제</h3>
+        <ul class="list">
+          <li>일주일 동안 스탠드업 실제로 돌려 보기 (팀원 답변 받기)</li>
+          <li>단톡방 대신 Slack으로 주문 1건 이상 처리해 보기</li>
+          <li>최근 주문 5건을 메모해 오기 (이름은 성만, 연락처 제외) → 9회차 Jira 실습</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>🔜 9회차: Jira로 할 일 관리하기</h3>
+        <p>주문 한 건을 "주문서 한 장"으로 만들고, 주방 주문 꽂이처럼 접수 → 제작 중 → 배송 중 → 완료로 옮겨 봅니다.</p>
+      </div>
+    </div>
+    <nav class="lesson-nav" data-auto aria-label="다음 강의"></nav>
+  </div>
+  <aside class="notes">다음 시간 Jira 가입은 Slack과 같은 회사 메일로 하도록 안내(10회차 연결이 쉬워짐).</aside>
+</section>
+
+<script src="../assets/course.js"></script>
+<script src="../assets/deck.js"></script>
+</body>
+</html>

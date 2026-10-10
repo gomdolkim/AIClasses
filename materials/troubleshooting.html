@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>문제 해결 카드 | AI로 작은 회사 운영하기</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Ctext y=%22.9em%22 font-size=%2290%22%3E%F0%9F%8C%B7%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="../assets/deck.css">
+<style>
+  html { scroll-snap-type: none; }
+  .doc-bar { position: sticky; top: 0; z-index: 20; display: flex; align-items: center; gap: 0.6rem; padding: 0.5rem 16px; background: color-mix(in srgb, var(--bg) 90%, transparent); backdrop-filter: blur(8px); border-bottom: 1px solid var(--border); font-size: 0.95rem; }
+  .doc-bar a, .doc-bar button { color: var(--text-mid); text-decoration: none; background: none; border: 0; font: inherit; cursor: pointer; padding: 0.3rem 0.6rem; border-radius: 8px; min-height: 40px; display: inline-flex; align-items: center; }
+  .doc-bar a:hover, .doc-bar button:hover { background: var(--surface); color: var(--text); }
+  .doc-bar .title { flex: 1; min-width: 0; font-weight: 600; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .doc { max-width: 1000px; margin: 0 auto; padding: 2rem 16px 4rem; }
+  .doc h1 { font-size: clamp(1.9rem, 4vw, 2.8rem); }
+  .doc h2 { font-size: clamp(1.3rem, 2.4vw, 1.8rem); margin-top: 2.6rem; scroll-margin-top: 4rem; display: flex; flex-wrap: wrap; gap: 0.6rem; align-items: center; }
+  .toc { display: flex; flex-wrap: wrap; gap: 0.4rem; list-style: none; }
+  .toc a { display: inline-block; text-decoration: none; padding: 0.3rem 0.8rem; border-radius: 999px; background: var(--surface); border: 1px solid var(--border); color: var(--text-mid); font-size: var(--fs-small); min-height: 36px; }
+  .toc a:hover { border-color: var(--lavender); color: var(--text); }
+  .table td:first-child { font-weight: 600; min-width: 11em; }
+  @media print { .doc-bar { display: none; } .table-wrap { break-inside: avoid; } }
+</style>
+</head>
+<body data-root="../" data-material="troubleshooting">
+<nav class="doc-bar" aria-label="자료 이동">
+  <a href="../index.html">☰ 목차</a>
+  <span class="title">문제 해결 카드</span>
+  <button type="button" id="themeBtn" aria-label="밝게/어둡게 전환">🌓</button>
+</nav>
+
+<main class="doc">
+  <header class="stack">
+    <span class="eyebrow">막혔을 때 여기부터</span>
+    <h1>문제 해결 카드</h1>
+    <p class="lead">증상을 찾아 오른쪽 칸대로 해 보세요. 그래도 안 되면 에러 화면을 캡처해서 Claude에게 보여 주고 물어보세요.</p>
+    <div class="callout callout--info"><span>메뉴 이름·한도는 <strong>2026-10 기준</strong>입니다. 서비스 화면이 바뀌었으면 강사에게 알려 주세요.</span></div>
+    <nav aria-label="문제 종류로 이동">
+      <ul class="toc">
+        <li><a href="#login">로그인·결제</a></li>
+        <li><a href="#claude">Claude 한도·커넥터</a></li>
+        <li><a href="#slack">Slack</a></li>
+        <li><a href="#jira">Jira</a></li>
+        <li><a href="#make">Make</a></li>
+        <li><a href="#line">LINE</a></li>
+        <li><a href="#wrangler">wrangler·배포</a></li>
+        <li><a href="#leak">비밀값 유출</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <h2 id="login">🔐 로그인 · 결제 <span class="pill pill--pink">1·3회차</span></h2>
+  <div class="table-wrap"><table class="table">
+    <thead><tr><th scope="col">증상</th><th scope="col">이렇게 해 보세요</th></tr></thead>
+    <tbody>
+      <tr><td>인증 문자가 안 와요</td><td>번호를 국가코드 +82로 선택했는지 확인 → 1~2분 뒤 재전송. 같은 번호로 여러 번 시도하면 잠시 막히니 10분 쉬었다가.</td></tr>
+      <tr><td>인증 메일이 안 와요</td><td>스팸함·프로모션함 확인. 회사 메일이면 보안 필터에 막혔을 수 있으니 개인 Gmail로 시도.</td></tr>
+      <tr><td>로그인이 계속 풀려요</td><td>처음 가입한 방법(Google로 계속하기 / 이메일)과 같은 방법으로 로그인. 시크릿 창이면 일반 창으로.</td></tr>
+      <tr><td>카드 결제가 거절돼요</td><td>해외 결제 가능 카드인지 확인(달러 결제). 카드사 앱에서 해외 온라인 결제 차단을 해제.</td></tr>
+      <tr><td>결제했는데 Pro가 안 보여요</td><td>로그아웃 후 다시 로그인. 결제한 계정과 지금 계정(메일)이 같은지 확인.</td></tr>
+    </tbody>
+  </table></div>
+
+  <h2 id="claude">🤖 Claude 한도 · 커넥터 <span class="pill pill--pink">2·3·11회차</span></h2>
+  <div class="table-wrap"><table class="table">
+    <thead><tr><th scope="col">증상</th><th scope="col">이렇게 해 보세요</th></tr></thead>
+    <tbody>
+      <tr><td>"사용량 한도에 도달했습니다"</td><td>표시된 시간이 지나면 다시 쓸 수 있습니다. 긴 파일·긴 대화가 한도를 빨리 씁니다 → 새 채팅으로 시작하고, 파일은 필요한 부분만 올리기.</td></tr>
+      <tr><td>답이 점점 이상해져요</td><td>대화가 너무 길어진 것. 지금까지 결과를 요약해 달라고 한 뒤 새 채팅에 붙여넣고 이어서.</td></tr>
+      <tr><td>프로젝트 메뉴가 없어요</td><td>무료 플랜이면 제한이 있습니다. Pro 결제 여부 확인. 왼쪽 메뉴의 <span class="path">Projects(프로젝트)</span>.</td></tr>
+      <tr><td>커넥터 연결이 안 돼요</td><td><span class="path">Settings(설정) → Connectors(커넥터)</span>에서 해당 서비스 <strong>연결 해제 후 다시 연결</strong>. 팝업 차단을 끄고, 로그인 창에서 Claude와 같은 회사 계정을 선택. 무료 플랜은 커스텀 커넥터 1개만 됩니다.</td></tr>
+      <tr><td>커넥터는 연결됐는데 "찾을 수 없음"</td><td>그 서비스에서 내 계정에 권한이 있는지 확인(예: Jira 프로젝트 BOM 멤버인지). 대화창의 도구 아이콘에서 커넥터가 켜져 있는지 확인.</td></tr>
+    </tbody>
+  </table></div>
+
+  <h2 id="slack">💬 Slack 권한 · 앱 승인 <span class="pill pill--sky">8·10회차</span></h2>
+  <div class="table-wrap"><table class="table">
+    <thead><tr><th scope="col">증상</th><th scope="col">이렇게 해 보세요</th></tr></thead>
+    <tbody>
+      <tr><td>Workflow Builder(워크플로 빌더)가 없어요</td><td>무료 플랜은 사용이 제한될 수 있습니다(수업 전 확인). Pro 이상인지, 관리자가 워크플로 사용을 막지 않았는지 확인.</td></tr>
+      <tr><td>앱 설치가 "승인 요청"으로만 돼요</td><td>워크스페이스가 앱 승인제입니다. 관리자(Owner/Admin)가 <span class="path">앱 관리 → 요청</span>에서 승인해야 합니다. 수업용 워크스페이스는 강사가 미리 승인.</td></tr>
+      <tr><td>무료 플랜에서 앱을 더 못 깔아요</td><td>무료 플랜은 앱 10개까지. 안 쓰는 앱을 제거하거나 Pro로.</td></tr>
+      <tr><td>봇 메시지가 채널에 안 와요</td><td>앱(봇)을 그 채널에 초대했는지 확인: 채널에서 <code>/invite @앱이름</code>. 비공개 채널은 꼭 초대가 필요합니다.</td></tr>
+      <tr><td>Incoming Webhook URL을 단톡방에 올렸어요</td><td>URL은 비밀번호입니다. 앱 설정에서 해당 Webhook을 삭제하고 새로 만드세요. (<a href="#leak">비밀값 유출 대응</a>)</td></tr>
+    </tbody>
+  </table></div>
+
+  <h2 id="jira">📋 Jira 권한 · Automation 한도 <span class="pill pill--sky">9·10·11회차</span></h2>
+  <div class="table-wrap"><table class="table">
+    <thead><tr><th scope="col">증상</th><th scope="col">이렇게 해 보세요</th></tr></thead>
+    <tbody>
+      <tr><td>프로젝트가 안 보여요</td><td>사이트 관리자가 나를 초대했는지, 프로젝트 BOM의 접근 권한에 내가 있는지 확인. Free는 사용자 10명까지.</td></tr>
+      <tr><td>이슈를 못 옮겨요(권한 없음)</td><td>프로젝트 설정의 권한/역할에서 내 역할이 "멤버" 이상인지 확인.</td></tr>
+      <tr><td>Slack에서 "Create issue"가 안 보여요</td><td>"Jira Cloud for Slack" 앱 설치·로그인 확인. 메시지 <strong>⋯</strong> 메뉴 → 더 보기 → Create issue.</td></tr>
+      <tr><td>자동화 규칙이 갑자기 멈췄어요</td><td>Automation 월 한도 초과 가능성. Free는 <strong>사이트 전체 월 150 steps</strong>(트리거·조건·액션 각 1 step), 한도에 닿으면 다음 달까지 정지. <span class="path">Automation → 사용량</span>에서 확인하고, 테스트 반복을 줄이세요.</td></tr>
+      <tr><td>규칙은 실행됐는데 Slack 알림이 없어요</td><td>규칙의 <strong>감사 로그(Audit log)</strong>에서 실패 단계 확인. Slack 액션의 Webhook URL·채널을 다시 확인.</td></tr>
+    </tbody>
+  </table></div>
+
+  <h2 id="make">🧩 Make 시나리오 오류 · credits <span class="pill pill--mint">13회차</span></h2>
+  <div class="table-wrap"><table class="table">
+    <thead><tr><th scope="col">증상</th><th scope="col">이렇게 해 보세요</th></tr></thead>
+    <tbody>
+      <tr><td>모듈에 빨간 느낌표</td><td>그 모듈을 눌러 오류 메시지 확인. 대부분 연결(Connection) 만료 → 다시 연결. 매핑한 값이 비어 있지 않은지 확인.</td></tr>
+      <tr><td>"Run once"는 되는데 실제로는 안 돌아요</td><td>시나리오 아래 스위치가 <strong>ON</strong>인지, 스케줄이 "즉시(Immediately)"인지 확인. 무료는 활성 시나리오 2개까지.</td></tr>
+      <tr><td>credits가 금방 바닥나요</td><td>Free는 월 1,000 credits. 모듈 하나 실행마다 소모됩니다. 테스트를 짧게 하고, 필요 없는 모듈·반복을 줄이세요. 부족하면 Core($9) 고려.</td></tr>
+      <tr><td>Claude 모듈 401/인증 오류</td><td>Anthropic API 키가 틀리거나 폐기됨. Console에서 새 키 발급 후 Make 연결을 다시 만드세요. 결제 크레딧 잔액도 확인.</td></tr>
+      <tr><td>JSON 파싱 오류</td><td>Claude가 JSON 밖에 설명을 붙인 경우. 시스템 프롬프트에 "JSON만 출력"을 다시 강조하고, 예시 JSON을 넣어 주세요.</td></tr>
+    </tbody>
+  </table></div>
+
+  <h2 id="line">🟢 LINE <span class="pill pill--mint">12·13·14회차</span></h2>
+  <div class="table-wrap"><table class="table">
+    <thead><tr><th scope="col">증상</th><th scope="col">이렇게 해 보세요</th></tr></thead>
+    <tbody>
+      <tr><td>Webhook "검증(Verify)" 실패</td><td>URL이 <code>https://</code>로 시작하고 끝 경로(<code>/line/webhook</code>)까지 정확한지 확인. 서버(Make 시나리오/Worker)가 켜져 있고 <strong>200 응답</strong>을 바로 돌려주는지 확인. 서명 검증에 쓰는 Channel secret이 맞는지 확인.</td></tr>
+      <tr><td>메시지를 보내도 봇이 응답 없음</td><td>LINE Developers 콘솔에서 <strong>Use webhook(Webhook 사용)</strong>이 켜져 있는지 확인. Channel access token이 맞는지, reply token을 1분 안에 한 번만 썼는지 확인. 서버 로그에서 오류 확인.</td></tr>
+      <tr><td>답장이 두 번 와요(중복)</td><td>LINE Official Account Manager의 <strong>응답 메시지(応答メッセージ)를 OFF</strong>로 하세요. 자동응답과 봇이 동시에 답하고 있는 것입니다. 인사말(あいさつメッセージ)도 봇과 겹치지 않게 정리.</td></tr>
+      <tr><td>무료 메시지가 다 떨어졌대요</td><td>무료 플랜은 월 200통(보내는 홍보 메시지 기준). Reply API·응답 메시지는 통수에 포함되지 않습니다. 단체 발송을 줄이거나 라이트(5,000엔) 고려.</td></tr>
+      <tr><td>일본어 메뉴라 못 찾겠어요</td><td>설정(設定) → 응답 설정(応答設定) 순서. 브라우저 번역 기능을 켜도 됩니다.</td></tr>
+    </tbody>
+  </table></div>
+
+  <h2 id="wrangler">☁️ wrangler · 배포 <span class="pill pill--mint">14회차</span></h2>
+  <div class="table-wrap"><table class="table">
+    <thead><tr><th scope="col">증상</th><th scope="col">이렇게 해 보세요</th></tr></thead>
+    <tbody>
+      <tr><td><code>npx: command not found</code></td><td>Node.js가 설치되지 않았거나 터미널을 새로 열지 않았습니다. Node.js LTS 설치 후 터미널을 닫았다 다시 열기. <code>node -v</code>로 확인.</td></tr>
+      <tr><td>로그인 창이 안 떠요 / "Not authenticated"</td><td><code>npx wrangler login</code> 실행 → 브라우저에서 Cloudflare 로그인 후 허용(Allow).</td></tr>
+      <tr><td>배포는 됐는데 500 오류</td><td>비밀값이 빠졌을 가능성. <code>npx wrangler secret put ANTHROPIC_API_KEY</code>처럼 8개 비밀값을 모두 넣었는지 확인. 로그는 <code>npx wrangler tail</code>.</td></tr>
+      <tr><td>401 / 서명 불일치</td><td><code>LINE_CHANNEL_SECRET</code> 값이 틀렸거나 앞뒤 공백이 들어감. 다시 <code>secret put</code>.</td></tr>
+      <tr><td>Jira 이슈가 안 만들어져요</td><td><code>JIRA_BASE_URL</code>(https://○○.atlassian.net), <code>JIRA_EMAIL</code>, <code>JIRA_API_TOKEN</code>, <code>JIRA_PROJECT_KEY</code>(=BOM) 확인. 이슈 유형 이름(클레임/문의)이 프로젝트에 있는지 확인.</td></tr>
+    </tbody>
+  </table></div>
+
+  <h2 id="leak">⛔ 비밀값이 유출됐을 때 <span class="pill pill--peach">언제나</span></h2>
+  <div class="callout callout--danger"><span>API 키, 토큰, Channel secret, Webhook URL이 <strong>단톡방·화면 공유·녹화·GitHub·캡처</strong>에 노출됐다면 "아무도 안 봤겠지"라고 생각하지 마세요. <strong>즉시 폐기하고 재발급</strong>합니다.</span></div>
+  <ol class="steps">
+    <li><strong>즉시 폐기</strong>: 해당 서비스 관리 화면에서 그 키를 삭제(Revoke)하거나 재발급(Reissue)합니다. Anthropic Console·LINE Developers·Slack 앱 설정·Atlassian 계정 보안 화면.</li>
+    <li><strong>새 값 넣기</strong>: 새 키를 Make 연결 또는 <code>npx wrangler secret put 이름</code>으로 다시 넣습니다.</li>
+    <li><strong>흔적 지우기</strong>: 올린 메시지·캡처·파일을 삭제합니다. (삭제만으로는 부족 — 반드시 1번 먼저)</li>
+    <li><strong>사용량 확인</strong>: Anthropic Console 사용량, 결제 내역에 모르는 사용이 있는지 확인합니다. 지출 한도(Spend limit)를 낮게 설정해 두세요.</li>
+    <li><strong>기록</strong>: 언제·무엇이·어디에 노출됐는지 강사(또는 대표)에게 알립니다.</li>
+  </ol>
+
+  <p class="asof">AI로 작은 회사 운영하기 · 문제 해결 카드 · 2026-10 기준 · <a href="../index.html">전체 목차로 돌아가기</a></p>
+</main>
+
+<script src="page.js"></script>
+</body>
+</html>

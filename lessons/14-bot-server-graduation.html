@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>14회차 · Claude가 짜준 봇 서버 & 졸업 | AI로 작은 회사 운영하기</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Ctext y=%22.9em%22 font-size=%2290%22%3E%F0%9F%8C%B7%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="../assets/deck.css">
+</head>
+<body data-lesson="14">
+
+<!-- 1. 표지 -->
+<section class="slide slide--title slide--center">
+  <div class="slide-inner">
+    <span class="eyebrow reveal">파트 ④ 고객 문의 AI 상담봇 (LINE) · 14회차 · 마지막 시간</span>
+    <h1 class="reveal">Claude가 짜준 봇 서버 &amp; 졸업</h1>
+    <p class="lead reveal">우리 봇을 우리 서버로 옮기고, 우리 회사의 AI 계획을 발표합니다</p>
+    <p class="small reveal" style="margin-top:2rem">⌨️ 방향키·스페이스로 이동 · <kbd>N</kbd> 강사 노트 · <kbd>D</kbd> 어둡게</p>
+  </div>
+  <aside class="notes">
+    [0~1분] 오늘은 두 부분: 앞 55분 서버 배포, 뒤 35분 졸업 발표. 시간 관리가 생명 — 배포가 늦어지는 수강생은 발표 후 남아서 완료하도록 미리 안내.
+    수업 전 준비: 강사 PC에 examples/messenger-bot 배포 완료본, Node.js 설치 확인용 USB/링크, 졸업 발표용 타이머, 수료증(있다면).
+    수강생 PC에 Node.js(LTS)가 설치되어 있는지 13회차 과제로 확인했어야 함. 안 된 사람은 실습 1에서 바로 설치(5분).
+  </aside>
+</section>
+
+<!-- 2. 오늘의 목표 -->
+<section class="slide">
+  <div class="slide-inner stack">
+    <h2>오늘의 목표 <span class="timebox">3분</span></h2>
+    <div class="goal reveal"><span class="goal-label">목표</span><span>AI가 만든 봇 서버를 Cloudflare에 <strong>배포</strong>하고, 우리 회사 <strong>AI 도입 계획</strong>을 발표한다</span></div>
+    <div class="goal reveal"><span class="goal-label">결과물</span><span>인터넷에서 작동하는 LINE 봇 서버 + "우리 회사 AI 도입 계획서" 1쪽</span></div>
+    <div class="grid-2 reveal">
+      <div class="card card--sky"><span class="icon">🚀</span><h3>앞 55분 · 봇 서버</h3><p>Make 대신 우리 서버에서 같은 봇을 돌리기</p></div>
+      <div class="card card--pink"><span class="icon">🎓</span><h3>뒤 35분 · 졸업 발표</h3><p>3개월 안에 우리 회사에서 할 AI 자동화</p></div>
+    </div>
+  </div>
+  <aside class="notes">"코드를 직접 짜는 날이 아니다. Claude가 짠 코드를 받아서 올리는 날"이라고 분명히 말해 긴장을 풀어 주기. 터미널에 명령어를 복사-붙여넣기만 하면 됨.</aside>
+</section>
+
+<!-- 3. 지난 시간 결과물 확인 -->
+<section class="slide slide--alt">
+  <div class="slide-inner stack">
+    <h2>지난 시간 결과물 확인 <span class="timebox">4분</span></h2>
+    <div class="grid-3">
+      <div class="card reveal"><h3>🤖 Make 봇</h3><p>일주일 동안 실제로 답했나요? 이상한 답은 규칙을 고쳤나요?</p></div>
+      <div class="card reveal"><h3>☁️ Cloudflare</h3><p>무료 가입 했나요? 메일 인증까지 끝났나요?</p></div>
+      <div class="card card--yellow reveal"><h3>📝 발표 재료</h3><p>"AI로 바꾸고 싶은 일" 3개 — 뒤 35분에 씁니다</p></div>
+    </div>
+    <div class="callout callout--tip reveal"><span>Make 봇에서 고친 시스템 프롬프트 규칙이 있다면 메모해 두세요. 오늘 서버의 <code>knowledge.ts</code>에도 똑같이 옮겨 적습니다.</span></div>
+  </div>
+  <aside class="notes">Make 시나리오는 오늘 서버 배포가 끝날 때까지 켜 둔다. LINE Webhook URL을 서버로 바꾸는 순간 Make는 더 이상 메시지를 받지 않음(실습 3에서 끔).</aside>
+</section>
+
+<!-- 4. 왜 서버로 옮기나 -->
+<section class="slide">
+  <div class="slide-inner stack">
+    <h2>왜 서버로 옮기나요? <span class="timebox">6분</span></h2>
+    <div class="analogy reveal">
+      Make는 <strong>공유 주방을 빌려 쓰는 것</strong>, 서버는 <strong>우리 가게 주방</strong>입니다.
+      처음엔 빌려 쓰는 게 편하지만, 손님이 늘면 내 주방이 더 빠르고 싸고 마음대로 바꿀 수 있습니다.
+    </div>
+    <div class="table-wrap reveal">
+      <table class="table">
+        <tr><th></th><th>Make (13회차)</th><th>Cloudflare 서버 (오늘)</th></tr>
+        <tr><td>⚡ 속도</td><td>모듈을 하나씩 거침</td><td>바로 처리 + "입력 중…" 표시까지</td></tr>
+        <tr><td>💰 비용</td><td>무료 월 1,000 credits ≈ 150~200건</td><td>무료 플랜 하루 10만 요청 (봇은 사실상 Claude 사용료만)</td></tr>
+        <tr><td>🛠️ 자유</td><td>모듈에 있는 기능만</td><td>LINE 서명 검사, 카카오 연결 등 무엇이든</td></tr>
+        <tr><td>😅 어려움</td><td>클릭으로 끝</td><td>터미널 명령어 몇 줄 (복사-붙여넣기)</td></tr>
+      </table>
+    </div>
+    <div class="grid-3 reveal">
+      <dl class="term"><dt>서버</dt><dd>인터넷에 24시간 켜져 있으면서 요청을 받아 처리하는 컴퓨터</dd></dl>
+      <dl class="term"><dt>Cloudflare Workers</dt><dd>내 컴퓨터 없이 코드를 Cloudflare 컴퓨터에 맡겨 돌리는 서비스</dd></dl>
+      <dl class="term"><dt>배포 (deploy)</dt><dd>내 컴퓨터의 코드를 인터넷 서버에 올려 누구나 쓸 수 있게 하는 일</dd></dl>
+    </div>
+    <p class="asof">Cloudflare Workers 무료 한도는 2026-10 기준이며 바뀔 수 있습니다.</p>
+  </div>
+  <aside class="notes">
+    "서버를 사야 하나요?" → 아니요. 서버 컴퓨터는 Cloudflare가 갖고 있고 우리는 코드만 맡김. 꺼질 걱정 없음.
+    Make가 나쁜 게 아니라는 점: 월 문의 수십 건이면 Make로 충분. 이 비교표가 졸업 계획서의 "비용" 칸 재료가 됨.
+    오늘 새 용어 5개: 서버, Cloudflare Workers, 배포, 비밀값, 로그.
+  </aside>
+</section>
+
+<!-- 5. Claude Code에게 명세 주기 -->
+<section class="slide slide--alt">
+  <div class="slide-inner stack">
+    <h2>코드는 Claude Code에게 "명세"를 주고 받습니다 <span class="timebox">6분</span></h2>
+    <p class="lead">명세 = 1회차의 <strong>좋은 요청 4요소</strong>를 프로그램용으로 쓴 것.</p>
+    <div class="prompt reveal">[상황] 꽃집 「봄날의 꽃」 LINE 공식계정용 AI 상담 봇 서버를 만들고 싶어. 나는 코딩을 모르니 파일마다 쉬운 한국어 설명을 달아줘.
+[할 일] Cloudflare Workers + TypeScript로 만들어줘.
+ - POST /line/webhook: x-line-signature를 Channel secret으로 검사, 바로 200 응답 후 뒤에서 처리
+ - 손님 메시지의 전화·카드번호를 가린 뒤 Claude Haiku 4.5(claude-haiku-4-5)에 보내기
+ - 시스템 프롬프트 = 상담 규칙 + FAQ (첨부한 system-prompt.md)
+ - 답은 JSON {answer, category, needs_human}. category: 영업정보|주문|배송|환불|불만|기타
+ - LINE에 reply token으로 답장. needs_human이면 Slack #cs-escalation 알림 + Jira BOM 이슈(클레임/문의)
+[조건] 비밀값은 코드에 쓰지 말고 환경변수: ANTHROPIC_API_KEY, LINE_CHANNEL_SECRET, LINE_CHANNEL_ACCESS_TOKEN, SLACK_WEBHOOK_URL, JIRA_BASE_URL, JIRA_EMAIL, JIRA_API_TOKEN, JIRA_PROJECT_KEY. 테스트도 만들어줘.
+[형식] 폴더 구조 + 파일 + 배포 방법 README</div>
+    <div class="callout callout--info reveal"><span>수업에서는 이 명세로 만든 <strong>완성본</strong> <code>examples/messenger-bot/</code>을 씁니다. 사용법은 그 폴더의 <code>README.md</code>. 직접 Claude Code로 만들어 보는 방법은 <strong>부록 C</strong>.</span></div>
+  </div>
+  <aside class="notes">
+    강사가 Claude Code에 이 명세를 넣고 코드가 만들어지는 장면을 2~3분 보여 주면 효과 큼(미리 녹화해 둔 영상도 OK). 수강생은 직접 만들지 않음 — AI가 매번 조금씩 다른 코드를 만들어 수업 진행이 어려워지기 때문.
+    핵심 메시지: "코드를 읽을 줄 몰라도, 무엇을 원하는지 정확히 말하면 AI가 만든다. 단, 비밀값·보안 조건은 사람이 명세에 꼭 넣어야 한다."
+  </aside>
+</section>
+
+<!-- 6. 폴더 지도 -->
+<section class="slide">
+  <div class="slide-inner stack">
+    <h2>완성본 둘러보기 · 고칠 곳은 딱 한 군데 <span class="timebox">4분</span></h2>
+    <div class="grid-2">
+<pre class="code reveal">examples/messenger-bot/
+├─ README.md        ← 사용 설명서
+├─ wrangler.toml    ← 서버 이름 (bomnal-bot)
+├─ src/
+│  ├─ index.ts      ← 안내 데스크 (주소별 담당)
+│  ├─ line.ts       ← LINE 받기·답장
+│  ├─ kakao.ts      ← 카카오 (부록 D)
+│  ├─ claude.ts     ← Claude에게 묻기
+│  ├─ escalate.ts   ← Slack·Jira로 넘기기
+│  ├─ privacy.ts    ← 개인정보 가리기
+│  └─ knowledge.ts  ← ★ 상담 규칙 + FAQ
+└─ test/            ← 자동 점검</pre>
+      <div class="stack reveal">
+        <div class="card card--yellow"><span class="icon">✏️</span><h3>knowledge.ts만 고치세요</h3><p>가격·영업시간이 바뀌면 이 파일의 FAQ 글을 고치고 다시 배포. 13회차 시스템 프롬프트와 같은 내용입니다.</p></div>
+        <div class="callout callout--tip"><span>다른 파일은 몰라도 됩니다. 궁금하면 Claude에게 "이 파일이 하는 일을 꽃집 사장님께 설명하듯 알려줘"라고 물어보세요.</span></div>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">VS Code나 메모장으로 knowledge.ts를 열어 보여 주기. 13회차에 Make에서 고친 규칙이 있으면 여기에 같은 문장으로 추가. Make 판 시스템 프롬프트에는 9번 규칙(역할 바꾸기 거부)이 더 있으니 원하면 옮겨 적게 하기.</aside>
+</section>
+
+<!-- 7. 실습 1: 준비와 로그인 -->
+<section class="slide slide--alt">
+  <div class="slide-inner stack">
+    <h2>실습 1 · 터미널 열고 Cloudflare 로그인 <span class="timebox">8분</span></h2>
+    <div class="grid-2">
+      <ol class="steps reveal">
+        <li>Node.js가 없으면 <span class="path">nodejs.org → LTS 다운로드</span> 후 설치</li>
+        <li>교재 폴더를 받아 둔 곳에서 터미널 열기 (맥: <strong>터미널</strong> 앱 / 윈도: <strong>PowerShell</strong>)</li>
+        <li>아래 명령을 한 줄씩 복사 → 붙여넣기 → <kbd>Enter</kbd></li>
+        <li><code>wrangler login</code>을 치면 브라우저가 열림 → Cloudflare 로그인 → <strong>Allow(허용)</strong></li>
+        <li>터미널에 <strong>Successfully logged in</strong> 이 보이면 성공</li>
+      </ol>
+<pre class="code reveal" data-copy>cd examples/messenger-bot
+npm install
+npx wrangler login</pre>
+    </div>
+    <div class="callout callout--info reveal"><span><strong>터미널</strong>은 마우스 대신 글자로 컴퓨터에 일을 시키는 창입니다. 오늘은 복사-붙여넣기만 합니다. (부록 C에서 더 자세히)</span></div>
+  </div>
+  <aside class="notes">
+    가장 많이 막히는 곳: ① cd 경로 — 교재 폴더 위치가 사람마다 다름. Finder/탐색기에서 messenger-bot 폴더를 터미널 창으로 끌어다 놓으면 경로가 입력됨(맥) ② npm 명령이 없다고 나옴 → Node.js 설치 후 터미널을 새로 열기 ③ 회사 PC 보안으로 설치 불가 → 개인 노트북 사용.
+    터미널은 1회차 이후 처음 보는 낯선 화면이므로 "빨간 글자가 나와도 컴퓨터가 망가지지 않는다"고 안심시키기. 터미널은 새 용어 카드로 만들지 않고 안내 상자로만 설명(오늘 용어 5개 한도).
+  </aside>
+</section>
+
+<!-- 8. 실습 2: 비밀값 등록 -->
+<section class="slide">
+  <div class="slide-inner stack">
+    <h2>실습 2-1 · 비밀값 8개 준비하기 <span class="timebox">3분</span></h2>
+    <dl class="term reveal"><dt>비밀값 (secret)</dt><dd>API 키·토큰처럼 코드에 쓰면 안 되는 값. Cloudflare <strong>금고</strong>에 따로 넣고, 서버가 실행될 때만 꺼내 씀</dd></dl>
+    <div class="table-wrap reveal">
+        <table class="table">
+          <tr><th>이름</th><th>어디서 가져오나</th></tr>
+          <tr><td>ANTHROPIC_API_KEY</td><td>console.anthropic.com → API keys (새로 만들기 권장)</td></tr>
+          <tr><td>LINE_CHANNEL_SECRET</td><td>LINE Developers → Basic settings</td></tr>
+          <tr><td>LINE_CHANNEL_ACCESS_TOKEN</td><td>LINE Developers → Messaging API 탭</td></tr>
+          <tr><td>SLACK_WEBHOOK_URL</td><td>10회차에서 배운 방법으로 #cs-escalation용 Incoming Webhook 발급</td></tr>
+          <tr><td>JIRA_BASE_URL / EMAIL</td><td><code>https://내회사.atlassian.net</code> / 로그인 메일</td></tr>
+          <tr><td>JIRA_API_TOKEN</td><td>id.atlassian.com → Security → API tokens</td></tr>
+          <tr><td>JIRA_PROJECT_KEY</td><td><code>BOM</code></td></tr>
+        </table>
+      </div>
+  </div>
+  <aside class="notes">값은 메모장에 잠깐 모아 두고, 금고에 다 넣은 뒤 메모장은 저장하지 말고 닫게 할 것. 카톡 '나에게 보내기'에 붙여넣는 것도 금지.</aside>
+</section>
+
+<section class="slide">
+  <div class="slide-inner stack">
+    <h2>실습 2-2 · 금고에 넣기 <span class="timebox">5분</span></h2>
+    <pre class="code reveal" data-copy>npx wrangler secret put ANTHROPIC_API_KEY
+npx wrangler secret put LINE_CHANNEL_SECRET
+npx wrangler secret put LINE_CHANNEL_ACCESS_TOKEN
+npx wrangler secret put SLACK_WEBHOOK_URL
+npx wrangler secret put JIRA_BASE_URL
+npx wrangler secret put JIRA_EMAIL
+npx wrangler secret put JIRA_API_TOKEN
+npx wrangler secret put JIRA_PROJECT_KEY</pre>
+    <div class="callout callout--danger reveal"><span>한 줄 치면 <strong>Enter a secret value</strong>가 나옵니다 → 값 붙여넣기 → Enter (화면에 안 보이는 게 정상). 비밀값을 <code>wrangler.toml</code>·코드·카톡·화면 공유에 <strong>절대</strong> 노출하지 마세요.</span></div>
+  </div>
+  <aside class="notes">
+    처음 secret put을 하면 "bomnal-bot이라는 Worker가 없는데 새로 만들까요?"라고 물음 → y.
+    Slack·Jira 비밀값이 없으면 봇은 답장은 하고 직원 연결만 건너뜀(README 참고) — 시간이 없으면 앞의 3개만 넣고 진행 가능.
+    화면 공유 중이면 강사는 값 붙여넣기 전에 공유를 잠시 멈출 것. 잘못 넣었으면 같은 명령을 다시 치면 덮어씀.
+  </aside>
+</section>
+
+<!-- 9. 실습 3: 배포 + LINE 연결 -->
+<section class="slide slide--alt">
+  <div class="slide-inner stack">
+    <h2>실습 3 · 배포하고 LINE에 주소 알려 주기 <span class="timebox">6분</span></h2>
+    <div class="grid-2">
+      <div class="stack">
+<pre class="code reveal" data-copy>npx wrangler deploy</pre>
+        <ol class="steps reveal">
+          <li>끝에 나온 주소 복사: <code>https://bomnal-bot.○○○.workers.dev</code></li>
+          <li>브라우저로 열어 "봄날의 꽃 상담 봇이 작동 중입니다 🌷" 확인</li>
+          <li><span class="path">LINE Developers → Messaging API 탭 → Webhook URL → Edit</span>에 <code>주소/line/webhook</code> 붙여넣기 → Update</li>
+          <li><strong>Verify</strong> → Success</li>
+          <li>Make 시나리오 스위치 <strong>OFF</strong> (두 봇이 동시에 일하지 않게)</li>
+        </ol>
+      </div>
+      <div class="flow reveal">
+        <div class="flow-node"><span class="icon">📱</span>LINE</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node flow-node--accent"><span class="icon">☁️</span>bomnal-bot<small>/line/webhook</small></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node"><span class="icon">🧠</span>Claude</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node flow-node--human"><span class="icon">🙋</span>Slack · Jira</div>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">
+    주소 끝에 /line/webhook을 빠뜨리는 실수가 가장 흔함(404). Verify 실패 시 다음 슬라이드의 로그를 먼저 보고 원인 확인.
+    Verify가 500이면 비밀값 누락 — 로그에 "비밀값이 등록되지 않았어요: ..."가 찍힘.
+  </aside>
+</section>
+
+<!-- 10. 실습 4: 테스트 + 로그 -->
+<section class="slide">
+  <div class="slide-inner stack">
+    <h2>실습 4 · 진짜 테스트하고 로그 보기 <span class="timebox">6분</span></h2>
+    <div class="grid-2">
+      <div class="stack">
+        <dl class="term reveal"><dt>로그 (log)</dt><dd>서버가 남기는 <strong>업무 일지</strong>. 무엇을 받았고 무엇이 실패했는지 시간순으로 적힘</dd></dl>
+<pre class="code reveal" data-copy>npx wrangler tail</pre>
+        <p class="small reveal">켜 둔 채로 휴대폰에서 질문 → 터미널에 기록이 실시간으로 올라옵니다. 끝낼 때는 <kbd>Ctrl</kbd>+<kbd>C</kbd>. 대시보드 <span class="path">Workers &amp; Pages → bomnal-bot → Logs</span>에서도 볼 수 있어요.</p>
+      </div>
+      <div class="chat reveal">
+        <div class="bubble bubble--user">花束Lはいくらですか？</div>
+        <div class="bubble bubble--bot">・・・ (입력 중 표시)</div>
+        <div class="bubble bubble--bot">こんにちは、春の日の花のAI相談員です。花束Lは85,000ウォンです🌷</div>
+        <div class="bubble bubble--user">배송 중에 꽃이 부러졌어요</div>
+        <div class="bubble bubble--bot">불편을 드려 죄송합니다. 사진을 확인한 뒤 재제작을 안내드릴 수 있도록 담당자에게 연결해 드리겠습니다.</div>
+      </div>
+    </div>
+    <div class="callout callout--tip reveal"><span>13회차 <strong>짓궂은 질문 테스트</strong>를 그대로 다시 해 보세요. 같은 규칙이니 같은 결과가 나와야 합니다.</span></div>
+  </div>
+  <aside class="notes">
+    "입력 중…" 애니메이션은 LINE 로딩 표시 API — Make 버전에는 없던 장점.
+    로그에 개인정보가 찍히지 않도록 예제는 가린 메시지만 기록함. 로그 화면도 화면 공유 시 주의.
+    가격·규칙을 바꾸려면 knowledge.ts 수정 → npx wrangler deploy 다시. 30초면 반영.
+  </aside>
+</section>
+
+<!-- 11. 자주 겪는 문제 + 보안 -->
+<section class="slide slide--alt">
+  <div class="slide-inner stack">
+    <h2>자주 겪는 문제 &amp; 비밀값 지키기 <span class="timebox">4분</span></h2>
+    <div class="table-wrap">
+      <table class="table">
+        <tr><th>증상</th><th>해결</th></tr>
+        <tr><td><code>npm: command not found</code></td><td>Node.js 설치 후 터미널 새로 열기</td></tr>
+        <tr><td>Verify 404</td><td>주소 끝 <code>/line/webhook</code> 확인</td></tr>
+        <tr><td>Verify 500 / 로그 "비밀값이 등록되지 않았어요"</td><td>로그에 나온 이름으로 <code>npx wrangler secret put</code> 다시</td></tr>
+        <tr><td>로그 "서명 불일치" / 401</td><td>LINE_CHANNEL_SECRET 오타 (Access token과 바꿔 넣지 않았는지)</td></tr>
+        <tr><td>답은 오는데 Slack·Jira 안 생김</td><td>Slack·Jira 비밀값 확인, Jira 유형 이름 <strong>클레임/문의</strong></td></tr>
+      </table>
+    </div>
+    <div class="callout callout--danger reveal"><span><strong>비밀값 3원칙</strong> ① 코드·파일·채팅에 쓰지 않는다 ② 직원이 퇴사하거나 유출이 의심되면 <strong>즉시 재발급</strong> 후 <code>secret put</code> ③ Anthropic Console에 <strong>월 사용 한도</strong>를 걸어 둔다</span></div>
+  </div>
+  <aside class="notes">
+    여기까지 55분. 배포가 안 끝난 수강생은 "발표 후 15분 남아서 같이 완료"로 정리하고 졸업 파트로 넘어감 — 발표 시간을 침범하지 말 것.
+    GitHub에 코드를 올릴 때(부록 A·B) .dev.vars 같은 비밀 파일이 올라가지 않도록 .gitignore 확인 필요 — 부록에서 다룸.
+  </aside>
+</section>
+
+<!-- 12. 파트 구분: 졸업 -->
+<section class="slide slide--part slide--center">
+  <div class="slide-inner stack">
+    <span class="eyebrow">뒤 35분</span>
+    <h2>🎓 졸업 발표 · 우리 회사 AI 도입 계획 <span class="timebox">1분</span></h2>
+    <p class="lead">14회 동안 배운 것을 <strong>내 회사의 다음 3개월</strong>로 바꿉니다.</p>
+    <div class="grid-4">
+      <div class="card card--pink"><h3>파트 ①</h3><p>AI 비서·프로젝트·스킬</p></div>
+      <div class="card card--lavender"><h3>파트 ②</h3><p>문서·마케팅·홈페이지</p></div>
+      <div class="card card--sky"><h3>파트 ③</h3><p>Slack·Jira 자동화</p></div>
+      <div class="card card--mint"><h3>파트 ④</h3><p>LINE AI 상담봇</p></div>
+    </div>
+  </div>
+  <aside class="notes">분위기 전환. 1회차 첫날 칠판에 받아 적었던 수강생 고민을 다시 보여 주면 감동 포인트. "그 고민 중 무엇을 해결할 수 있게 됐나?"</aside>
+</section>
+
+<!-- 13. 도입 계획서 템플릿 -->
+<section class="slide">
+  <div class="slide-inner stack">
+    <h2>"우리 회사 AI 도입 계획서" 만들기 <span class="timebox">8분</span></h2>
+    <div class="grid-2">
+      <div class="table-wrap reveal">
+        <table class="table">
+          <tr><th>칸</th><th>봄날의 꽃 예시</th></tr>
+          <tr><td>① 현재 문제</td><td>LINE·카톡 반복 문의 하루 30건, 대표가 하루 1시간 씀</td></tr>
+          <tr><td>② 적용할 자동화</td><td>LINE AI 상담봇(14회차) + 클레임 Jira 관리(9·10회차)</td></tr>
+          <tr><td>③ 비용 (월)</td><td>Claude Pro $20 + Slack Pro + API 약 $5</td></tr>
+          <tr><td>④ 담당자</td><td>봇 규칙 관리: 지수 / 클레임 처리: 민호</td></tr>
+          <tr><td>⑤ 3개월 로드맵</td><td>1개월: 봇 운영·규칙 다듬기 → 2개월: 주간 보고 자동화 → 3개월: 카카오 채널 확대</td></tr>
+          <tr><td>⑥ 성공 기준</td><td>반복 문의 응답 시간 절반, 대표 시간 주 5시간 절약</td></tr>
+        </table>
+      </div>
+      <div class="prompt reveal">[상황] 나는 (업종) 회사를 운영하고 직원은 (N)명이야. 지금 가장 시간을 많이 뺏는 일은 (3가지)야.
+[할 일] 아래 6칸으로 "우리 회사 AI 도입 계획서"를 만들어줘: ① 현재 문제 ② 적용할 자동화 ③ 월 비용 ④ 담당자 ⑤ 3개월 로드맵(월별) ⑥ 성공 기준.
+[조건] 내가 배운 도구(Claude 프로젝트·스킬, Slack, Jira, Make, LINE 봇, Cloudflare)만 사용. 비용은 2026-10 기준 대략적 금액, 모르면 [확인 필요]. 개인정보 보호 주의점 1줄 포함.
+[형식] 1쪽 표 + 발표용 요약 3문장</div>
+    </div>
+    <div class="callout callout--warn reveal"><span>비용 숫자는 AI가 틀릴 수 있어요. 각 서비스 요금 페이지에서 <strong>한 번 더 확인</strong>하세요. (2회차 사실 확인 습관)</span></div>
+  </div>
+  <aside class="notes">
+    3회차 "봄날의 꽃" 프로젝트처럼 자기 회사 프로젝트가 있는 수강생은 그 프로젝트 안에서 요청하면 회사 정보를 다시 쓸 필요 없음.
+    8분 안에 표가 완성되도록 돌아다니며 ②번 칸이 너무 큰 꿈(예: "모든 업무 자동화")이면 "첫 달에 할 것 하나"로 좁혀 주기.
+  </aside>
+</section>
+
+<!-- 14. 발표 형식 -->
+<section class="slide slide--alt">
+  <div class="slide-inner stack">
+    <h2>졸업 발표 · 1인 3분 <span class="timebox">20분</span></h2>
+    <div class="flow reveal">
+      <div class="flow-node"><span class="icon">😵</span>문제<small>30초</small></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node flow-node--accent"><span class="icon">🤖</span>자동화 + 시연/캡처<small>1분</small></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node"><span class="icon">💰</span>비용·담당자<small>30초</small></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node"><span class="icon">🗓️</span>3개월 로드맵<small>1분</small></div>
+    </div>
+    <div class="grid-2 reveal">
+      <div class="card card--mint"><h3>👏 듣는 사람</h3><p>발표마다 <strong>"좋았던 점 1개 + 질문 1개"</strong>를 Slack #공지 스레드에 남기기</p></div>
+      <div class="card card--peach"><h3>📌 발표 팁</h3><p>오늘 배포한 봇이나 13회차 봇을 휴대폰으로 <strong>실제 시연</strong>하면 최고. 계획서 표 화면 공유도 OK</p></div>
+    </div>
+    <div class="callout callout--danger reveal"><span>시연·화면 공유 때 <strong>API 키·토큰·손님 실명/전화번호</strong>가 보이지 않게 미리 창을 정리하세요.</span></div>
+  </div>
+  <aside class="notes">
+    인원이 6명 기준 3분×6 = 18분 + 전환 2분. 인원이 많으면 2분으로 줄이거나 조별 발표. 강사는 타이머를 크게 띄우고 2분 30초에 신호.
+    강사 피드백은 "다음 달에 바로 할 수 있는가?" 한 가지 기준으로 짧게.
+  </aside>
+</section>
+
+<!-- 15. 수료 체크리스트 -->
+<section class="slide">
+  <div class="slide-inner stack">
+    <h2>수료 체크리스트 ✅ <span class="timebox">3분</span></h2>
+    <p class="small">한 일을 눌러서 체크하세요. (이 컴퓨터에 저장됩니다)</p>
+    <ul class="checklist reveal">
+      <li>Claude 프로젝트에 우리 회사 자료를 넣고 업무를 맡길 수 있다 (1~6회차)</li>
+      <li>Slack 채널과 Jira 보드로 팀 일을 나누고, 둘을 자동으로 이었다 (7~11회차)</li>
+      <li>LINE 자동응답과 AI 상담봇을 만들고 짓궂은 질문으로 시험했다 (12~13회차)</li>
+      <li>봇 서버를 Cloudflare에 배포하고 로그를 볼 수 있다 (14회차)</li>
+      <li>비밀값·개인정보를 AI와 화면 공유에서 지키는 방법을 안다</li>
+      <li>"우리 회사 AI 도입 계획서"를 발표했다</li>
+    </ul>
+  </div>
+  <aside class="notes">못 한 항목은 부록과 materials/setup-checklist.html로 이어서 하도록 안내. 수료증 전달은 이 슬라이드에서.</aside>
+</section>
+
+<!-- 16. 앞으로 배울 것 -->
+<section class="slide slide--title slide--center">
+  <div class="slide-inner stack">
+    <h2>🌷 수료를 축하합니다! 앞으로 배울 것 <span class="timebox">3분</span></h2>
+    <div class="grid-3" style="text-align:left">
+      <div class="card"><h3>부록 A</h3><p>홈페이지를 인터넷에 올리기 (GitHub + Vercel)</p></div>
+      <div class="card"><h3>부록 B</h3><p>버전 관리 기초 — 코드를 안전하게 보관</p></div>
+      <div class="card"><h3>부록 C</h3><p>심화: Claude Code로 직접 만들기</p></div>
+      <div class="card"><h3>부록 D</h3><p>카카오톡 채널 자동응답 &amp; 챗봇 — <strong>오늘 서버 그대로</strong> 연결</p></div>
+      <div class="card"><h3>부록 E</h3><p>Claude 스킬 설치·사용·직접 만들기</p></div>
+      <div class="card card--yellow"><h3>📝 마지막 과제</h3><p>계획서의 "1개월 차" 할 일을 Jira 이슈로 만들고 시작하기</p></div>
+    </div>
+    <nav class="lesson-nav" data-auto aria-label="다음 강의"></nav>
+  </div>
+  <aside class="notes">한국 손님이 대부분인 수강생에게는 부록 D(카카오)를 1순위로 추천 — 오늘 배포한 서버의 /kakao/skill 주소를 그대로 쓴다. 단톡방은 수료 후에도 질문 창구로 유지할지 안내. 1개월 뒤 짧은 온라인 점검 모임을 제안하면 실제 도입률이 높아짐.</aside>
+</section>
+
+<script src="../assets/course.js"></script>
+<script src="../assets/deck.js"></script>
+</body>
+</html>

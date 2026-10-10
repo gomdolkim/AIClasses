@@ -1,0 +1,22 @@
+{
+  "name": "bomnal-bot",
+  "version": "1.0.0",
+  "private": true,
+  "description": "봄날의 꽃 LINE·카카오 AI 상담 봇 (Cloudflare Workers 교재 예제)",
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "coverage": "vitest run --coverage",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^5.20261010.1",
+    "@vitest/coverage-v8": "^4.0.0",
+    "typescript": "~5.9.3",
+    "vitest": "^4.0.0",
+    "wrangler": "^4.40.0"
+  }
+}

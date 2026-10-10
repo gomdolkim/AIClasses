@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1회차 · AI 비서 첫 출근 | AI로 작은 회사 운영하기</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Ctext y=%22.9em%22 font-size=%2290%22%3E%F0%9F%8C%B7%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="../assets/deck.css">
+</head>
+<body data-lesson="1">
+
+<!-- 1. 표지 -->
+<section class="slide slide--title slide--center">
+  <div class="slide-inner">
+    <span class="eyebrow reveal">파트 ① AI 비서와 친해지기 · 1회차</span>
+    <h1 class="reveal">AI 비서 첫 출근</h1>
+    <p class="lead reveal">오늘부터 우리 회사에 24시간 일하는 비서가 생깁니다</p>
+    <p class="small reveal" style="margin-top:2rem">⌨️ 방향키·스페이스로 이동 · <kbd>N</kbd> 강사 노트 · <kbd>D</kbd> 어둡게</p>
+  </div>
+  <aside class="notes">
+    [0~3분] 인사, 자기소개. "컴퓨터를 잘 몰라도 괜찮다. 오늘 할 일은 '말로 부탁하기' 하나뿐"이라고 안심시키기.
+    수강생 각자 "내가 운영하는(할) 회사"를 한 문장으로 말하게 하면 분위기가 풀림.
+  </aside>
+</section>
+
+<!-- 2. 오늘의 목표 -->
+<section class="slide">
+  <div class="slide-inner stack">
+    <h2>오늘의 목표 <span class="timebox">3분</span></h2>
+    <div class="goal reveal"><span class="goal-label">목표</span><span>Claude에 가입하고, <strong>좋은 요청 4요소</strong>로 가게 업무를 맡길 수 있다</span></div>
+    <div class="goal reveal"><span class="goal-label">결과물</span><span>가게 소개문 1개 + 공지문 3종 (휴무·이벤트·가격 변경)</span></div>
+    <div class="grid-3 reveal">
+      <div class="card card--pink"><span class="icon">🙋</span><h3>가입하기</h3><p>Claude 계정 만들기</p></div>
+      <div class="card card--lavender"><span class="icon">💬</span><h3>부탁하기</h3><p>요청 4요소 익히기</p></div>
+      <div class="card card--mint"><span class="icon">✏️</span><h3>다듬기</h3><p>마음에 들 때까지 고쳐 달라고 하기</p></div>
+    </div>
+  </div>
+  <aside class="notes">목표는 딱 하나. 결과물을 오늘 꼭 손에 쥐고 가도록 시간 관리. 실습이 밀리면 공지문은 2종만 해도 됨.</aside>
+</section>
+
+<!-- 3. 우리 회사 소개 -->
+<section class="slide slide--alt">
+  <div class="slide-inner stack">
+    <span class="eyebrow">14회 동안 함께할 회사</span>
+    <h2>🌷 꽃집 「봄날의 꽃」을 소개합니다 <span class="timebox">5분</span></h2>
+    <div class="grid-2">
+      <div class="card reveal">
+        <h3>회사 정보</h3>
+        <ul class="list">
+          <li>직원 4명: 대표 1, 플로리스트 2, 배송·포장 1</li>
+          <li>매장 판매 + 스마트스토어 온라인 주문</li>
+          <li>일본인 손님이 많아 <strong>LINE</strong>으로도 문의를 받음</li>
+        </ul>
+      </div>
+      <div class="card card--peach reveal">
+        <h3>요즘 고민 😵</h3>
+        <ul class="list">
+          <li>"오늘 영업해요?" 같은 똑같은 문의가 하루 30건</li>
+          <li>주문이 카톡·메모지·엑셀에 흩어져서 누락</li>
+          <li>홍보 글 쓸 시간이 없음</li>
+        </ul>
+      </div>
+    </div>
+    <p class="callout callout--tip reveal">매 회차 이 고민을 하나씩 AI와 자동화로 해결합니다. 마지막 날에는 여러분 회사에 똑같이 적용합니다.</p>
+  </div>
+  <aside class="notes">수강생 회사가 꽃집이 아니어도 괜찮다고 강조. "꽃 → 우리 상품"으로 바꿔 생각하면 됨. 수강생 고민을 2~3개 칠판에 받아 적어 두고 12~14회차에 다시 꺼내기.</aside>
+</section>
+
+<!-- 4. AI와 Claude란 -->
+<section class="slide">
+  <div class="slide-inner stack">
+    <h2>AI, 그리고 Claude가 뭔가요? <span class="timebox">7분</span></h2>
+    <div class="analogy reveal">
+      Claude는 <strong>책을 엄청나게 많이 읽은 신입 비서</strong>입니다.
+      글쓰기·정리·번역·아이디어는 정말 잘하지만, <strong>우리 가게 사정은 모릅니다.</strong>
+      그래서 일을 맡길 때 상황을 잘 설명해 주는 사람이 좋은 결과를 얻습니다.
+    </div>
+    <div class="grid-2 reveal">
+      <dl class="term"><dt>AI (인공지능)</dt><dd>사람처럼 글을 이해하고 만들어 내는 컴퓨터 프로그램</dd></dl>
+      <dl class="term"><dt>Claude (클로드)</dt><dd>Anthropic이라는 회사가 만든 AI 비서. 웹사이트·앱에서 대화로 사용</dd></dl>
+    </div>
+    <div class="grid-3 reveal">
+      <div class="card card--mint"><h3>✅ 잘하는 일</h3><p>글쓰기, 요약, 번역, 표 정리, 아이디어</p></div>
+      <div class="card card--peach"><h3>⚠️ 조심할 일</h3><p>최신 정보, 숫자 계산, 사실 확인 — 2회차에서 자세히</p></div>
+      <div class="card card--sky"><h3>🔑 성공 비결</h3><p>신입에게 하듯 <strong>자세히</strong> 부탁하기</p></div>
+    </div>
+  </div>
+  <aside class="notes">기술 설명(모델, 학습 등)은 하지 않는다. "신입 비서" 비유 하나로 끝. 질문이 나오면 2회차에서 다룬다고 안내.</aside>
+</section>
+
+<!-- 5. 가입하기 -->
+<section class="slide slide--alt">
+  <div class="slide-inner stack">
+    <h2>실습 1 · Claude 가입하기 <span class="timebox">10분</span></h2>
+    <div class="grid-2">
+      <ol class="steps reveal">
+        <li>크롬(Chrome) 주소창에 <span class="path">claude.ai</span> 입력</li>
+        <li><strong>Google로 계속하기</strong> 또는 이메일로 가입</li>
+        <li>휴대폰 번호 인증 (문자로 온 숫자 입력)</li>
+        <li>이름 입력 → 첫 화면에 <strong>입력창</strong>이 보이면 성공 🎉</li>
+        <li>휴대폰에도 <strong>Claude 앱</strong> 설치 후 같은 계정으로 로그인</li>
+      </ol>
+      <div class="stack reveal">
+        <div class="callout callout--info"><span>이 과정은 <strong>Claude Pro(유료)</strong> 기준입니다. 무료로도 1~2회차는 충분하지만, 3회차(프로젝트)부터는 Pro를 권장합니다.</span></div>
+        <div class="callout callout--warn"><span>회사 대표 메일로 가입하세요. 나중에 Slack·Jira와 연결할 때 같은 메일을 쓰면 편합니다.</span></div>
+      </div>
+    </div>
+    <p class="asof">요금·화면은 2026-10 기준이며 바뀔 수 있습니다. 수업 전 강사가 최신 화면을 확인하세요.</p>
+  </div>
+  <aside class="notes">
+    가장 많이 막히는 곳: 문자 인증이 안 옴(번호 앞 +82 확인), 회사 메일 스팸함. 2명 이상 막히면 옆 사람과 짝을 지어 진행.
+    Pro 결제는 수업 중에 하지 말고 3회차 전까지 하도록 과제로.
+  </aside>
+</section>
+
+<!-- 6. 첫 대화 -->
+<section class="slide">
+  <div class="slide-inner stack">
+    <h2>실습 2 · 첫 번째 부탁 <span class="timebox">5분</span></h2>
+    <p class="lead">일단 아무렇게나 부탁해 봅시다.</p>
+    <div class="prompt reveal">꽃집 소개글 써줘</div>
+    <div class="callout callout--tip reveal"><span>결과가 나왔나요? 그런데… <strong>우리 가게 같나요?</strong> 이름도, 분위기도, 위치도 없죠. 비서는 시킨 만큼만 압니다.</span></div>
+  </div>
+  <aside class="notes">일부러 짧은 요청으로 "평범한 결과"를 경험하게 하는 단계. 2~3명의 결과를 화면에 띄워 비교하면 모두 비슷하다는 게 보임 → 다음 슬라이드로 연결.</aside>
+</section>
+
+<!-- 7. 좋은 요청 4요소 -->
+<section class="slide slide--alt">
+  <div class="slide-inner stack">
+    <h2>좋은 요청의 4요소 <span class="timebox">10분</span></h2>
+    <div class="analogy reveal">처음 온 아르바이트생에게 일을 맡길 때를 떠올려 보세요. "포장해 줘"가 아니라 "누구 선물인지, 어떤 색으로, 몇 시까지"를 말해 주죠.</div>
+    <div class="grid-4 reveal">
+      <div class="card card--pink"><span class="icon">🎭</span><h3>① 상황</h3><p>나는 누구이고, 무슨 가게인지</p></div>
+      <div class="card card--lavender"><span class="icon">🎯</span><h3>② 할 일</h3><p>무엇을 만들어 달라는지</p></div>
+      <div class="card card--sky"><span class="icon">📏</span><h3>③ 조건</h3><p>말투, 길이, 꼭 넣을 내용</p></div>
+      <div class="card card--mint"><span class="icon">📦</span><h3>④ 형식</h3><p>표, 목록, 문자 길이 등</p></div>
+    </div>
+    <div class="prompt reveal">[상황] 나는 서울 망원동에서 꽃집 「봄날의 꽃」을 운영해. 손님은 20~40대가 많고, 일본인 손님도 자주 와.
+[할 일] 네이버 스마트스토어에 올릴 가게 소개글을 써줘.
+[조건] 따뜻하고 친근한 말투, 300자 안팎, '당일 꽃다발 주문 가능'과 '망원역 2번 출구 3분'을 꼭 넣어줘.
+[형식] 제목 1줄 + 본문 + 해시태그 5개</div>
+  </div>
+  <aside class="notes">4요소를 외우게 하기보다 "아르바이트생에게 설명하듯"이라는 감각을 남기는 게 목표. 대괄호 표시는 처음에만 쓰고, 익숙해지면 자연스러운 문장으로 써도 된다고 안내.</aside>
+</section>
+
+<!-- 8. 비교 -->
+<section class="slide">
+  <div class="slide-inner stack">
+    <h2>실습 3 · 4요소로 다시 부탁하기 <span class="timebox">10분</span></h2>
+    <div class="grid-2">
+      <div class="card reveal">
+        <h3>😐 그냥 부탁</h3>
+        <p>"꽃집 소개글 써줘"</p>
+        <p class="small">→ 어느 꽃집에나 붙일 수 있는 글</p>
+      </div>
+      <div class="card card--mint reveal">
+        <h3>😍 4요소로 부탁</h3>
+        <p>상황 + 할 일 + 조건 + 형식</p>
+        <p class="small">→ 우리 가게 이름·위치·장점이 담긴 글</p>
+      </div>
+    </div>
+    <ol class="steps reveal">
+      <li>앞 슬라이드의 프롬프트를 <strong>복사</strong> 버튼으로 복사해 Claude에 붙여넣기</li>
+      <li>가게 이름·위치를 <strong>내 회사</strong>로 바꿔 한 번 더</li>
+      <li>마음에 드는 결과를 메모장이나 카톡 '나에게 보내기'에 저장</li>
+    </ol>
+  </div>
+  <aside class="notes">자기 회사가 아직 없는 수강생은 봄날의 꽃 그대로 진행. 저장 방법을 꼭 확인 — 다음 시간에 다시 씀.</aside>
+</section>
+
+<!-- 9. 고쳐 달라고 하기 -->
+<section class="slide slide--alt">
+  <div class="slide-inner stack">
+    <h2>실습 4 · 마음에 들 때까지 고쳐 달라고 하기 <span class="timebox">10분</span></h2>
+    <p class="lead">한 번에 완벽할 필요 없습니다. <strong>같은 대화창에서</strong> 이어서 말하면 앞 내용을 기억합니다.</p>
+    <div class="grid-3 reveal">
+      <div class="prompt">조금 더 짧게, 200자로 줄여줘</div>
+      <div class="prompt">일본어 버전도 만들어줘</div>
+      <div class="prompt">말투를 더 고급스럽게 바꿔줘</div>
+    </div>
+    <div class="callout callout--tip reveal"><span>새 주제를 시작할 땐 왼쪽 위 <strong>새 채팅</strong>을 누르세요. 주제가 섞이면 결과가 흐려집니다.</span></div>
+  </div>
+  <aside class="notes">"수정 요청은 잔소리가 아니라 대화"라는 점을 강조. 일본어 번역은 LINE 봇(12~14회차) 복선이니 꼭 해보게 할 것.</aside>
+</section>
+
+<!-- 10. 응용 실습 -->
+<section class="slide">
+  <div class="slide-inner stack">
+    <h2>응용 실습 · 공지문 3종 만들기 <span class="timebox">15분</span></h2>
+    <p class="lead">4요소를 직접 써서 아래 3가지를 만들어 보세요.</p>
+    <div class="grid-3 reveal">
+      <div class="card card--pink"><span class="icon">🗓️</span><h3>휴무 공지</h3><p>추석 연휴 휴무 안내 (인스타·매장 문 앞용)</p></div>
+      <div class="card card--lavender"><span class="icon">🎁</span><h3>이벤트 공지</h3><p>로즈데이 꽃다발 10% 할인</p></div>
+      <div class="card card--sky"><span class="icon">💰</span><h3>가격 변경 안내</h3><p>재료비 인상으로 일부 가격 조정 (정중하게!)</p></div>
+    </div>
+    <div class="callout callout--warn reveal"><span>가격 변경 안내는 손님 기분을 상하게 하기 쉬워요. ③ 조건에 "사과와 감사의 마음을 담아"처럼 <strong>감정</strong>도 적어 보세요.</span></div>
+  </div>
+  <aside class="notes">돌아다니며 4요소 중 빠진 것을 짚어 주기. 가장 잘 된 예시 1~2개를 화면에 공유. 빨리 끝난 사람은 일본어 버전까지.</aside>
+</section>
+
+<!-- 11. 자주 겪는 문제 -->
+<section class="slide slide--alt">
+  <div class="slide-inner stack">
+    <h2>자주 겪는 문제 <span class="timebox">5분</span></h2>
+    <div class="table-wrap reveal">
+      <table class="table">
+        <tr><th>이럴 때</th><th>이렇게</th></tr>
+        <tr><td>답이 너무 길다/짧다</td><td>"○○자로", "3줄로"처럼 숫자로 말하기</td></tr>
+        <tr><td>말투가 어색하다</td><td>"20대 손님에게 말하듯", "백화점 안내문처럼"처럼 예를 들어 주기</td></tr>
+        <tr><td>엉뚱한 내용이 섞였다</td><td>새 채팅에서 다시 시작하기</td></tr>
+        <tr><td>"사용량 한도에 도달" 메시지</td><td>몇 시간 뒤 다시 사용 가능. 자주 뜨면 Pro 플랜 고려</td></tr>
+        <tr><td>로그인이 풀렸다</td><td>같은 방법(Google/이메일)으로 다시 로그인</td></tr>
+      </table>
+    </div>
+  </div>
+  <aside class="notes">자세한 대응은 materials/troubleshooting.html 참고.</aside>
+</section>
+
+<!-- 12. 체크리스트 -->
+<section class="slide">
+  <div class="slide-inner stack">
+    <h2>오늘의 체크리스트 ✅ <span class="timebox">3분</span></h2>
+    <p class="small">한 일을 눌러서 체크하세요. (이 컴퓨터에 저장됩니다)</p>
+    <ul class="checklist reveal">
+      <li>Claude에 가입하고 휴대폰 앱에도 로그인했다</li>
+      <li>좋은 요청 4요소(상황·할 일·조건·형식)를 말할 수 있다</li>
+      <li>우리 가게 소개문을 만들어 저장했다</li>
+      <li>공지문 3종을 만들었다</li>
+      <li>"더 짧게", "일본어로"처럼 고쳐 달라고 해 봤다</li>
+    </ul>
+  </div>
+  <aside class="notes">체크 못 한 항목이 있는 수강생은 과제로. 다음 시간 시작 5분에 결과물 확인함.</aside>
+</section>
+
+<!-- 13. 과제와 다음 회차 -->
+<section class="slide slide--title slide--center">
+  <div class="slide-inner stack">
+    <h2>과제 & 다음 시간 예고 <span class="timebox">4분</span></h2>
+    <div class="grid-2" style="text-align:left">
+      <div class="card">
+        <h3>📝 과제</h3>
+        <ul class="list">
+          <li>내 회사(또는 봄날의 꽃) 자주 묻는 질문 10개 적어 오기 → 3회차·12회차에 씀</li>
+          <li>3회차 전까지 Claude Pro 결제</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>🔜 2회차: AI가 잘하는 일, 틀리는 일</h3>
+        <p>AI가 그럴듯한 거짓말을 할 때가 있다? 손님 개인정보는 넣어도 될까? 우리 회사 AI 사용 수칙을 만듭니다.</p>
+      </div>
+    </div>
+    <nav class="lesson-nav" data-auto aria-label="다음 강의"></nav>
+  </div>
+  <aside class="notes">FAQ 10개 과제가 중요함 — 3회차 프로젝트, 12~14회차 봇의 재료가 됨. 단톡방에 과제 안내를 다시 올려 두기.</aside>
+</section>
+
+<script src="../assets/course.js"></script>
+<script src="../assets/deck.js"></script>
+</body>
+</html>

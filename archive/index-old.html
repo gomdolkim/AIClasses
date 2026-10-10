@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 클래스 - Claude 활용 웹 개발 강의</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+    --bg-main: #EDF2FB;
+    --card-bg: #FFFBF0;
+    --card-shadow: rgba(0,0,0,0.06);
+    --accent-pink: #F4A7BB;
+    --accent-mint: #A8E6CF;
+    --accent-lavender: #C3B1E1;
+    --accent-sky: #89CFF0;
+    --accent-peach: #FFDAB9;
+    --accent-coral: #F8A4A4;
+    --accent-yellow: #FFE066;
+    --accent-teal: #7EC8C8;
+    --text-dark: #2D3142;
+    --text-mid: #4F5D75;
+    --text-light: #8D99AE;
+}
+
+body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background: var(--bg-main);
+    color: var(--text-dark);
+    min-height: 100vh;
+}
+
+.hero {
+    text-align: center;
+    padding: clamp(2rem, 6vw, 5rem) clamp(1rem, 4vw, 4rem) clamp(1.5rem, 3vw, 3rem);
+}
+
+.hero h1 {
+    font-size: clamp(1.8rem, 5vw, 3.5rem);
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+    background: linear-gradient(135deg, var(--accent-pink), var(--accent-lavender), var(--accent-sky));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.hero p {
+    font-size: clamp(0.9rem, 2vw, 1.25rem);
+    color: var(--text-mid);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+    gap: clamp(1rem, 2vw, 1.5rem);
+    padding: 0 clamp(1rem, 4vw, 6rem) clamp(2rem, 4vw, 4rem);
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.card {
+    background: var(--card-bg);
+    border-radius: 16px;
+    padding: clamp(1.25rem, 2.5vw, 1.75rem);
+    box-shadow: 0 2px 12px var(--card-shadow);
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+    border: 2px solid transparent;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+}
+
+.card:active {
+    transform: translateY(-1px);
+}
+
+.badge {
+    flex-shrink: 0;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 1.1rem;
+    color: #fff;
+}
+
+.card-body {
+    flex: 1;
+    min-width: 0;
+}
+
+.card-title {
+    font-size: clamp(1rem, 2vw, 1.15rem);
+    font-weight: 700;
+    margin-bottom: 0.35rem;
+    line-height: 1.4;
+}
+
+.card-desc {
+    font-size: clamp(0.8rem, 1.4vw, 0.9rem);
+    color: var(--text-mid);
+    line-height: 1.5;
+}
+
+.card:nth-child(1) .badge { background: var(--accent-pink); }
+.card:nth-child(2) .badge { background: var(--accent-lavender); }
+.card:nth-child(3) .badge { background: var(--accent-sky); }
+.card:nth-child(4) .badge { background: var(--accent-mint); }
+.card:nth-child(5) .badge { background: var(--accent-peach); color: var(--text-dark); }
+.card:nth-child(6) .badge { background: var(--accent-coral); }
+.card:nth-child(7) .badge { background: var(--accent-teal); }
+.card:nth-child(8) .badge { background: var(--accent-yellow); color: var(--text-dark); }
+
+.card:nth-child(1):hover { border-color: var(--accent-pink); }
+.card:nth-child(2):hover { border-color: var(--accent-lavender); }
+.card:nth-child(3):hover { border-color: var(--accent-sky); }
+.card:nth-child(4):hover { border-color: var(--accent-mint); }
+.card:nth-child(5):hover { border-color: var(--accent-peach); }
+.card:nth-child(6):hover { border-color: var(--accent-coral); }
+.card:nth-child(7):hover { border-color: var(--accent-teal); }
+.card:nth-child(8):hover { border-color: var(--accent-yellow); }
+
+footer {
+    text-align: center;
+    padding: 2rem 1rem;
+    color: var(--text-light);
+    font-size: 0.8rem;
+}
+</style>
+</head>
+<body>
+
+<header class="hero">
+    <h1>AI 클래스</h1>
+    <p>Claude를 활용한 웹 개발 — 기초부터 배포까지 8개 강의로 배우는 실전 가이드</p>
+</header>
+
+<main class="grid">
+    <a class="card" href="presentation-01-intro.html">
+        <div class="badge">01</div>
+        <div class="card-body">
+            <div class="card-title">Claude로 나만의 홈페이지 만들기</div>
+            <div class="card-desc">Claude AI를 활용한 웹사이트 제작 입문</div>
+        </div>
+    </a>
+
+    <a class="card" href="presentation-02-terms.html">
+        <div class="badge">02</div>
+        <div class="card-body">
+            <div class="card-title">Claude 활용을 위한 AI 용어 사전</div>
+            <div class="card-desc">AI 핵심 개념과 용어 정리</div>
+        </div>
+    </a>
+
+    <a class="card" href="presentation-03-plugins.html">
+        <div class="badge">03</div>
+        <div class="card-body">
+            <div class="card-title">Claude 플러그인 & 생태계 완전 정복</div>
+            <div class="card-desc">MCP, 플러그인, 확장 생태계 활용법</div>
+        </div>
+    </a>
+
+    <a class="card" href="presentation-04-dev-basics.html">
+        <div class="badge">04</div>
+        <div class="card-body">
+            <div class="card-title">소프트웨어 개발 기초 & IT 용어</div>
+            <div class="card-desc">개발 기초 지식과 IT 용어 이해</div>
+        </div>
+    </a>
+
+    <a class="card" href="presentation-05-vercel.html">
+        <div class="badge">05</div>
+        <div class="card-body">
+            <div class="card-title">Vercel로 홈페이지 세상에 공개하기</div>
+            <div class="card-desc">Vercel 배포를 통한 웹사이트 공개</div>
+        </div>
+    </a>
+
+    <a class="card" href="presentation-06-git.html">
+        <div class="badge">06</div>
+        <div class="card-body">
+            <div class="card-title">Git 사용법 완전 정복</div>
+            <div class="card-desc">버전 관리와 Git 워크플로우</div>
+        </div>
+    </a>
+
+    <a class="card" href="presentation-07-ecc.html">
+        <div class="badge">07</div>
+        <div class="card-body">
+            <div class="card-title">Everything Claude Code로 개발 자동화하기</div>
+            <div class="card-desc">Claude Code를 활용한 개발 자동화</div>
+        </div>
+    </a>
+
+    <a class="card" href="presentation-08-roadmap.html">
+        <div class="badge">08</div>
+        <div class="card-body">
+            <div class="card-title">프론트엔드 & 백엔드 학습 로드맵</div>
+            <div class="card-desc">웹 개발 학습 경로와 로드맵</div>
+        </div>
+    </a>
+</main>
+
+<footer>
+    AI 클래스 &copy; 2026
+</footer>
+
+</body>
+</html>

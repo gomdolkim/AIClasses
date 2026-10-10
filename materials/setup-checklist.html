@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>준비 체크리스트 | AI로 작은 회사 운영하기</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Ctext y=%22.9em%22 font-size=%2290%22%3E%F0%9F%8C%B7%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="../assets/deck.css">
+<style>
+  html { scroll-snap-type: none; }
+  .doc-bar { position: sticky; top: 0; z-index: 20; display: flex; align-items: center; gap: 0.6rem; padding: 0.5rem 16px; background: color-mix(in srgb, var(--bg) 90%, transparent); backdrop-filter: blur(8px); border-bottom: 1px solid var(--border); font-size: 0.95rem; }
+  .doc-bar a, .doc-bar button { color: var(--text-mid); text-decoration: none; background: none; border: 0; font: inherit; cursor: pointer; padding: 0.3rem 0.6rem; border-radius: 8px; min-height: 40px; display: inline-flex; align-items: center; }
+  .doc-bar a:hover, .doc-bar button:hover { background: var(--surface); color: var(--text); }
+  .doc-bar .title { flex: 1; min-width: 0; font-weight: 600; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .doc { max-width: 1000px; margin: 0 auto; padding: 2rem 16px 4rem; }
+  .doc h1 { font-size: clamp(1.9rem, 4vw, 2.8rem); }
+  .doc h2 { font-size: clamp(1.4rem, 2.6vw, 2rem); margin-top: 2.8rem; scroll-margin-top: 4rem; }
+  .due { margin-top: 1.4rem; }
+  .due h3 { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+  .table td.num, .table th.num { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .table tfoot td { font-weight: 800; background: var(--surface-2); }
+  @media print { .doc-bar { display: none; } .due { break-inside: avoid; } }
+</style>
+</head>
+<body data-root="../" data-material="setup-checklist">
+<nav class="doc-bar" aria-label="자료 이동">
+  <a href="../index.html">☰ 목차</a>
+  <span class="title">수업 전 준비·계정 체크리스트</span>
+  <button type="button" id="themeBtn" aria-label="밝게/어둡게 전환">🌓</button>
+</nav>
+
+<main class="doc">
+  <header class="stack">
+    <span class="eyebrow">수강생용</span>
+    <h1>수업 전 준비 · 계정 체크리스트</h1>
+    <p class="lead">한꺼번에 준비하지 마세요. <strong>필요한 회차 전까지만</strong> 하나씩 준비하면 됩니다. 항목을 누르면 체크되고, 이 브라우저에 저장됩니다.</p>
+    <div class="callout callout--tip"><span>가입은 모두 <strong>같은 회사 대표 메일</strong>로 하세요. 나중에 서비스끼리 연결할 때 훨씬 편합니다.</span></div>
+  </header>
+
+  <h2 id="timeline">회차별: 언제까지 무엇을</h2>
+
+  <div class="card due">
+    <h3>1회차 전 <span class="pill pill--pink">처음</span></h3>
+    <ul class="checklist">
+      <li>PC(노트북)와 크롬(Chrome) 브라우저 설치</li>
+      <li>문자를 받을 수 있는 휴대폰</li>
+      <li>회사 대표 메일 주소(또는 개인 Gmail) 비밀번호 확인</li>
+    </ul>
+  </div>
+
+  <div class="card due">
+    <h3>3회차 전 <span class="pill pill--pink">Claude Pro</span></h3>
+    <ul class="checklist">
+      <li>Claude Pro 결제 (월 $20) — <span class="path">claude.ai → Settings(설정) → Billing(결제)</span></li>
+      <li>해외 결제 가능한 카드 준비</li>
+      <li>1회차 과제: 우리 회사 자주 묻는 질문 10개 적기</li>
+      <li>실습 데이터 내려받기: <a href="dataset/faq.md">faq.md</a>, <a href="dataset/price-list.md">price-list.md</a>, <a href="dataset/brand-voice.md">brand-voice.md</a>, <a href="dataset/orders-sample.csv">orders-sample.csv</a></li>
+    </ul>
+  </div>
+
+  <div class="card due">
+    <h3>8회차 전 <span class="pill pill--sky">Slack Pro</span></h3>
+    <ul class="checklist">
+      <li>Slack 워크스페이스 만들기 (또는 강사 워크스페이스 초대 수락)</li>
+      <li>Slack Pro 결제 (1인당 월 $8.75, 연간 결제 시 $7.25) — 강사 안내에 따라</li>
+      <li>PC용 Slack 앱과 휴대폰 앱 설치</li>
+    </ul>
+  </div>
+
+  <div class="card due">
+    <h3>9회차 전 <span class="pill pill--sky">Jira</span></h3>
+    <ul class="checklist">
+      <li>Atlassian 계정 만들고 Jira Free 사이트 만들기 (무료, 10명까지)</li>
+      <li>사이트 주소 메모해 두기 (예: <code>○○.atlassian.net</code>)</li>
+    </ul>
+  </div>
+
+  <div class="card due">
+    <h3>12회차 전 <span class="pill pill--mint">LINE 공식계정</span></h3>
+    <ul class="checklist">
+      <li>휴대폰에 LINE 앱 설치·가입</li>
+      <li>LINE 공식계정 만들기 (무료 플랜) — LINE Official Account Manager</li>
+      <li>테스트용으로 내 LINE에서 공식계정 친구 추가</li>
+    </ul>
+  </div>
+
+  <div class="card due">
+    <h3>13회차 전 <span class="pill pill--mint">Make</span></h3>
+    <ul class="checklist">
+      <li>Make 무료 계정 만들기 (월 1,000 credits)</li>
+      <li>Anthropic Console 가입 + 소액 크레딧 충전 + 지출 한도(Spend limit) 설정</li>
+      <li>API 키 발급 → 비밀번호 관리자나 안전한 메모에만 보관</li>
+    </ul>
+  </div>
+
+  <div class="card due">
+    <h3>14회차 전 <span class="pill pill--mint">봇 서버</span></h3>
+    <ul class="checklist">
+      <li>LINE Developers 콘솔 로그인 → 공식계정에 Messaging API 켜기</li>
+      <li>Cloudflare 무료 계정 만들기</li>
+      <li>Node.js LTS 설치 → 터미널에서 <code>node -v</code> 확인</li>
+      <li>졸업 발표 준비: 우리 회사 AI 도입 계획서 초안</li>
+    </ul>
+  </div>
+
+  <h2 id="cost">예상 월 비용</h2>
+  <p>봄날의 꽃(직원 4명)이 과정에서 배운 것을 모두 쓴다고 가정한 예시입니다.</p>
+  <div class="table-wrap">
+    <table class="table">
+      <thead><tr><th scope="col">서비스</th><th scope="col">플랜</th><th scope="col" class="num">월 비용</th><th scope="col">메모</th></tr></thead>
+      <tbody>
+        <tr><td>Claude</td><td>Pro × 1명(대표)</td><td class="num">$20</td><td>Claude Code 포함. 무료는 커스텀 커넥터 1개</td></tr>
+        <tr><td>Slack</td><td>Pro × 4명</td><td class="num">$29~35</td><td>1인 $7.25(연간)~$8.75(월간). 무료는 90일 기록·앱 10개</td></tr>
+        <tr><td>Jira</td><td>Free</td><td class="num">$0</td><td>10명, 2GB, Automation 월 150 steps(사이트 전체)</td></tr>
+        <tr><td>Make</td><td>Free</td><td class="num">$0</td><td>월 1,000 credits, 활성 시나리오 2개. 부족하면 Core $9</td></tr>
+        <tr><td>LINE 공식계정</td><td>무료</td><td class="num">0엔</td><td>월 200통. 라이트 5,000엔 / 스탠더드 15,000엔. Reply API는 통수 미포함</td></tr>
+        <tr><td>Claude API (봇)</td><td>Haiku 4.5 종량제</td><td class="num">$2~5</td><td>상담 1,000건 기준 약 $2~5 ($1 / $5 per MTok)</td></tr>
+        <tr><td>Cloudflare Workers</td><td>Free</td><td class="num">$0</td><td>작은 가게 봇은 무료 범위로 충분 (한도는 수업 전 확인)</td></tr>
+      </tbody>
+      <tfoot><tr><td>합계(예시)</td><td></td><td class="num">약 $51~60</td><td>Make·LINE 유료 전환 시 추가</td></tr></tfoot>
+    </table>
+  </div>
+  <div class="callout callout--info"><span>모든 요금은 <strong>2026-10 기준</strong>이며 환율·세금은 제외했습니다. 결제 전 각 서비스 가격 페이지에서 다시 확인하세요. Slack 무료 플랜의 Workflow Builder 사용 가능 여부는 도움말과 가격 페이지가 달라 <strong>수업 전 확인</strong>이 필요합니다.</span></div>
+  <p class="small">참고: Zapier Free(월 100 tasks, 2단계만), n8n(셀프호스팅 무료, 클라우드 €20~)도 대안입니다. 카카오톡 채널은 <a href="../appendix/d-kakao-bot.html">부록 D</a>를 보세요.</p>
+
+  <h2 id="security">보안 수칙 요약</h2>
+  <div class="grid-2">
+    <div class="card card--mint">
+      <h3>✅ 이렇게 하세요</h3>
+      <ul class="list">
+        <li>API 키·토큰·Webhook URL은 <strong>비밀번호처럼</strong> 보관</li>
+        <li>비밀값은 코드가 아닌 <strong>환경변수</strong>(<code>wrangler secret put</code>, Make 연결)에만</li>
+        <li>Anthropic Console에 <strong>지출 한도</strong> 설정</li>
+        <li>봇 첫 인사에 <strong>"AI 상담원"</strong>임을 알리기 (AI 기본법, 2026-01-22 시행)</li>
+        <li>어려운 문의는 사람에게 넘기기 (#cs-escalation)</li>
+      </ul>
+    </div>
+    <div class="card card--peach">
+      <h3>⛔ 하지 마세요</h3>
+      <ul class="list">
+        <li>손님 전화번호·카드번호·주소를 프롬프트에 그대로 넣기</li>
+        <li>비밀값을 단톡방·화면 공유·캡처·GitHub에 올리기</li>
+        <li>AI가 환불·보상·할인을 약속하게 두기</li>
+        <li>AI 답변을 확인 없이 손님에게 보내기 (특히 가격·날짜)</li>
+        <li>퇴사한 직원 계정을 그대로 두기</li>
+      </ul>
+    </div>
+  </div>
+  <div class="callout callout--danger"><span>비밀값이 노출됐다면 즉시 폐기·재발급하세요. 순서는 <a href="troubleshooting.html#leak">문제 해결 카드 → 비밀값 유출</a>에 있습니다.</span></div>
+
+  <p class="asof">AI로 작은 회사 운영하기 · 준비 체크리스트 · 2026-10 기준 · <a href="../index.html">전체 목차로 돌아가기</a></p>
+</main>
+
+<script src="page.js"></script>
+</body>
+</html>

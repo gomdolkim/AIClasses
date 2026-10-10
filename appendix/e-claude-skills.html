@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>부록 E · Claude 스킬 설치·사용·직접 만들기 | AI로 작은 회사 운영하기</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Ctext y=%22.9em%22 font-size=%2290%22%3E%F0%9F%8C%B7%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="../assets/deck.css">
+</head>
+<body data-appendix="E">
+
+<!-- 1. 표지 -->
+<section class="slide slide--title slide--center">
+  <div class="slide-inner">
+    <span class="eyebrow reveal">부록 E · 3회차 심화</span>
+    <h1 class="reveal">Claude 스킬 설치·사용·직접 만들기</h1>
+    <p class="lead reveal">우리 가게 업무 매뉴얼을 AI 책장에 꽂아 두는 법</p>
+    <p class="small reveal" style="margin-top:2rem">⌨️ 방향키·스페이스로 이동 · <kbd>N</kbd> 강사 노트 · <kbd>D</kbd> 어둡게</p>
+  </div>
+  <aside class="notes">3회차에서 스킬 설치까지 해 본 수강생용 심화. 수업 중 다 다루지 말고, 질문이 나온 장만 골라 보여 줘도 됨. 혼자 읽어도 따라 할 수 있게 구성.</aside>
+</section>
+
+<!-- 2. 이 부록에서 배울 것 -->
+<section class="slide">
+  <div class="slide-inner stack">
+    <h2>이 부록에서 배울 것</h2>
+    <div class="goal reveal"><span class="goal-label">목표</span><span>스킬을 켜고, 설치하고, <strong>대화로 직접 만들어</strong> 팀과 나눈다</span></div>
+    <div class="goal reveal"><span class="goal-label">결과물</span><span>우리 가게 업무 매뉴얼 스킬 1개 (예: 주문 확인 문자, 상품 설명 쓰기)</span></div>
+    <div class="grid-4 reveal">
+      <div class="card card--pink"><span class="icon">🔛</span><h3>켜기</h3><p>기본 스킬 확인</p></div>
+      <div class="card card--lavender"><span class="icon">📦</span><h3>설치</h3><p>zip 올리기·지우기</p></div>
+      <div class="card card--sky"><span class="icon">🛠️</span><h3>만들기</h3><p>대화로 SKILL.md 완성</p></div>
+      <div class="card card--mint"><span class="icon">🤝</span><h3>나누기</h3><p>팀 공유·Claude Code</p></div>
+    </div>
+    <p class="asof">메뉴 이름·요금제 조건은 2026-10 기준입니다. Claude 화면은 자주 바뀌니 수업 전 확인하세요.</p>
+  </div>
+  <aside class="notes">혼자 읽는 수강생에게: 7번 슬라이드(대화로 만들기)가 핵심 실습. 나머지는 필요할 때 찾아보면 됨.</aside>
+</section>
+
+<!-- 3. 스킬이란 -->
+<section class="slide slide--alt">
+  <div class="slide-inner stack">
+    <h2>스킬이란? — 책장에 꽂힌 업무 매뉴얼</h2>
+    <div class="analogy reveal">
+      비서 책상 옆 책장에 매뉴얼이 여러 권 꽂혀 있다고 해 볼게요. 비서는 평소엔 <strong>책등의 제목</strong>만 훑어봅니다.
+      "공지문 써 줘"라는 부탁을 받으면 그제야 <strong>「공지문 매뉴얼」</strong>을 꺼내 펼치고, 필요하면 뒤쪽 <strong>부록(가격표)</strong>까지 찾아봅니다.
+    </div>
+    <div class="flow reveal">
+      <div class="flow-node">📗 책등<br><span class="small">이름 + 설명 (항상 보임)</span></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node flow-node--accent">📖 본문<br><span class="small">SKILL.md (그 일을 할 때만)</span></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node">📎 부록<br><span class="small">참고 파일·프로그램 (필요할 때만)</span></div>
+    </div>
+    <dl class="term reveal"><dt>SKILL.md</dt><dd>스킬 폴더 안의 매뉴얼 본문 파일. 맨 위에 이름(name)과 설명(description)을 적고, 그 아래에 일하는 방법을 씁니다</dd></dl>
+    <p class="small reveal">그래서 스킬을 여러 개 설치해도 대화가 무거워지지 않습니다. 책등만 늘어날 뿐이니까요.</p>
+  </div>
+  <aside class="notes">공식 문서의 'progressive disclosure(단계별 공개)'를 책장 비유로 바꾼 것. 용어는 말하지 않아도 됨. 핵심: "설명(description)이 책등 제목 역할 → 설명을 잘 써야 Claude가 꺼내 본다."</aside>
+</section>
+
+<!-- 4. 비교 표 -->
+<section class="slide">
+  <div class="slide-inner stack">
+    <h2>지침·프로젝트·스킬·커넥터, 언제 무엇을?</h2>
+    <div class="table-wrap reveal">
+      <table class="table">
+        <tr><th></th><th>비유</th><th>언제 적용?</th><th>봄날의 꽃 예시</th></tr>
+        <tr><td><strong>프로필 지침</strong><br><span class="small">개인 설정</span></td><td>내 명함</td><td>모든 대화에 항상</td><td>"나는 꽃집 사장, 존댓말로"</td></tr>
+        <tr><td><strong>프로젝트</strong></td><td>회사 자료실</td><td>그 프로젝트 안 대화에만, 늘 펼쳐 둠</td><td>FAQ·가격표·말투 지침</td></tr>
+        <tr><td><strong>스킬</strong></td><td>업무 매뉴얼 한 권</td><td>어느 대화든, <strong>그 일을 할 때만</strong> 꺼냄</td><td>공지문 작성법, 주간 보고 형식</td></tr>
+        <tr><td><strong>커넥터</strong></td><td>다른 프로그램과 연결된 전화선</td><td>바깥 정보를 읽거나 쓸 때</td><td>Jira 이슈 읽기, Slack 메시지</td></tr>
+      </table>
+    </div>
+    <div class="callout callout--tip reveal"><span>함께 쓰면 가장 강력합니다. 커넥터로 Jira를 <strong>읽고</strong> → 주간 보고 스킬의 <strong>형식대로</strong> 쓰고 → 프로젝트 자료로 <strong>사실 확인</strong> (11회차).</span></div>
+  </div>
+  <aside class="notes">
+    공식 도움말 표현: 프로젝트 = 항상 로드되는 배경 지식(그 프로젝트 안), 스킬 = 필요할 때 동적으로 켜지는 절차(어디서나), 커넥터(MCP) = 외부 도구 접근, 스킬은 그 도구를 '잘 쓰는 법'.
+    예상 질문 "그럼 프로젝트 지침에 다 쓰면 안 돼요?" → 가능하지만, 다른 프로젝트나 일반 채팅에선 못 씀. 반복되는 '절차'는 스킬로 빼는 게 관리가 쉬움.
+  </aside>
+</section>
+
+<!-- 5. 켜기 -->
+<section class="slide slide--alt">
+  <div class="slide-inner stack">
+    <h2>claude.ai에서 스킬 켜기</h2>
+    <div class="grid-2">
+      <div class="stack reveal">
+        <h3>👤 개인 (Free · Pro · Max)</h3>
+        <ol class="steps">
+          <li><span class="path">Settings(설정) → Capabilities(기능)</span></li>
+          <li><span class="path">Code execution and file creation</span> 켜기</li>
+          <li><span class="path">Customize(사용자 지정) → Skills(스킬)</span>에서 목록 확인</li>
+        </ol>
+      </div>
+      <div class="stack reveal">
+        <h3>👥 팀 (Team · Enterprise)</h3>
+        <ol class="steps">
+          <li>관리자: <span class="path">Organization settings(조직 설정)</span>에서 코드 실행과 <strong>Skills</strong> 허용</li>
+          <li>구성원: <span class="path">Customize → Skills</span>에서 켜고 끄기</li>
+          <li>조직이 배포한 스킬은 팀 표시와 함께 목록에 나타남</li>
+        </ol>
+      </div>
+    </div>
+    <div class="callout callout--info reveal"><span>기본 제공 스킬: <strong>Excel · Word · PowerPoint · PDF</strong> 만들기. 따로 부를 필요 없이 "엑셀로 만들어 줘"라고 하면 알아서 씁니다.</span></div>
+    <p class="asof">2026-10 도움말 기준: 스킬은 Free·Pro·Max·Team·Enterprise 모두 지원, 코드 실행 기능이 켜져 있어야 함. 일부 문서는 아직 예전 경로(Settings → Features)를 적고 있으니 수업 전 실제 화면 확인.</p>
+  </div>
+  <aside class="notes">
+    도움말끼리 표현이 엇갈림(Customize > Skills / Settings > Capabilities / Settings > Features). 화면에서 "Skills"를 찾으면 됨.
+    Team 메뉴 이름은 도움말에 "Organization settings > Skills" 또는 "Plugins &amp; skills"로 나옴 — 수업 전 확인.
+  </aside>
+</section>
+
+<!-- 6. 설치·끄기·삭제 -->
+<section class="slide">
+  <div class="slide-inner stack">
+    <h2>설치 · 끄기 · 삭제</h2>
+    <div class="grid-3 reveal">
+      <div class="card card--mint">
+        <h3>📦 설치</h3>
+        <p><span class="path">Customize → Skills → + → Create skill → Upload a skill</span> → zip 선택</p>
+      </div>
+      <div class="card card--yellow">
+        <h3>⏸️ 끄기</h3>
+        <p>목록에서 토글을 끄면 보관만 되고 쓰이지 않음. 언제든 다시 켤 수 있음</p>
+      </div>
+      <div class="card card--peach">
+        <h3>🗑️ 삭제</h3>
+        <p>스킬을 눌러 상세 화면 → <strong>⋯</strong> → <strong>Delete(삭제)</strong></p>
+      </div>
+    </div>
+    <div class="grid-2 reveal">
+      <pre class="code">✅ 올바른 zip
+my-skill.zip
+└── my-skill/
+    ├── SKILL.md
+    └── references/</pre>
+      <pre class="code">❌ 올라가지 않는 zip
+my-skill.zip
+├── SKILL.md      ← 폴더 없이 파일만
+└── references/</pre>
+    </div>
+    <p class="small reveal">폴더 이름은 SKILL.md의 <code>name</code>과 같게 맞추세요. 예제: <span class="path">examples/skills/README.md</span></p>
+  </div>
+  <aside class="notes">zip 구조 오류가 업로드 실패의 대부분. "폴더를 오른쪽 클릭해서 압축"만 기억시키면 됨. Mac Finder 압축은 폴더째 묶임. 스킬을 고치면 zip을 다시 만들어 올리고, 이전 것은 삭제.</aside>
+</section>
+
+<!-- 7. 대화로 만들기 실습 -->
+<section class="slide slide--alt">
+  <div class="slide-inner stack">
+    <h2>실습 · 대화하며 내 스킬 만들기 (skill-creator)</h2>
+    <div class="grid-2">
+      <ol class="steps reveal">
+        <li><span class="path">Customize → Skills</span>에서 Anthropic 예시 스킬 <strong>skill-creator</strong>가 켜져 있는지 확인</li>
+        <li>새 채팅에 오른쪽처럼 <strong>형식·말투·좋았던 예시</strong>를 한 번에 설명</li>
+        <li>Claude의 질문에 답하면 SKILL.md가 완성됨</li>
+        <li>화면의 저장(스킬에 추가) 버튼을 누르거나, 파일을 받아 zip으로 묶어 업로드</li>
+        <li><strong>새 채팅</strong>에서 평소처럼 부탁해 시험 → 스킬을 읽는 표시 확인</li>
+      </ol>
+      <div class="prompt reveal">스킬을 하나 만들고 싶어. 이름은 bomnal-order-confirm.
+할 일: 손님 주문을 받으면 '주문 확인 문자'를 써 주는 것.
+형식: 4줄 이내 — 인사 / 상품·가격 / 받는 날짜·시간 / 문의처.
+말투: 따뜻한 존댓말, 이모지 1개.
+규칙: 가격은 가격표대로, 배송비 규칙(오후 3시 마감, 마포·서대문 무료) 반영. 손님 전화번호는 문자에 넣지 않기.
+좋았던 예시: "안녕하세요, 봄날의 꽃이에요 🌷 / 꽃다발 M 55,000원 주문 확인했어요 / 5월 8일(목) 오후 2시에 받아 보실 수 있어요 / 궁금한 점은 인스타 @bomnal_flower 로 연락 주세요"
+나한테 부족한 정보를 먼저 물어봐 줘.</div>
+    </div>
+    <p class="asof">저장 버튼 이름·위치는 화면마다 다를 수 있습니다(2026-10, 수업 전 확인). 버튼이 없으면 "SKILL.md 파일로 만들어 줘" → 내려받아 폴더에 넣고 zip으로 묶으세요.</p>
+  </div>
+  <aside class="notes">
+    공식 튜토리얼 요령: 여러 번 설명했던 일을 고르고, 형식·말투·실제 예시를 한 메시지에 담아 설명 → 새 대화에서 시험 → Claude 생각 표시에 스킬 이름을 읽는 흔적이 있는지 확인.
+    skill-creator가 목록에 없어도 "스킬을 만들어 줘"라고 하면 대부분 진행됨. 안 되면 강사가 예제 SKILL.md를 틀로 주고 내용만 바꾸게 하기.
+  </aside>
+</section>
+
+<!-- 8. SKILL.md 구조 -->
+<section class="slide">
+  <div class="slide-inner stack">
+    <h2>SKILL.md 들여다보기</h2>
+    <div class="grid-2">
+      <pre class="code reveal" data-copy>---
+name: bomnal-order-confirm
+description: 봄날의 꽃 주문 확인 문자를 4줄로
+  쓰는 매뉴얼. 주문 확인, 예약 문자, 접수
+  안내를 요청받으면 사용.
+---
+
+# 주문 확인 문자 매뉴얼
+
+## 순서
+1. 인사 (봄날의 꽃이에요 🌷)
+2. 상품명과 가격 — references/price.md 확인
+3. 받는 날짜·시간
+4. 문의처: 인스타 @bomnal_flower
+
+## 하지 말 것
+- 가격표에 없는 금액 지어내기
+- 손님 전화번호 적기
+
+## 예시
+안녕하세요, 봄날의 꽃이에요 🌷 …</pre>
+      <div class="stack reveal">
+        <div class="card card--lavender"><h3>① 머리말 (--- 사이)</h3><p><code>name</code>: 영어 소문자·숫자·하이픈, 64자 이내. "claude"·"anthropic" 단어 금지<br><code>description</code>: <strong>무엇을</strong> + <strong>언제</strong>. 짧게(도움말 기준 200자 이내)</p></div>
+        <div class="card card--sky"><h3>② 본문</h3><p>순서, 규칙, 하지 말 것, 예시. 신입에게 주는 매뉴얼처럼</p></div>
+        <div class="card card--mint"><h3>③ 부록 파일 (선택)</h3><p>가격표 같은 긴 자료는 <code>references/</code>에 따로. 본문에서 "확인하라"고 가리키기</p></div>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">
+    공식 규칙: name은 소문자·숫자·하이픈 64자, 예약어(anthropic, claude) 불가. description은 API 문서 기준 1,024자까지지만 claude.ai 도움말은 200자 이내라고 적고 있음 → 짧게 쓰는 게 안전.
+    본문은 짧을수록 좋음(공식 권장: 본문 5천 토큰 미만, 대략 A4 몇 쪽). 길어지면 references로 분리.
+  </aside>
+</section>
+
+<!-- 9. 좋은 스킬 작성 팁 -->
+<section class="slide slide--alt">
+  <div class="slide-inner stack">
+    <h2>좋은 스킬을 쓰는 6가지 요령</h2>
+    <div class="grid-3 reveal">
+      <div class="card card--pink"><h3>1. 설명에 '언제'</h3><p>"공지, 안내문, 휴무 글을 요청받으면 사용"처럼 손님·직원이 실제 쓰는 말을 넣기</p></div>
+      <div class="card card--lavender"><h3>2. 한 스킬 = 한 업무</h3><p>공지문, 주간 보고, 견적서는 각각 따로</p></div>
+      <div class="card card--sky"><h3>3. 순서를 번호로</h3><p>"1. 확인 → 2. 작성 → 3. 점검" 단계로</p></div>
+      <div class="card card--mint"><h3>4. 좋은 예시 1개</h3><p>실제로 만족했던 결과물을 붙여 넣기</p></div>
+      <div class="card card--peach"><h3>5. 모르면 묻게</h3><p>"자료에 없으면 [확인 필요]로 표시" 규칙</p></div>
+      <div class="card card--yellow"><h3>6. 고치며 키우기</h3><p>이상한 결과가 나오면 그 경우를 '하지 말 것'에 추가</p></div>
+    </div>
+  </div>
+  <aside class="notes">1번이 가장 중요: description이 책등 제목. 너무 막연하면("글쓰기 도우미") 엉뚱할 때 불리거나, 안 불림. 5번은 2회차 할루시네이션 대비와 같은 원리.</aside>
+</section>
+
+<!-- 10. 팀 공유 -->
+<section class="slide">
+  <div class="slide-inner stack">
+    <h2>팀과 나누기</h2>
+    <div class="table-wrap reveal">
+      <table class="table">
+        <tr><th>상황</th><th>방법</th></tr>
+        <tr><td>Team·Enterprise 요금제</td><td>스킬 <strong>⋯ → Share(공유)</strong>로 특정 동료·그룹에게, 또는 <strong>Publish to org(조직에 게시)</strong>. 관리자는 전원에게 배포 가능</td></tr>
+        <tr><td>각자 Pro 요금제</td><td>zip 파일을 단톡방·드라이브로 전달 → 각자 업로드 (자동 공유 안 됨)</td></tr>
+        <tr><td>Claude Code 사용 팀</td><td>프로젝트 폴더 <code>.claude/skills/</code>에 넣고 Git으로 공유 (부록 B·C)</td></tr>
+      </table>
+    </div>
+    <div class="callout callout--warn reveal"><span>claude.ai, Claude Code, API에 올린 스킬은 <strong>서로 자동으로 옮겨지지 않습니다.</strong> 쓰는 곳마다 따로 넣어야 해요.</span></div>
+    <p class="asof">공유 기능은 2026-10 도움말 기준이며, 개발자 문서에는 "claude.ai 스킬은 개인용"이라는 예전 설명이 남아 있습니다. 팀 공유 버튼은 수업 전 실제 화면에서 확인하세요.</p>
+  </div>
+  <aside class="notes">봄날의 꽃 예: 대표가 공지문 스킬을 만들어 직원 3명에게 zip으로 전달. Team 요금제라면 Publish to org 한 번이면 끝. 스킬을 고치면 다시 나눠야 한다는 점도 짚기.</aside>
+</section>
+
+<!-- 11. Claude Code에서 스킬 -->
+<section class="slide slide--alt">
+  <div class="slide-inner stack">
+    <h2>Claude Code에서 스킬 쓰기</h2>
+    <p class="lead">Claude Code(부록 C)에서는 zip 없이 <strong>폴더를 넣기만</strong> 하면 됩니다.</p>
+    <div class="grid-2">
+      <div class="table-wrap reveal">
+        <table class="table">
+          <tr><th>위치</th><th>범위</th></tr>
+          <tr><td><code>~/.claude/skills/스킬이름/SKILL.md</code></td><td>내 컴퓨터의 모든 작업</td></tr>
+          <tr><td><code>.claude/skills/스킬이름/SKILL.md</code></td><td>그 프로젝트 폴더에서만 (Git으로 팀 공유)</td></tr>
+        </table>
+      </div>
+      <div class="stack reveal">
+        <pre class="code" data-copy>cp -r bomnal-notice-writer ~/.claude/skills/</pre>
+        <ul class="list">
+          <li><code>/bomnal-notice-writer 추석 휴무</code> — 이름으로 직접 부르기</li>
+          <li>"공지문 써줘" — 설명을 보고 알아서 꺼내 씀</li>
+          <li><code>/skills</code> — 설치된 스킬 목록 보기</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">
+    공식 문서(code.claude.com/docs/en/skills): 개인 ~/.claude/skills, 프로젝트 .claude/skills, 플러그인 안의 skills. 같은 이름이면 개인이 프로젝트보다 우선.
+    부르기만 하고 Claude가 알아서 쓰지 않게 하려면 머리말에 <code>disable-model-invocation: true</code> — 초보자에겐 소개만.
+    참고: Excel·Word 등 기본 문서 스킬은 Claude Code에는 기본 포함이 아님(아래 플러그인으로 설치 가능).
+  </aside>
+</section>
+
+<!-- 12. 플러그인 마켓플레이스 -->
+<section class="slide">
+  <div class="slide-inner stack">
+    <h2>플러그인 마켓플레이스로 스킬 묶음 설치</h2>
+    <div class="analogy reveal">플러그인은 <strong>매뉴얼 전집 세트</strong>, 마켓플레이스는 그 전집을 파는 <strong>서점</strong>이에요. 서점을 한 번 등록하면 전집을 골라 설치할 수 있습니다.</div>
+    <pre class="code reveal" data-copy># 1) Anthropic 공식 스킬 서점 등록
+/plugin marketplace add anthropics/skills
+
+# 2) 문서(Excel·Word·PowerPoint·PDF) 스킬 묶음 설치
+/plugin install document-skills@anthropic-agent-skills
+
+# 3) 설치된 플러그인 확인
+/plugin list</pre>
+    <p class="small reveal">Claude Code 입력창에 한 줄씩 입력합니다. 플러그인 스킬은 <code>/플러그인이름:스킬이름</code>으로 부를 수 있어요.</p>
+  </div>
+  <aside class="notes">명령은 github.com/anthropics/skills README 기준(2026-10). 문서 스킬(docx·pdf·pptx·xlsx)은 오픈소스가 아니라 '소스 공개' 라이선스. 마켓플레이스도 아무거나 등록하지 말 것 → 다음 장 보안.</aside>
+</section>
+
+<!-- 13. 보안 주의 -->
+<section class="slide slide--alt">
+  <div class="slide-inner stack">
+    <h2>보안 주의 — 스킬은 '프로그램 설치'와 같아요</h2>
+    <div class="callout callout--danger reveal"><span>스킬에는 Claude가 그대로 따르는 <strong>지시문</strong>과 실제로 실행되는 <strong>코드</strong>가 들어갈 수 있습니다. 나쁜 스킬은 파일을 몰래 보내거나 엉뚱한 일을 시킬 수 있어요. <strong>출처를 모르는 스킬은 설치하지 마세요.</strong></span></div>
+    <ul class="checklist reveal">
+      <li>직접 만들었거나 Anthropic 등 믿을 수 있는 곳의 스킬만 설치한다</li>
+      <li>남이 준 zip은 풀어서 SKILL.md와 모든 파일을 먼저 읽어 본다</li>
+      <li>"이 주소로 보내라", "이 사이트에서 받아 와라" 같은 문장이 있으면 설치하지 않는다</li>
+      <li>스킬 안에 비밀번호·API 키·손님 개인정보를 적지 않는다</li>
+      <li>안 쓰는 스킬은 끄거나 삭제한다</li>
+    </ul>
+  </div>
+  <aside class="notes">공식 문서 표현: "직접 만들었거나 Anthropic에서 받은 신뢰할 수 있는 출처의 스킬만 사용", "소프트웨어 설치처럼 취급". 외부 URL에서 내용을 가져오는 스킬은 특히 위험(가져온 내용에 악성 지시가 섞일 수 있음). 2회차 AI 사용 수칙에 "스킬 설치 규칙" 한 줄 추가를 권장.</aside>
+</section>
+
+<!-- 14. 작은 회사 아이디어 -->
+<section class="slide">
+  <div class="slide-inner stack">
+    <h2>작은 회사에서 써먹을 스킬 아이디어</h2>
+    <div class="grid-3 reveal">
+      <div class="card card--pink"><span class="icon">📢</span><h3>공지문 작성</h3><p>휴무·이벤트·가격 변경 (3회차 예제)</p></div>
+      <div class="card card--lavender"><span class="icon">📊</span><h3>주간 보고</h3><p>Jira 이슈 → 정해진 5칸 보고 (11회차 예제)</p></div>
+      <div class="card card--sky"><span class="icon">💬</span><h3>리뷰 답글</h3><p>별점별 답글 규칙, 불만엔 사과 + 매장 연락 유도</p></div>
+      <div class="card card--mint"><span class="icon">🧾</span><h3>견적서</h3><p>가격표 기준 계산, 부가세·배송비 표기 형식</p></div>
+      <div class="card card--peach"><span class="icon">🛍️</span><h3>상품 설명</h3><p>스마트스토어 상세 문구 틀 + 금지 표현</p></div>
+      <div class="card card--yellow"><span class="icon">🇯🇵</span><h3>일본어 응대</h3><p>LINE 문의 답변 말투·자주 쓰는 표현집</p></div>
+    </div>
+    <div class="callout callout--tip reveal"><span>고르는 기준: "<strong>매번 똑같이 설명하는 일</strong>"이 1순위입니다. 한 달에 세 번 이상 같은 설명을 했다면 스킬 후보!</span></div>
+  </div>
+  <aside class="notes">예제 파일: examples/skills/bomnal-notice-writer, bomnal-weekly-report. 수강생에게 자기 회사 후보 2개를 적게 하고, 그중 하나를 7번 슬라이드 방식으로 만들어 보게 하면 좋은 과제가 됨.</aside>
+</section>
+
+<!-- 15. 자주 겪는 문제 -->
+<section class="slide slide--alt">
+  <div class="slide-inner stack">
+    <h2>자주 겪는 문제</h2>
+    <div class="table-wrap reveal">
+      <table class="table">
+        <tr><th>이럴 때</th><th>이렇게</th></tr>
+        <tr><td>업로드하면 오류</td><td>폴더째 압축했는지, SKILL.md 맨 위 <code>---</code> 머리말과 name·description이 있는지 확인</td></tr>
+        <tr><td>name 오류</td><td>영어 소문자·숫자·하이픈만. 한글·띄어쓰기·"claude" 단어 빼기</td></tr>
+        <tr><td>스킬을 안 꺼내 쓴다</td><td>description에 실제로 쓰는 요청 말("공지", "안내문")을 추가</td></tr>
+        <tr><td>엉뚱할 때 끼어든다</td><td>description을 더 좁게: "봄날의 꽃 공지문에만"</td></tr>
+        <tr><td>고쳤는데 그대로다</td><td>예전 스킬 삭제 → 새 zip 업로드 → 새 채팅에서 시험</td></tr>
+      </table>
+    </div>
+    <nav class="lesson-nav" data-auto aria-label="다른 부록"></nav>
+  </div>
+  <aside class="notes">출처: support.claude.com 「Using Skills in Claude」「How to create custom skills」, platform.claude.com Agent Skills 개요, code.claude.com Skills, github.com/anthropics/skills (2026-10 확인).</aside>
+</section>
+
+<script src="../assets/course.js"></script>
+<script src="../assets/deck.js"></script>
+</body>
+</html>

@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>부록 D · 카카오톡 채널 자동응답 &amp; 챗봇 | AI로 작은 회사 운영하기</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Ctext y=%22.9em%22 font-size=%2290%22%3E%F0%9F%8C%B7%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="../assets/deck.css">
+</head>
+<body data-appendix="D">
+
+<!-- 1. 표지 -->
+<section class="slide slide--title slide--center">
+  <div class="slide-inner">
+    <span class="eyebrow reveal">부록 D · 12~14회차 다음에</span>
+    <h1 class="reveal">카카오톡 채널 자동응답 &amp; 챗봇</h1>
+    <p class="lead reveal">한국 손님에게는 카카오톡으로 — 14회차 서버를 그대로 연결합니다</p>
+    <p class="small reveal" style="margin-top:2rem">⌨️ 방향키·스페이스로 이동 · <kbd>N</kbd> 강사 노트 · <kbd>D</kbd> 어둡게</p>
+  </div>
+  <aside class="notes">
+    혼자 보는 자습용 + 보충 수업용(약 70분). 전제: 14회차에서 examples/messenger-bot을 Cloudflare에 배포했거나, 최소한 12회차의 "자동응답" 개념을 안다.
+    한국 손님이 대부분인 수강생에게 가장 실용적인 부록. LINE과 다른 점(5초 제한, 콜백, 비즈니스 인증)만 집중해서 설명.
+  </aside>
+</section>
+
+<!-- 2. 목표 -->
+<section class="slide">
+  <div class="slide-inner stack">
+    <h2>이번 부록의 목표 <span class="timebox">3분</span></h2>
+    <div class="goal reveal"><span class="goal-label">목표</span><span>카카오톡 채널을 만들고, <strong>코딩 없는 자동응답</strong>부터 <strong>AI 챗봇(우리 서버)</strong>까지 단계별로 연결한다</span></div>
+    <div class="goal reveal"><span class="goal-label">결과물</span><span>자동응답이 켜진 채널 + 폴백 블록에 스킬이 연결된 AI 챗봇</span></div>
+    <div class="grid-3 reveal">
+      <div class="card card--yellow"><span class="icon">1️⃣</span><h3>채팅 자동응답</h3><p>12회차 수준 · 코딩 0</p></div>
+      <div class="card card--mint"><span class="icon">2️⃣</span><h3>카나나 상담매니저</h3><p>카카오의 AI 상담 도구</p></div>
+      <div class="card card--lavender"><span class="icon">3️⃣</span><h3>챗봇 + 스킬</h3><p>14회차 서버의 <code>/kakao/skill</code></p></div>
+    </div>
+  </div>
+  <aside class="notes">세 단계 중 우리 회사에 맞는 곳까지만 가도 된다고 안내. 대부분의 작은 가게는 1~2단계로 충분하고, Slack·Jira 연동이 필요하면 3단계.</aside>
+</section>
+
+<!-- 3. 비유와 용어 -->
+<section class="slide slide--alt">
+  <div class="slide-inner stack">
+    <h2>카카오톡 채널 = 한국판 LINE 공식계정 <span class="timebox">5분</span></h2>
+    <div class="analogy reveal">
+      챗봇은 <strong>"질문별 서랍장"</strong>입니다. 서랍(블록)마다 정해진 답이 들어 있고, 맞는 서랍이 없으면 마지막 <strong>"기타" 서랍(폴백 블록)</strong>이 열립니다.
+      우리는 그 기타 서랍을 <strong>AI 상담원(우리 서버)에게 전화를 거는 서랍</strong>으로 바꿉니다.
+    </div>
+    <div class="grid-2 reveal">
+      <dl class="term"><dt>카카오톡 채널</dt><dd>가게·회사용 카카오톡 계정. 손님이 채널 추가 후 1:1 채팅·소식 받기</dd></dl>
+      <dl class="term"><dt>폴백 블록</dt><dd>어떤 블록에도 해당하지 않는 말이 왔을 때 실행되는 "기타" 블록</dd></dl>
+      <dl class="term"><dt>스킬</dt><dd>블록이 답을 만들 때 <strong>외부 서버에 물어보는</strong> 연결. 우리 서버 주소를 등록</dd></dl>
+      <dl class="term"><dt>콜백</dt><dd>"지금은 준비 중, 다 되면 다시 알려 드릴게요" 방식. 5초 안에 못 답할 때 사용</dd></dl>
+    </div>
+  </div>
+  <aside class="notes">LINE과 비교: 공식계정 ↔ 채널, 응답 메시지 ↔ 자동응답/블록, Messaging API webhook ↔ 스킬. 새 용어 4개.</aside>
+</section>
+
+<!-- 4. 세 가지 방법 비교 -->
+<section class="slide">
+  <div class="slide-inner stack">
+    <h2>세 가지 방법 한눈에 <span class="timebox">5분</span></h2>
+    <div class="table-wrap reveal">
+      <table class="table">
+        <tr><th></th><th>① 채팅 자동응답</th><th>② 카나나 상담매니저</th><th>③ 챗봇 관리자센터 + 스킬</th></tr>
+        <tr><td>어디서</td><td>카카오톡 채널 관리자센터</td><td>카카오 비즈니스 도구</td><td>챗봇 관리자센터 + 14회차 서버</td></tr>
+        <tr><td>코딩</td><td>없음</td><td>없음</td><td>없음 (서버는 이미 배포됨)</td></tr>
+        <tr><td>AI 답변</td><td>✕ 정해진 답</td><td>○ 생성형 AI 답변·관리자 호출 (2026-09 추가)</td><td>○ Claude + 우리 상담 규칙</td></tr>
+        <tr><td>Slack·Jira 연결</td><td>✕</td><td>✕ (수업 전 확인)</td><td>○ #cs-escalation + BOM 이슈</td></tr>
+        <tr><td>비용</td><td>무료</td><td>수업 전 확인</td><td>Claude API 사용량 (Haiku 4.5)</td></tr>
+      </table>
+    </div>
+    <p class="asof">2026-10 기준. 카나나 상담매니저는 2025-09 출시, 2026-09에 생성형 AI 답변·관리자 호출이 추가되었습니다. 요금·메뉴는 수업 전 확인하세요.</p>
+  </div>
+  <aside class="notes">12~13회차의 "응답 메시지 vs AIチャットボット vs Make+Claude" 비교와 같은 구조임을 짚기. 카나나는 카카오가 직접 만든 도구라 설정이 쉬운 대신, 우리 회사 Slack·Jira와 잇기는 어려울 수 있음.</aside>
+</section>
+
+<!-- 5. 실습 1: 채널 개설 + 비즈니스 인증 -->
+<section class="slide slide--alt">
+  <div class="slide-inner stack">
+    <h2>실습 1 · 카카오톡 채널 만들기 <span class="timebox">10분</span></h2>
+    <div class="grid-2">
+      <ol class="steps reveal">
+        <li><span class="path">카카오비즈니스(business.kakao.com) → 카카오톡 채널 → 새 채널 만들기</span></li>
+        <li>채널 이름 <strong>봄날의 꽃</strong>, 검색용 아이디, 프로필 사진·소개 입력</li>
+        <li>운영 시간: 화~일 10:00–20:00 (월요일 휴무) 설정</li>
+        <li><strong>채널 공개·검색 허용</strong> 켜기</li>
+        <li>(필요 시) <span class="path">채널 관리자센터 → 설정 → 비즈니스 인증</span>에서 사업자등록증으로 신청</li>
+      </ol>
+      <div class="stack reveal">
+        <div class="callout callout--info"><span><strong>비즈니스 인증</strong>은 사업자 정보 확인을 거친 채널입니다. 챗봇 <strong>플러그인</strong> 등 일부 기능은 인증 채널이 필요하고, 심사에 며칠 걸릴 수 있으니 미리 신청하세요.</span></div>
+        <div class="callout callout--danger"><span>사업자등록증 사진은 인증 신청 화면에만 올리고, 단톡방·AI 채팅에 붙여 넣지 마세요.</span></div>
+      </div>
+    </div>
+    <p class="asof">2026-10 기준 메뉴 이름입니다. 화면 개편이 잦으니 수업 전 확인하세요.</p>
+  </div>
+  <aside class="notes">사업자가 아직 없는 수강생은 일반 채널로 1·2단계까지 실습 가능. 3단계(스킬·콜백)에서 막히면 비즈니스 인증 여부부터 확인.</aside>
+</section>
+
+<!-- 6. 실습 2: 채팅 자동응답 -->
+<section class="slide">
+  <div class="slide-inner stack">
+    <h2>실습 2 · 채팅 자동응답 (코딩 없음) <span class="timebox">8분</span></h2>
+    <div class="grid-2">
+      <ol class="steps reveal">
+        <li><span class="path">채널 관리자센터 → 채팅 → 자동응답</span></li>
+        <li><strong>첫 인사(웰컴) 메시지</strong>: "AI·자동응답이 먼저 답하고, 필요하면 직원이 이어서 답한다" 안내</li>
+        <li>12회차에 만든 FAQ 10개 중 자주 묻는 질문을 <strong>자동응답</strong>으로 등록</li>
+        <li>휴대폰 카카오톡으로 채널 추가 → 직접 질문해 확인</li>
+      </ol>
+      <div class="prompt reveal">12회차에 만든 LINE 응답 메시지 표(키워드 | 답변)를 카카오톡 채널용으로 바꿔줘.
+[조건] 한국어만, 각 답변 2~3줄, 존댓말. 영업시간 화~일 10:00–20:00, 월요일 휴무. 모르는 내용은 [확인 필요].
+[형식] 표: 질문 | 손님이 쓸 만한 표현 3개 | 답변</div>
+    </div>
+    <div class="callout callout--warn reveal"><span>한국 AI 기본법(2026-01-22 시행)에 따라 AI가 답한다면 첫 인사에 <strong>"AI 상담원"</strong>임을 밝히세요.</span></div>
+  </div>
+  <aside class="notes">카카오 채널 자동응답 메뉴 구성(키워드형·버튼형 등)은 자주 바뀜 — 수업 전 강사가 실제 화면을 캡처해 두기. 3단계에서 챗봇을 연결하면 채팅 답변은 챗봇이 맡게 되므로, 자동응답과 챗봇의 우선순위를 확인할 것.</aside>
+</section>
+
+<!-- 7. 카나나 상담매니저 -->
+<section class="slide slide--alt">
+  <div class="slide-inner stack">
+    <h2>카나나 상담매니저 둘러보기 <span class="timebox">5분</span></h2>
+    <div class="grid-2">
+      <div class="stack reveal">
+        <p class="lead">카카오가 만든 <strong>AI 상담 도우미</strong>입니다.</p>
+        <ul class="list">
+          <li>가게 정보를 등록하면 손님 질문에 AI가 답변 (2026-09 생성형 AI 답변 추가)</li>
+          <li>AI가 답하기 어려우면 <strong>관리자 호출</strong></li>
+          <li>코딩·서버 없이 카카오 안에서 끝남</li>
+        </ul>
+      </div>
+      <div class="chat reveal">
+        <div class="bubble bubble--user">내일 꽃바구니 주문 가능해요?</div>
+        <div class="bubble bubble--bot">안녕하세요, 봄날의 꽃 AI 상담원입니다. 꽃바구니는 70,000원부터이며, 오후 3시까지 주문하시면 서울 당일 배송돼요.</div>
+        <div class="bubble bubble--user">리본 문구 바꿔 주실 수 있어요?</div>
+        <div class="bubble bubble--staff">(관리자 호출) 담당자가 확인 후 답변드릴게요!</div>
+      </div>
+    </div>
+    <div class="callout callout--info reveal"><span>장점은 <strong>쉬움</strong>, 아쉬운 점은 우리 회사 <strong>Slack·Jira와 잇기 어려움</strong>. 둘 다 필요하면 다음 장의 챗봇 + 스킬로.</span></div>
+    <p class="asof">2026-10 기준. 요금·신청 조건·메뉴 위치는 수업 전 확인.</p>
+  </div>
+  <aside class="notes">카나나 상담매니저와 3단계 챗봇을 동시에 켜면 누가 답할지 충돌할 수 있음 — 하나만 선택하도록 안내. 정확한 요금은 확인 후 칠판에.</aside>
+</section>
+
+<!-- 8. 챗봇 관리자센터: 봇 만들기 + 폴백 -->
+<section class="slide">
+  <div class="slide-inner stack">
+    <h2>실습 3 · 챗봇 만들고 "기타 서랍" 찾기 <span class="timebox">7분</span></h2>
+    <div class="flow reveal">
+      <div class="flow-node"><span class="icon">💬</span>손님 말</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node"><span class="icon">🗂️</span>블록과 비교<small>웰컴·영업시간…</small></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node flow-node--accent"><span class="icon">❓</span>폴백 블록<small>맞는 블록 없음</small></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node"><span class="icon">☁️</span>스킬<small>/kakao/skill</small></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node"><span class="icon">🧠</span>Claude</div>
+    </div>
+    <ol class="steps reveal">
+      <li><span class="path">챗봇 관리자센터(chatbot.kakao.com) → 봇 만들기 → 카카오톡 챗봇</span>, 이름 <strong>봄날의 꽃 AI</strong></li>
+      <li><span class="path">설정 → 카카오톡 채널 연결</span>에서 실습 1의 채널 선택</li>
+      <li><span class="path">시나리오 → 기본 시나리오</span>에 <strong>웰컴 블록</strong>, <strong>폴백 블록</strong>이 이미 있는 것 확인</li>
+    </ol>
+  </div>
+  <aside class="notes">블록을 많이 만들 필요 없음 — 모든 질문을 폴백 → AI로 보내는 것이 이번 설계. 웰컴 블록에는 AI 상담원 고지 문구를 넣어 두기.</aside>
+</section>
+
+<!-- 9. 스킬 연결 -->
+<section class="slide slide--alt">
+  <div class="slide-inner stack">
+    <h2>실습 4 · 폴백 블록에 우리 서버 연결 <span class="timebox">10분</span></h2>
+    <div class="grid-2">
+      <ol class="steps reveal">
+        <li><span class="path">스킬 → 스킬 목록 → 생성</span>: 이름 <strong>봄날의 꽃 AI 서버</strong></li>
+        <li>먼저 터미널에서 <code>npx wrangler secret put KAKAO_SKILL_SECRET</code> → 아무도 못 맞힐 긴 문자열 입력 (예: 비밀번호 생성기로 만든 32자)</li>
+        <li>URL에 14회차 주소 + <code>/kakao/skill?key=</code> + 방금 만든 문자열 붙여넣기 → 저장</li>
+        <li><span class="path">시나리오 → 폴백 블록</span> → 파라미터 설정의 <strong>스킬 선택</strong>에서 방금 만든 스킬</li>
+        <li>봇 응답을 <strong>스킬데이터 사용</strong>으로 → 저장</li>
+      </ol>
+<pre class="code reveal" data-copy>https://bomnal-bot.내계정.workers.dev/kakao/skill?key=내가-만든-긴-비밀문자열</pre>
+    </div>
+    <div class="callout callout--tip reveal"><span>LINE과 <strong>같은 서버·같은 상담 규칙(knowledge.ts)</strong>을 씁니다. 비밀값은 <code>ANTHROPIC_API_KEY</code>와 <code>KAKAO_SKILL_SECRET</code>이 꼭 필요하고, Slack·Jira 값이 있으면 카카오 문의도 #cs-escalation·BOM으로 넘어갑니다.</span></div>
+    <div class="callout callout--warn reveal"><span>카카오는 LINE 같은 서명이 없어서 <code>?key=</code> 비밀 문자열로 우리 챗봇만 들어오게 막습니다. 이 주소는 비밀번호처럼 다루고, 유출되면 <code>secret put</code>으로 새 값을 넣은 뒤 스킬 URL도 바꾸세요. Anthropic Console의 <strong>월 사용 한도</strong>도 꼭 걸어 두세요.</span></div>
+  </div>
+  <aside class="notes">"내계정" 부분은 14회차 npx wrangler deploy 끝에 나온 주소. 서버 코드는 examples/messenger-bot/src/kakao.ts — ?key= 값이 틀리면 401로 거절(Claude 호출 안 함), KAKAO_SKILL_SECRET이 없으면 500. 콜백이 켜져 있으면 콜백 방식, 꺼져 있으면 4초 안에 답하거나 "잠시 후 다시 물어봐 달라"는 안내로 답함.</aside>
+</section>
+
+<!-- 10. 5초와 콜백 -->
+<section class="slide">
+  <div class="slide-inner stack">
+    <h2>카카오의 5초 규칙과 콜백 <span class="timebox">7분</span></h2>
+    <div class="grid-2">
+      <div class="card card--peach reveal">
+        <h3>⏱️ 5초 규칙</h3>
+        <p>스킬 서버가 <strong>5초 안에</strong> 답하지 않으면 카카오는 실패로 봅니다. AI는 가끔 5초를 넘깁니다.</p>
+      </div>
+      <div class="card card--mint reveal">
+        <h3>📞 콜백</h3>
+        <p>서버가 즉시 <code>"useCallback": true</code>로 "준비 중" 응답 → 답이 나오면 <strong>callbackUrl</strong>로 보냄. 이 주소는 <strong>5분 안에 1번만</strong> 사용.</p>
+      </div>
+    </div>
+<pre class="code reveal">{ "version": "2.0", "useCallback": true,
+  "data": { "text": "답변을 준비하고 있어요..." } }</pre>
+    <ol class="steps reveal">
+      <li><span class="path">설정 → AI 챗봇 관리 → AI 챗봇 전환</span> 신청 (승인 후 콜백 사용 가능)</li>
+      <li><span class="path">폴백 블록 → ⋯ 메뉴 → Callback API 설정</span> 켜고 기본 응답 문구 입력</li>
+    </ol>
+    <p class="asof">2026-10 기준. 'AI 챗봇 관리' 메뉴가 안 보이거나 승인 조건(비즈니스 인증 등)이 다를 수 있으니 수업 전 확인하세요.</p>
+  </div>
+  <aside class="notes">LINE의 reply token(1분)과 비교: 카카오는 5초 + 콜백 5분. 콜백 승인 전에는 우리 서버가 4초 안에 답하거나 안내 문구로 응답하므로 봇은 일단 동작함. 콜백 승인 메뉴가 안 보이는 사례가 Kakao DevTalk에 보고되어 있음 — 그 경우 챗봇 관리자센터 문의.</aside>
+</section>
+
+<!-- 11. 배포·테스트·문제 -->
+<section class="slide slide--alt">
+  <div class="slide-inner stack">
+    <h2>배포하고 진짜 카카오톡으로 테스트 <span class="timebox">8분</span></h2>
+    <ol class="steps reveal">
+      <li><span class="path">배포 → 배포</span> 버튼 (저장만 하면 손님에게 반영되지 않음)</li>
+      <li>휴대폰 카카오톡에서 채널 대화방 → 13회차 <strong>짓궂은 질문</strong> 3개 보내기</li>
+      <li>터미널 <code>npx wrangler tail</code>로 로그 확인</li>
+    </ol>
+    <div class="table-wrap reveal">
+      <table class="table">
+        <tr><th>증상</th><th>해결</th></tr>
+        <tr><td>봇테스트 창에서 콜백 답이 안 옴</td><td>정상 — 봇테스트는 콜백을 완전히 지원하지 않음. <strong>배포 후</strong> 실제 채팅으로 테스트</td></tr>
+        <tr><td>"잠시 후 다시 물어봐 주세요"만 나옴</td><td>콜백 미설정 + 답이 4초 초과. 콜백 신청·설정</td></tr>
+        <tr><td>스킬 오류 / 응답 없음</td><td>URL 끝 <code>/kakao/skill?key=…</code> 값이 서버의 <code>KAKAO_SKILL_SECRET</code>과 같은지, <code>ANTHROPIC_API_KEY</code>가 있는지 확인 (<code>npx wrangler tail</code>에 401이면 key 불일치, 500이면 비밀값 누락)</td></tr>
+        <tr><td>채널 연결 목록에 채널이 없음</td><td>채널 관리자(마스터) 권한, 비즈니스 인증 여부 확인</td></tr>
+      </table>
+    </div>
+  </div>
+  <aside class="notes">배포 버튼을 누르지 않아 "고쳤는데 안 바뀐다"는 경우가 가장 흔함. 테스트 후 Slack #cs-escalation에 "카카오 문의" 알림이 오는지도 확인.</aside>
+</section>
+
+<!-- 12. 체크리스트 -->
+<section class="slide slide--title slide--center">
+  <div class="slide-inner stack">
+    <h2>부록 D 체크리스트 ✅ <span class="timebox">2분</span></h2>
+    <ul class="checklist reveal" style="text-align:left">
+      <li>카카오톡 채널을 만들고 첫 인사에 AI·자동응답 안내를 넣었다</li>
+      <li>채팅 자동응답으로 FAQ를 등록했다</li>
+      <li>카나나 상담매니저와 챗봇+스킬의 차이를 말할 수 있다</li>
+      <li>폴백 블록에 <code>/kakao/skill</code> 스킬을 연결하고 배포했다</li>
+      <li>5초 규칙과 콜백(5분·1회)을 설명할 수 있다</li>
+    </ul>
+    <nav class="lesson-nav" data-auto aria-label="다음 부록"></nav>
+  </div>
+  <aside class="notes">다 끝낸 수강생은 14회차 졸업 계획서의 로드맵에 "카카오 채널 확대"를 넣도록 권장. 다음은 부록 E(Claude 스킬).</aside>
+</section>
+
+<script src="../assets/course.js"></script>
+<script src="../assets/deck.js"></script>
+</body>
+</html>

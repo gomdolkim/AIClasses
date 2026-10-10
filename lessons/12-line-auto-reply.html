@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>12회차 · 코딩 없이 LINE 자동응답 | AI로 작은 회사 운영하기</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Ctext y=%22.9em%22 font-size=%2290%22%3E%F0%9F%8C%B7%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="../assets/deck.css">
+</head>
+<body data-lesson="12">
+
+<!-- 1. 표지 -->
+<section class="slide slide--title slide--center">
+  <div class="slide-inner">
+    <span class="eyebrow reveal">파트 ④ 고객 문의 AI 상담봇 (LINE) · 12회차</span>
+    <h1 class="reveal">코딩 없이 LINE 자동응답</h1>
+    <p class="lead reveal">"오늘 영업해요?" 같은 질문은 이제 LINE이 대신 답합니다</p>
+    <p class="small reveal" style="margin-top:2rem">⌨️ 방향키·스페이스로 이동 · <kbd>N</kbd> 강사 노트 · <kbd>D</kbd> 어둡게</p>
+  </div>
+  <aside class="notes">
+    [0~2분] 마지막 파트 시작. "파트 ④는 손님을 상대하는 AI. 12회차는 코딩·AI 없이, 13회차는 AI를 붙이고, 14회차는 진짜 서버로 옮긴다"고 3회 흐름을 먼저 그려 주기.
+    수업 전 준비: 강사용 LINE 공식계정 1개를 미리 만들어 두고(데모용), 휴대폰 LINE 앱으로 친구 추가해 둘 것. 프로젝터에 휴대폰 화면 미러링 준비.
+  </aside>
+</section>
+
+<!-- 2. 오늘의 목표 -->
+<section class="slide">
+  <div class="slide-inner stack">
+    <h2>오늘의 목표 <span class="timebox">3분</span></h2>
+    <div class="goal reveal"><span class="goal-label">목표</span><span>LINE 공식계정을 만들고, 자주 묻는 질문에 <strong>자동으로 답하는</strong> 설정을 한다</span></div>
+    <div class="goal reveal"><span class="goal-label">결과물</span><span>AI 고지가 들어간 인사 메시지 + <strong>FAQ 10개 자동응답</strong> + 버튼 3개짜리 리치 메뉴</span></div>
+    <div class="grid-4 reveal">
+      <div class="card card--mint"><span class="icon">🏪</span><h3>계정 만들기</h3><p>LINE 공식계정 개설</p></div>
+      <div class="card card--pink"><span class="icon">👋</span><h3>첫인사</h3><p>친구 추가 시 자동 인사</p></div>
+      <div class="card card--lavender"><span class="icon">🔑</span><h3>키워드 답변</h3><p>FAQ 10개 등록</p></div>
+      <div class="card card--sky"><span class="icon">🔘</span><h3>버튼 메뉴</h3><p>영업시간·주문·문의</p></div>
+    </div>
+  </div>
+  <aside class="notes">오늘은 AI가 직접 답하지 않는다는 점을 미리 말해 두기. "정해진 질문에 정해진 답"부터 해야 13회차 AI 봇의 고마움이 보인다. 시간이 밀리면 리치 메뉴는 과제로 돌린다.</aside>
+</section>
+
+<!-- 3. 지난 시간 결과물 확인 -->
+<section class="slide slide--alt">
+  <div class="slide-inner stack">
+    <h2>지난 시간 결과물 확인 <span class="timebox">5분</span></h2>
+    <div class="grid-2">
+      <div class="card reveal">
+        <h3>📊 11회차: AI 주간 보고</h3>
+        <ul class="list">
+          <li>Claude가 Jira를 읽고 주간 보고를 Slack에 올렸나요?</li>
+          <li>보고서에 빠진 내용이 있었다면 프롬프트를 한 줄 고쳐 보기</li>
+        </ul>
+      </div>
+      <div class="card card--yellow reveal">
+        <h3>📝 1회차 과제를 꺼내 주세요</h3>
+        <p>"자주 묻는 질문 10개" — 오늘 바로 씁니다.</p>
+        <p class="small">없는 분은 봄날의 꽃 FAQ를 같이 씁니다. 3회차 프로젝트에 넣어 둔 자료도 좋아요.</p>
+      </div>
+    </div>
+    <div class="callout callout--tip reveal"><span>오늘부터 3회 동안 하나의 봇을 키웁니다. 12회차 <strong>정해진 답</strong> → 13회차 <strong>AI가 답</strong> → 14회차 <strong>우리 서버에서 AI가 답</strong>.</span></div>
+  </div>
+  <aside class="notes">주간 보고 자동화가 아직 안 된 수강생은 쉬는 시간에 개별 확인. FAQ 10개가 없는 수강생이 많으면 슬라이드 9의 프롬프트로 Claude에게 만들게 하면 됨(2~3분).</aside>
+</section>
+
+<!-- 4. 비유와 용어 -->
+<section class="slide">
+  <div class="slide-inner stack">
+    <h2>LINE 공식계정은 "가게 앞 안내 데스크" <span class="timebox">7분</span></h2>
+    <div class="analogy reveal">
+      개인 LINE이 <strong>내 휴대폰 번호</strong>라면, 공식계정은 <strong>가게 대표 번호 + 안내 데스크</strong>입니다.
+      손님이 친구 추가를 하면 인사를 건네고, 정해진 질문에는 <strong>안내판</strong>이 대신 답하고, 어려운 질문은 직원이 직접 받습니다.
+    </div>
+    <div class="grid-2 reveal">
+      <dl class="term"><dt>LINE 공식계정 (LINE公式アカウント)</dt><dd>가게·회사용 LINE 계정. 손님이 친구 추가하면 1:1 대화와 공지 발송이 가능</dd></dl>
+      <dl class="term"><dt>인사 메시지 (あいさつメッセージ)</dt><dd>손님이 친구 추가했을 때 자동으로 보내는 첫 메시지</dd></dl>
+      <dl class="term"><dt>응답 메시지 (応答メッセージ)</dt><dd>손님이 정해진 <strong>키워드</strong>를 보내면 정해진 답을 자동으로 보내는 기능</dd></dl>
+      <dl class="term"><dt>리치 메뉴 (リッチメニュー)</dt><dd>대화창 아래에 고정되는 큰 버튼판. 누르면 글자 전송·링크 열기 등</dd></dl>
+    </div>
+  </div>
+  <aside class="notes">일본에서 LINE은 "카카오톡 + 문자"에 가까운 필수 앱이라는 배경 설명 1분. 일본인 손님은 전화보다 LINE 문의를 편하게 여김. 용어 4개 + 슬라이드 11의 AIチャットボット 1개 = 오늘 새 용어 5개.</aside>
+</section>
+
+<!-- 5. 강사 데모: 손님 화면 + 관리 화면 지도 -->
+<section class="slide slide--alt">
+  <div class="slide-inner stack">
+    <h2>강사 데모 · 손님에게는 이렇게 보입니다 <span class="timebox">6분</span></h2>
+    <div class="grid-2">
+      <div class="chat reveal">
+        <div class="bubble bubble--bot">友だち追加ありがとうございます！🌷 봄날의 꽃입니다. このアカウントは自動応答です。</div>
+        <div class="bubble bubble--user">営業時間</div>
+        <div class="bubble bubble--bot">火〜日 10:00–20:00、月曜定休です。望遠駅2番出口から徒歩3分！</div>
+        <div class="bubble bubble--user">영업시간</div>
+        <div class="bubble bubble--bot">화~일 10:00–20:00, 월요일 휴무입니다. 망원역 2번 출구 도보 3분!</div>
+      </div>
+      <div class="table-wrap reveal">
+        <table class="table">
+          <tr><th>화면 표시 (일본어)</th><th>뜻</th></tr>
+          <tr><td>ホーム</td><td>홈 (설정 대부분이 여기)</td></tr>
+          <tr><td>自動応答</td><td>자동응답 메뉴 묶음</td></tr>
+          <tr><td>あいさつメッセージ</td><td>인사 메시지</td></tr>
+          <tr><td>応答メッセージ</td><td>응답 메시지 (키워드)</td></tr>
+          <tr><td>リッチメニュー</td><td>리치 메뉴</td></tr>
+          <tr><td>設定 → 応答設定</td><td>설정 → 응답 방식 켜고 끄기</td></tr>
+          <tr><td>作成 / 保存 / 有効</td><td>만들기 / 저장 / 사용 중</td></tr>
+        </table>
+      </div>
+    </div>
+    <p class="asof">메뉴 이름·위치는 2026-10 기준 LINE Official Account Manager(웹) 화면입니다. 화면 언어 설정에 따라 영어·한국어로 보일 수 있으니 수업 전 확인하세요.</p>
+  </div>
+  <aside class="notes">
+    휴대폰 미러링으로 강사 계정에 "営業時間"을 보내 실제로 답이 오는 것을 보여 주기. 그다음 PC 관리 화면(manager.line.biz)으로 넘어가 표의 메뉴를 하나씩 손가락으로 짚기.
+    예상 질문: "한국어로 화면을 바꿀 수 있나요?" → 계정 설정의 언어 메뉴에서 가능할 수 있으나, 지역·버전에 따라 일부 메뉴는 일본어로 남음. 오늘은 일본어+한국어 병기로 진행.
+  </aside>
+</section>
+
+<!-- 6. 실습 1: 계정 개설 -->
+<section class="slide">
+  <div class="slide-inner stack">
+    <h2>실습 1 · LINE 공식계정 만들기 <span class="timebox">12분</span></h2>
+    <div class="grid-2">
+      <ol class="steps reveal">
+        <li>PC 크롬에서 <span class="path">LINE for Business → LINE公式アカウントをはじめる (공식계정 시작하기)</span></li>
+        <li><strong>メールアドレスで登録 (이메일로 가입)</strong> 선택 → 회사 대표 메일로 비즈니스 ID 만들기</li>
+        <li>필수 항목 입력: アカウント名(계정 이름) <strong>봄날의 꽃 / 春の日の花</strong>, 업종, 회사·사업자 소재 국가</li>
+        <li>비즈니스 매니저 조직 연결 화면이 나오면 <strong>새 조직 만들기</strong></li>
+        <li>완료 후 <span class="path">LINE Official Account Managerへ (관리 화면으로)</span> → 휴대폰 LINE으로 내 계정 QR을 찍어 <strong>친구 추가</strong></li>
+      </ol>
+      <div class="stack reveal">
+        <div class="callout callout--warn"><span><strong>국가·지역은 실제 사업장 위치</strong>로 고르세요. 지역마다 요금제와 쓸 수 있는 기능이 다릅니다. 일본 지역 계정은 무료 월 200통 / 라이트 5,000엔 / 스탠더드 15,000엔이고, <strong>자동응답·답장은 통수에 포함되지 않습니다.</strong></span></div>
+        <div class="callout callout--info"><span>한국 사업자가 만든 계정은 일본 지역 계정과 요금·메뉴가 다를 수 있고, 파란·초록 배지가 붙는 <strong>인증 계정</strong> 심사는 일본·대만·태국·인도네시아만 받습니다. 오늘 실습(인사·응답 메시지·리치 메뉴)은 미인증 계정으로 충분합니다.</span></div>
+        <div class="callout callout--danger"><span>개인 LINE 계정으로 로그인하면 내 개인 프로필과 섞이기 쉽습니다. 회사 메일로 만든 <strong>비즈니스 계정</strong>을 쓰세요.</span></div>
+      </div>
+    </div>
+    <p class="asof">2026-10 기준. 2025-06-25부터 계정 생성 시 비즈니스 매니저 조직 연결이 필수가 되었습니다. 한국 소재 사업자 계정에서 보이는 메뉴·요금은 수업 전 강사가 직접 확인하세요.</p>
+  </div>
+  <aside class="notes">
+    가장 많이 막히는 곳: ① 인증 메일이 스팸함에 감 ② 국가 선택에서 고민 — 사실대로 고르게 할 것(거짓 정보는 약관 위반·계정 정지 위험) ③ 비즈니스 매니저 연결 화면에서 멈춤 → "새로 만들기" 누르면 됨.
+    예상 질문: "일본에 지사가 없는데 일본 손님 받을 수 있나요?" → 지역과 상관없이 일본 손님이 친구 추가·대화하는 데는 문제 없음. 지역은 요금·일부 기능(예: AIチャットボット)의 차이.
+    수업 전 강사가 한국 소재 계정에서 応答メッセージ·リッチメニュー·AIチャットボット 메뉴가 보이는지 반드시 확인. 안 보이면 강사 데모 계정 화면으로 설명하고 수강생은 보이는 메뉴까지만.
+  </aside>
+</section>
+
+<!-- 7. 실습 2: 인사 메시지 + AI 고지 -->
+<section class="slide slide--alt">
+  <div class="slide-inner stack">
+    <h2>실습 2 · 첫인사에 "자동응답" 알리기 <span class="timebox">8분</span></h2>
+    <div class="grid-2">
+      <div class="stack">
+        <ol class="steps reveal">
+          <li><span class="path">ホーム → 自動応答 → あいさつメッセージ</span> (인사 메시지)</li>
+          <li>기본 문구를 지우고 아래 프롬프트로 만든 문구 붙여넣기</li>
+          <li><strong>変更を保存 (변경 저장)</strong> → 휴대폰에서 차단 후 다시 친구 추가해 확인</li>
+        </ol>
+        <div class="callout callout--warn reveal"><span>한국 AI 기본법(2026-01-22 시행)은 생성형 AI 사용을 알리도록 합니다. 오늘은 AI가 아니어도 <strong>"자동응답 / AI 상담"임을 첫인사에 밝히는 습관</strong>을 들이세요. 13회차부터는 진짜 AI가 답합니다.</span></div>
+      </div>
+      <div class="prompt reveal">[상황] 나는 서울 망원동 꽃집 「봄날의 꽃」 대표야. 일본인 손님이 LINE으로 많이 문의해.
+[할 일] LINE 공식계정 인사 메시지를 써줘.
+[조건] 일본어 먼저, 그 아래 한국어. 각 3~4줄. '이 계정은 자동응답(추후 AI 상담원)이 먼저 답하고, 필요하면 직원이 이어서 답한다'는 안내를 꼭 넣어줘. 영업시간 화~일 10:00–20:00, 월요일 휴무. 아래 메뉴 버튼을 눌러 보라는 안내도.
+[형식] 이모지 2개 이내, 손님 이름 자리에는 {Nickname} 사용</div>
+    </div>
+  </div>
+  <aside class="notes">
+    {Nickname}은 LINE 관리 화면에서 "友だちの表示名(친구 표시 이름)" 버튼으로 넣는 자리표시자. 화면에 따라 버튼을 눌러 삽입해야 할 수 있음.
+    일본어 확인: 일본어를 모르는 수강생에게 "Claude에게 한국어로 다시 번역시켜 뜻을 확인"하게 하기(2회차 사실 확인 습관).
+  </aside>
+</section>
+
+<!-- 8. 응답 메시지 원리 -->
+<section class="slide">
+  <div class="slide-inner stack">
+    <h2>응답 메시지는 "글자가 똑같아야" 답합니다 <span class="timebox">5분</span></h2>
+    <div class="flow reveal">
+      <div class="flow-node"><span class="icon">📱</span>손님이 보냄<small>"営業時間"</small></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node flow-node--accent"><span class="icon">🔍</span>키워드 목록과 비교<small>完全一致 (완전 일치)</small></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node"><span class="icon">💬</span>정해진 답 전송</div>
+    </div>
+    <div class="grid-2 reveal">
+      <div class="card card--mint"><h3>✅ 답함</h3><p>"営業時間" / "영업시간"</p></div>
+      <div class="card card--peach"><h3>❌ 못 답함</h3><p>"今日やってますか？" / "오늘 문 열어요?" — 키워드와 글자가 다름</p></div>
+    </div>
+    <div class="callout callout--tip reveal"><span>그래서 키워드를 <strong>여러 개</strong>(営業時間, 営業, 定休日, 영업시간, 휴무…) 등록하고, 리치 메뉴 버튼이 <strong>정확한 키워드를 대신 보내게</strong> 만듭니다.</span></div>
+  </div>
+  <aside class="notes">핵심 한계를 오늘 몸으로 느끼게 하는 슬라이드. LINE 공식계정 기본 기능은 완전 일치만 지원(부분 일치는 외부 도구 필요, 2026-10 기준). 이 불편함이 13회차 AI 봇의 동기가 됨 — 슬라이드 12에서 다시 꺼냄.</aside>
+</section>
+
+<!-- 9. 실습 3: FAQ 10개 등록 -->
+<section class="slide slide--alt">
+  <div class="slide-inner stack">
+    <h2>실습 3 · FAQ 10개 자동응답 만들기 <span class="timebox">13분</span></h2>
+    <div class="grid-2">
+      <div class="prompt reveal">[상황] 「봄날의 꽃」 LINE 공식계정에 응답 메시지(키워드 완전 일치 자동응답)를 등록하려고 해. 아래는 우리 FAQ 10개야.
+(여기에 1회차 과제 FAQ 10개 붙여넣기)
+[할 일] FAQ마다 키워드와 답변을 만들어줘.
+[조건] 키워드는 일본어 3개 + 한국어 3개(손님이 그대로 칠 만한 짧은 단어). 답변은 일본어 → 한국어 순, 각 2~3줄. 모르는 내용은 지어내지 말고 [확인 필요]로 표시.
+[형식] 표: 번호 | 질문 | 키워드 | 답변</div>
+      <div class="stack">
+        <ol class="steps reveal">
+          <li><span class="path">ホーム → 自動応答 → 応答メッセージ → 作成</span></li>
+          <li>タイトル(제목): "01 영업시간"처럼 번호 붙이기</li>
+          <li><strong>キーワード応答 (키워드 응답)</strong>에 키워드 6개 입력</li>
+          <li>답변 붙여넣기 → <strong>保存</strong>, 목록에서 <strong>有効(사용)</strong> 확인</li>
+          <li><span class="path">設定 → 応答設定</span>에서 <strong>応答メッセージ</strong>가 켜져 있는지 확인</li>
+        </ol>
+        <div class="callout callout--danger reveal"><span>답변에 <strong>직원 개인 전화번호·계좌번호</strong>를 넣지 마세요. 결제·환불은 "직원이 확인 후 안내" 문구로.</span></div>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">
+    10개를 다 등록하기 어려우면 5개만 하고 나머지는 과제. 반드시 휴대폰으로 키워드를 보내 테스트하게 할 것.
+    봄날의 꽃 FAQ 예: 영업시간, 위치, 꽃다발 가격(S 35,000/M 55,000/L 85,000원), 당일 배송(오후 3시까지, 배송비 5,000원·마포/서대문 무료), 결제 방법, 환불(제작 전 전액/제작 후 불가/파손 시 사진 확인 후 재제작), 정기구독(월 4회 120,000원), 개업 화환, 꽃바구니, 주차.
+    "주차"처럼 정보가 없는 질문은 [확인 필요]가 나오는지 확인 — 2회차 할루시네이션 복습.
+  </aside>
+</section>
+
+<!-- 10. 실습 4: 리치 메뉴 -->
+<section class="slide">
+  <div class="slide-inner stack">
+    <h2>실습 4 · 리치 메뉴 버튼 3개 <span class="timebox">10분</span></h2>
+    <div class="grid-3 reveal">
+      <div class="card card--mint"><span class="icon">🕙</span><h3>営業時間 · 영업시간</h3><p>アクション: <strong>テキスト</strong> → "営業時間" 전송 → 응답 메시지가 답함</p></div>
+      <div class="card card--pink"><span class="icon">💐</span><h3>ご注文 · 주문</h3><p>アクション: <strong>リンク</strong> → 스마트스토어 주소</p></div>
+      <div class="card card--sky"><span class="icon">💬</span><h3>お問い合わせ · 문의</h3><p>アクション: <strong>テキスト</strong> → "問い合わせ" 전송 → "내용을 남겨 주세요" 안내</p></div>
+    </div>
+    <ol class="steps reveal">
+      <li><span class="path">ホーム → トークルーム管理 → リッチメニュー → 作成</span></li>
+      <li>タイトル 입력, 表示期間(표시 기간)은 넉넉하게 1년</li>
+      <li><strong>テンプレートを選択</strong>에서 3칸짜리 선택 → 각 칸에 アクション 지정</li>
+      <li>이미지는 <strong>画像を作成 (이미지 만들기)</strong>로 글자만 넣어도 OK → <strong>保存</strong></li>
+    </ol>
+    <p class="asof">메뉴 위치는 2026-10 기준이며 화면 개편으로 바뀔 수 있습니다.</p>
+  </div>
+  <aside class="notes">
+    버튼 이미지는 6회차에 만든 가게 홈페이지 색감으로 Claude에게 디자인 문구를 받아도 좋지만 시간 관계상 글자만.
+    자주 막힘: 저장 후 메뉴가 안 보임 → 表示期間 시작일이 미래로 되어 있거나, 휴대폰 LINE에서 대화방을 나갔다 다시 들어가야 보임.
+    "問い合わせ" 키워드용 응답 메시지를 하나 더 만들어 두게 하기(11번째).
+  </aside>
+</section>
+
+<!-- 11. AIチャットボット(β) 비교 -->
+<section class="slide slide--alt">
+  <div class="slide-inner stack">
+    <h2>LINE에도 AI가 있다? AIチャットボット(β) <span class="timebox">6분</span></h2>
+    <dl class="term reveal"><dt>AIチャットボット(β) (AI 챗봇 베타)</dt><dd>손님 말의 뜻을 AI가 알아듣고, <strong>미리 등록한 Q&amp;A 목록 중</strong> 가장 맞는 답을 골라 보내는 LINE 기능 (2025-11 출시)</dd></dl>
+    <div class="table-wrap reveal">
+      <table class="table">
+        <tr><th></th><th>応答メッセージ (오늘)</th><th>AIチャットボット(β)</th><th>Make + Claude (13회차)</th></tr>
+        <tr><td>알아듣는 범위</td><td>글자 완전 일치만</td><td>비슷한 말도 OK</td><td>자유로운 문장 OK</td></tr>
+        <tr><td>답변</td><td>정해진 답</td><td>Q&amp;A 목록에서 고름 (새 문장 안 만듦)</td><td>규칙 안에서 새로 작성</td></tr>
+        <tr><td>준비</td><td>키워드 직접 입력</td><td>PDF·이미지 올리면 Q&amp;A 자동 생성</td><td>상담 규칙 + FAQ 글</td></tr>
+        <tr><td>직원에게 넘기기</td><td>✕</td><td>✕ (기본 답변만)</td><td>Slack·Jira로 자동 전달</td></tr>
+        <tr><td>비용</td><td>무료</td><td>Q&amp;A 등록·테스트 무료, 실제 운영은 チャットPro 월 3,000엔+세금</td><td>Make 무료 + Claude API 사용량</td></tr>
+      </table>
+    </div>
+    <p class="asof">2026-10 기준. AIチャットボット(β)는 <span class="path">ホーム → 自動応答 → AIチャットボット(β)</span>(PC 웹 전용, 관리자 권한). 일본 지역 계정 기능으로, 한국 소재 계정·한국어 질문 지원 여부는 수업 전 확인.</p>
+  </div>
+  <aside class="notes">
+    시연은 선택: 강사 계정에서 봄날의 꽃 FAQ PDF를 올려 Q&amp;A가 자동 생성되는 모습만 보여 주면 충분(실제 운영 결제는 하지 않음).
+    "그럼 이것만 쓰면 되지 않나요?" → 간단한 가게는 충분히 좋은 선택이라고 솔직하게 말하기. 다만 직원 연결·업무 도구 연동이 필요하면 13회차 방식.
+  </aside>
+</section>
+
+<!-- 12. 한계 → 13회차 동기 -->
+<section class="slide">
+  <div class="slide-inner stack">
+    <h2>오늘 만든 봇의 빈 곳 <span class="timebox">4분</span></h2>
+    <div class="flow reveal">
+      <div class="flow-node"><span class="icon">📱</span>손님<small>"배송 중에 꽃이 부러졌어요…"</small></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node flow-node--accent"><span class="icon">🤖</span>자동응답<small>키워드 없음 → 침묵</small></div>
+      <div class="flow-arrow">✕</div>
+      <div class="flow-node flow-node--human"><span class="icon">💬</span>Slack #cs-escalation<small>아무도 모름</small></div>
+      <div class="flow-arrow">✕</div>
+      <div class="flow-node flow-node--human"><span class="icon">📋</span>Jira 클레임 이슈<small>기록 없음</small></div>
+    </div>
+    <div class="grid-3 reveal">
+      <div class="card card--peach"><h3>😶 못 알아들음</h3><p>키워드와 다르면 답이 없음</p></div>
+      <div class="card card--peach"><h3>🔕 직원이 모름</h3><p>급한 클레임도 관리 화면을 열어야 보임</p></div>
+      <div class="card card--peach"><h3>🧩 따로 놂</h3><p>8~11회차에 만든 Slack·Jira와 연결 안 됨</p></div>
+    </div>
+    <div class="callout callout--info reveal"><span>13회차: <strong>Claude가 자유 문장에 답하고</strong>, 어려운 문의는 Slack <strong>#cs-escalation</strong> 알림 + Jira <strong>BOM</strong> 이슈로 자동으로 넘깁니다.</span></div>
+  </div>
+  <aside class="notes">7회차 업무 흐름도를 다시 보여 주면 효과적. "손님 → 봇 → 사람"의 다리가 빠져 있다는 것을 강조하고 다음 시간 기대감을 만든다.</aside>
+</section>
+
+<!-- 13. 응용 실습 -->
+<section class="slide slide--alt">
+  <div class="slide-inner stack">
+    <h2>응용 · 우리 회사 버전으로 바꾸기 <span class="timebox">3분</span></h2>
+    <div class="grid-3 reveal">
+      <div class="card card--lavender"><span class="icon">✍️</span><h3>인사 메시지</h3><p>우리 회사 이름·영업시간·자동응답 고지</p></div>
+      <div class="card card--mint"><span class="icon">🔑</span><h3>키워드 3개 더</h3><p>우리 손님이 실제로 쓰는 단어</p></div>
+      <div class="card card--sky"><span class="icon">🔘</span><h3>버튼 1개 교체</h3><p>예약·카탈로그·지도 등</p></div>
+    </div>
+    <div class="callout callout--tip reveal"><span>손님이 실제로 보낸 메시지를 보면 키워드가 보입니다. 관리 화면 <span class="path">チャット (채팅)</span>에서 지난 대화를 훑어보세요(손님 이름·번호는 메모에 옮기지 않기).</span></div>
+  </div>
+  <aside class="notes">시간이 짧으므로 "무엇을 바꿀지" 정하는 데까지만 하고 실제 입력은 과제. 일본 손님이 없는 수강생은 한국어 키워드만으로 진행해도 됨(카카오는 부록 D).</aside>
+</section>
+
+<!-- 14. 자주 겪는 문제 -->
+<section class="slide">
+  <div class="slide-inner stack">
+    <h2>자주 겪는 문제 <span class="timebox">3분</span></h2>
+    <div class="table-wrap">
+      <table class="table">
+        <tr><th>증상</th><th>해결</th></tr>
+        <tr><td>키워드를 보냈는데 답이 없다</td><td>응답 메시지가 有効인지, <span class="path">設定 → 応答設定</span>에서 応答メッセージ가 켜져 있는지, 띄어쓰기·전각/반각 확인</td></tr>
+        <tr><td>인사 메시지가 안 온다</td><td>이미 친구인 경우 안 옴 → 차단 후 차단 해제/다시 친구 추가</td></tr>
+        <tr><td>리치 메뉴가 안 보인다</td><td>表示期間 시작일·<strong>有効</strong> 확인, 대화방 나갔다 다시 들어가기</td></tr>
+        <tr><td>메뉴 이름이 영어/한국어로 보인다</td><td>화면 언어 설정 차이. 슬라이드 5의 표로 위치를 맞춰 보기</td></tr>
+        <tr><td>직원이 답장했는데 자동응답도 같이 나갔다</td><td>키워드와 똑같은 말이 오면 자동응답이 먼저 나감. 직원 상담이 많은 시간엔 応答メッセージ를 잠시 끄기</td></tr>
+      </table>
+    </div>
+  </div>
+  <aside class="notes">전각(全角)/반각 문제: 일본어 키보드로 입력한 숫자·기호는 모양이 달라 키워드가 일치하지 않을 수 있음. 자세한 대응은 materials/troubleshooting.html.</aside>
+</section>
+
+<!-- 15. 체크리스트 -->
+<section class="slide slide--alt">
+  <div class="slide-inner stack">
+    <h2>오늘의 체크리스트 ✅ <span class="timebox">2분</span></h2>
+    <p class="small">한 일을 눌러서 체크하세요. (이 컴퓨터에 저장됩니다)</p>
+    <ul class="checklist reveal">
+      <li>LINE 공식계정을 만들고 내 휴대폰으로 친구 추가했다</li>
+      <li>인사 메시지에 "자동응답/AI 상담" 안내를 넣었다</li>
+      <li>응답 메시지(키워드)를 최소 5개 등록하고 휴대폰으로 테스트했다</li>
+      <li>리치 메뉴 버튼 3개(영업시간·주문·문의)를 만들었다</li>
+      <li>응답 메시지와 AIチャットボット(β)의 차이를 말할 수 있다</li>
+    </ul>
+  </div>
+  <aside class="notes">체크 못 한 항목은 과제로. 특히 계정 개설이 안 된 수강생은 13회차 전까지 꼭 완료해야 함 — 13회차는 이 계정에 Messaging API를 켜는 것부터 시작.</aside>
+</section>
+
+<!-- 16. 과제와 다음 회차 -->
+<section class="slide slide--title slide--center">
+  <div class="slide-inner stack">
+    <h2>과제 & 다음 시간 예고 <span class="timebox">3분</span></h2>
+    <div class="grid-2" style="text-align:left">
+      <div class="card">
+        <h3>📝 과제</h3>
+        <ul class="list">
+          <li>FAQ 10개 자동응답 모두 등록 + 지인 1명에게 친구 추가·테스트 부탁</li>
+          <li>Make(make.com) 무료 가입, Anthropic Console(console.anthropic.com) 가입·결제 수단 등록($5 충전이면 충분)</li>
+          <li>"봇이 대답하면 안 되는 질문" 3개 적어 오기 (예: 환불 약속)</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>🔜 13회차: Make + Claude로 AI 상담봇</h3>
+        <p>손님이 어떤 말로 물어도 Claude가 답하고, 환불·불만은 Slack과 Jira로 사람에게 넘깁니다. 코딩은 여전히 0줄!</p>
+      </div>
+    </div>
+    <nav class="lesson-nav" data-auto aria-label="다음 강의"></nav>
+  </div>
+  <aside class="notes">Anthropic Console 가입은 Claude Pro와 별개(API는 사용량 과금)라는 점을 꼭 설명 — 수강생이 가장 헷갈려함. API 키는 13회차에 수업 중 같이 만든다. "대답하면 안 되는 질문"은 13회차 짓궂은 질문 테스트 재료.</aside>
+</section>
+
+<script src="../assets/course.js"></script>
+<script src="../assets/deck.js"></script>
+</body>
+</html>

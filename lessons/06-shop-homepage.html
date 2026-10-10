@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>6회차 · 가게 홈페이지 만들기 | AI로 작은 회사 운영하기</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Ctext y=%22.9em%22 font-size=%2290%22%3E%F0%9F%8C%B7%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="../assets/deck.css">
+</head>
+<body data-lesson="6">
+
+<!-- 1. 표지 -->
+<section class="slide slide--title slide--center">
+  <div class="slide-inner">
+    <span class="eyebrow reveal">파트 ② 사장님 업무 맡기기 · 6회차</span>
+    <h1 class="reveal">가게 홈페이지 만들기</h1>
+    <p class="lead reveal">코딩 없이, 말로 부탁해서 오늘 링크 하나를 손님에게 보냅니다</p>
+    <p class="small reveal" style="margin-top:2rem">⌨️ 방향키·스페이스로 이동 · <kbd>N</kbd> 강사 노트 · <kbd>D</kbd> 어둡게</p>
+  </div>
+  <aside class="notes">
+    [0~2분] "홈페이지 만들려면 업체에 얼마 줘야 할까요?" 물어보고 시작. 오늘은 코드 설명을 하지 않는다고 미리 안심시키기.
+    준비물: 과제로 모아 온 링크(네이버 지도·스마트스토어·인스타), 휴대폰.
+  </aside>
+</section>
+
+<!-- 2. 오늘의 목표 -->
+<section class="slide">
+  <div class="slide-inner stack">
+    <h2>오늘의 목표 <span class="timebox">3분</span></h2>
+    <div class="goal reveal"><span class="goal-label">목표</span><span>Claude <strong>아티팩트</strong>로 홈페이지를 만들고, 고쳐 달라고 하고, <strong>링크로 공유</strong>할 수 있다</span></div>
+    <div class="goal reveal"><span class="goal-label">결과물</span><span><strong>1페이지 가게 소개 사이트</strong> + 공개 링크</span></div>
+    <div class="grid-4 reveal">
+      <div class="card card--pink"><span class="icon">🏗️</span><h3>만들기</h3><p>한 번의 부탁</p></div>
+      <div class="card card--lavender"><span class="icon">✏️</span><h3>고치기</h3><p>색·문구·순서</p></div>
+      <div class="card card--sky"><span class="icon">🔗</span><h3>연결하기</h3><p>지도·주문 링크</p></div>
+      <div class="card card--mint"><span class="icon">📱</span><h3>공유하기</h3><p>링크·휴대폰 확인</p></div>
+    </div>
+  </div>
+  <aside class="notes">최소 목표: 공개 링크를 휴대폰으로 열어 보기까지. 디자인 욕심은 과제로.</aside>
+</section>
+
+<!-- 3. 지난 시간 결과물 확인 -->
+<section class="slide slide--alt">
+  <div class="slide-inner stack">
+    <h2>지난 시간 결과물 확인 <span class="timebox">5분</span></h2>
+    <div class="grid-2">
+      <div class="card reveal">
+        <h3>📌 5회차에 만든 것</h3>
+        <ul class="list">
+          <li>말투 가이드 (프로젝트에 저장)</li>
+          <li>인스타 1주 캘린더 + 이벤트 문자</li>
+        </ul>
+      </div>
+      <div class="card card--mint reveal">
+        <h3>🔗 오늘 재료</h3>
+        <ul class="list">
+          <li>1회차 가게 소개문</li>
+          <li>3회차 프로젝트의 가게 정보·가격표</li>
+          <li>5회차 말투 가이드</li>
+        </ul>
+      </div>
+    </div>
+    <div class="callout callout--tip reveal"><span>지금까지 만든 것이 모두 홈페이지 재료입니다. 오늘도 <strong>프로젝트 안에서</strong> 새 채팅을 여세요.</span></div>
+  </div>
+  <aside class="notes">게시물 1개를 실제로 올린 수강생에게 반응을 짧게 물어보기. 링크 과제를 안 해 온 수강생은 실습 중간에 검색해서 모으게 함.</aside>
+</section>
+
+<!-- 4. 비유 + 용어 -->
+<section class="slide">
+  <div class="slide-inner stack">
+    <h2>홈페이지 = 인터넷에 세운 가게 간판 <span class="timebox">7분</span></h2>
+    <div class="analogy reveal">
+      홈페이지는 <strong>24시간 켜져 있는 가게 간판 겸 안내 책자</strong>입니다.
+      예전엔 간판집(제작 업체)에 맡겨야 했지만, 이제는 Claude에게 "이런 간판 만들어 줘"라고 말하면 <strong>옆 작업대(아티팩트)</strong>에 바로 만들어 줍니다.
+      다 되면 <strong>공개 링크</strong>를 명함처럼 손님에게 건네면 끝!
+    </div>
+    <div class="grid-3 reveal">
+      <dl class="term"><dt>홈페이지 (웹사이트)</dt><dd>인터넷 주소로 누구나 열어 볼 수 있는 화면. 오늘은 1페이지짜리 소개 사이트</dd></dl>
+      <dl class="term"><dt>아티팩트 (Artifacts)</dt><dd>Claude가 대화창 오른쪽에 따로 만들어 주는 결과물 창. 홈페이지·문서·표 등을 바로 보여 줌</dd></dl>
+      <dl class="term"><dt>공개 링크</dt><dd>아티팩트를 <strong>Publish(게시)</strong>하면 생기는 인터넷 주소. 링크를 받은 사람은 Claude 계정 없이도 볼 수 있음</dd></dl>
+    </div>
+  </div>
+  <aside class="notes">
+    HTML·CSS 같은 말은 꺼내지 않는다(옛 1강 덱과 다른 점). "Claude가 홈페이지 설계도를 써 주고 바로 지어 준다" 정도로 충분.
+    예상 질문: "이걸로 네이버 검색에 나오나요?" → 공개 링크는 검색 노출을 보장하지 않음. 제대로 된 내 도메인·검색 등록은 부록 A.
+  </aside>
+</section>
+
+<!-- 5. 강사 데모 -->
+<section class="slide slide--alt">
+  <div class="slide-inner stack">
+    <h2>강사 데모 · 부탁 한 번에 홈페이지 <span class="timebox">6분</span></h2>
+    <div class="prompt reveal">프로젝트에 있는 가게 정보와 말투 가이드를 바탕으로, 꽃집 「봄날의 꽃」 1페이지 소개 홈페이지를 아티팩트로 만들어줘.
+- 순서: 첫 화면(가게 이름 + 한 줄 소개 + '주문하기' 버튼) → 상품과 가격 → 당일 배송 안내 → 영업시간·오시는 길 → 연락처
+- 분위기: 파스텔 분홍과 연두, 따뜻하고 깔끔하게
+- 휴대폰에서 보기 좋게
+- 가격·영업시간은 프로젝트 자료에 있는 것만 쓰고, 모르는 정보는 [확인 필요]로 남겨줘</div>
+    <div class="flow reveal">
+      <div class="flow-node flow-node--human">말로 부탁</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node flow-node--accent">오른쪽 아티팩트 창에 완성</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node">고쳐 달라고 하기</div>
+    </div>
+  </div>
+  <aside class="notes">
+    오른쪽에 화면이 "그려지는" 장면을 천천히 보여 주기 — 수강생 반응이 가장 큰 순간.
+    아티팩트 창이 안 뜨면: Settings(설정) → Capabilities(기능)에서 Artifacts(아티팩트) 켜기(2026-10 기준, 수업 전 확인).
+    코드 보기(Code) 탭은 "설계도"라고만 말하고 넘어가기. Preview(미리보기) 탭에서 진행.
+  </aside>
+</section>
+
+<!-- 6. 실습 1: 재료 준비 -->
+<section class="slide">
+  <div class="slide-inner stack">
+    <h2>실습 1 · 홈페이지 재료 한 장 정리 <span class="timebox">7분</span></h2>
+    <div class="grid-2">
+      <ul class="checklist reveal">
+        <li>가게 이름과 한 줄 소개 (1회차 소개문)</li>
+        <li>대표 상품 3~5개와 가격</li>
+        <li>영업시간·휴무일·주소·찾아오는 길</li>
+        <li>가게 대표 전화 (개인 휴대폰 X)</li>
+        <li>네이버 지도 링크</li>
+        <li>주문 링크 (스마트스토어 등)</li>
+        <li>인스타·LINE 링크</li>
+      </ul>
+      <div class="stack reveal">
+        <div class="callout callout--danger"><span>공개 링크는 <strong>누구나</strong> 볼 수 있습니다. 대표 개인 휴대폰 번호, 집 주소, 직원 실명·사진은 넣지 마세요.</span></div>
+        <div class="callout callout--info"><span>링크 복사법: 네이버 지도 앱에서 가게 검색 → <span class="path">공유 → 링크 복사</span>. 스마트스토어·인스타도 공유 버튼에서 복사.</span></div>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">
+    메모장에 한 번에 모아 두면 이후 실습이 빨라짐. 봄날의 꽃 그대로 하는 수강생은 링크를 비워 두고 [확인 필요]로.
+    "대표 전화"가 없는 1인 사업자는 문의를 인스타 DM·LINE으로 받는 방식 추천.
+  </aside>
+</section>
+
+<!-- 7. 실습 2: 첫 홈페이지 -->
+<section class="slide slide--alt">
+  <div class="slide-inner stack">
+    <h2>실습 2 · 내 첫 홈페이지 만들기 <span class="timebox">10분</span></h2>
+    <ol class="steps reveal">
+      <li>프로젝트 안에서 <strong>새 채팅</strong> 열기</li>
+      <li>데모 프롬프트를 복사해, 가게 이름·분위기·순서를 <strong>내 회사</strong>로 바꾸기</li>
+      <li>실습 1의 재료 메모를 그 아래에 붙여넣고 보내기</li>
+      <li>오른쪽 아티팩트 창에서 <span class="path">Preview(미리보기)</span>로 확인</li>
+      <li>버튼을 눌러 보고, [확인 필요] 칸이 어디인지 표시해 두기</li>
+    </ol>
+    <div class="callout callout--tip reveal"><span>처음부터 완벽하지 않아도 됩니다. <strong>"일단 만들고, 고친다"</strong>가 오늘의 순서예요.</span></div>
+  </div>
+  <aside class="notes">
+    막히는 지점: 아티팩트 대신 긴 글(코드)만 대화창에 나옴 → "아티팩트로 보여줘"라고 다시 말하기.
+    사용량 한도 메시지가 뜨면 옆 사람 화면으로 같이 진행. 다 된 사람은 "다른 분위기 버전도 하나 더" 요청해 비교.
+  </aside>
+</section>
+
+<!-- 8. 실습 3: 수정 요청 -->
+<section class="slide">
+  <div class="slide-inner stack">
+    <h2>실습 3 · 고쳐 달라고 하기 <span class="timebox">10분</span></h2>
+    <p class="lead">같은 대화에서 <strong>한 번에 하나씩</strong> 말하면 결과가 깔끔합니다.</p>
+    <div class="grid-3 reveal">
+      <div class="prompt">첫 화면 배경을 연한 분홍으로, 글자는 더 크게 바꿔줘.</div>
+      <div class="prompt">상품 부분을 카드 3개로 나누고, 각 카드에 꽃 이모지를 넣어줘.</div>
+      <div class="prompt">맨 아래에 '월요일 휴무' 안내 띠를 추가해줘.</div>
+    </div>
+    <div class="grid-2 reveal">
+      <div class="callout callout--tip"><span>이전 모습이 더 좋았다면? 아티팩트 창 아래쪽의 <strong>버전 화살표(‹ ›)</strong>로 앞 버전으로 돌아갈 수 있어요.</span></div>
+      <div class="callout callout--info"><span>사진을 올려서 "이 사진 분위기에 맞는 색으로 바꿔줘"도 가능합니다. 단, 올린 사진이 사이트에 그대로 들어가지 않을 수 있어요.</span></div>
+    </div>
+  </div>
+  <aside class="notes">
+    1회차 "고쳐 달라고 하기"의 반복. 여러 요청을 한 문장에 몰아넣으면 일부가 빠지기 쉬움.
+    사진: 아티팩트 화면에는 업로드한 사진이 바로 들어가지 않는 경우가 많음(2026-10 기준, 수업 전 확인) → 이모지·색으로 꾸미고, 실제 사진은 인스타 링크로 연결. 사진까지 넣은 정식 사이트는 부록 A.
+    버전 화살표 위치는 화면 업데이트에 따라 바뀔 수 있음.
+  </aside>
+</section>
+
+<!-- 9. 지도·주문 링크 -->
+<section class="slide slide--alt">
+  <div class="slide-inner stack">
+    <h2>지도·주문 링크 연결하기 <span class="timebox">8분</span></h2>
+    <div class="prompt reveal">아래 링크를 버튼으로 연결해줘. 버튼을 누르면 새 창에서 열리게 해줘.
+- '길찾기' 버튼: (네이버 지도 링크 붙여넣기)
+- '주문하기' 버튼: (스마트스토어 링크 붙여넣기)
+- '인스타 구경하기' 버튼: (인스타 링크 붙여넣기)
+- '전화하기' 버튼: 휴대폰에서 누르면 바로 전화가 걸리게 02-000-0000</div>
+    <div class="callout callout--danger reveal"><span>Claude는 우리 가게의 진짜 링크를 모릅니다. 링크를 알아서 만들어 넣었다면 <strong>그럴듯한 가짜 주소</strong>일 수 있어요(2회차 할루시네이션). 반드시 내가 복사한 링크를 붙여넣고, <strong>버튼을 직접 눌러</strong> 확인하세요.</span></div>
+    <p class="small reveal">지도를 화면 안에 넣는 것(지도 퍼가기)은 아티팩트에서 막혀 있을 수 있어요. 버튼으로 연결하는 방식이 가장 확실합니다.</p>
+  </div>
+  <aside class="notes">
+    02-000-0000은 예시. 수강생은 가게 대표번호로. LINE 친구 추가 링크는 12회차에서 만든 뒤 다시 넣어도 됨.
+    미리보기에서 링크가 안 열리면 공개(Publish) 후 다시 확인 — 미리보기 창은 외부 링크를 막는 경우가 있음.
+  </aside>
+</section>
+
+<!-- 10. 실습 4: 공개 링크 -->
+<section class="slide">
+  <div class="slide-inner stack">
+    <h2>실습 4 · 공개 링크 만들기 <span class="timebox">8분</span></h2>
+    <div class="grid-2">
+      <ol class="steps reveal">
+        <li>아티팩트 창 오른쪽 위 <span class="path">Publish(게시)</span> 누르기 <span class="small">(화면에 따라 <span class="path">Share(공유)</span>로 보일 수 있음)</span></li>
+        <li>안내를 읽고 공개 확인</li>
+        <li><strong>링크 복사</strong> → 카톡 '나에게 보내기'</li>
+        <li>내용을 고친 뒤에는 다시 Publish를 눌러 최신 버전으로 업데이트</li>
+      </ol>
+      <div class="stack reveal">
+        <div class="callout callout--warn"><span>공개 링크는 <strong>링크를 아는 누구나</strong> 볼 수 있고, 검색엔진에 노출될 수도 있습니다. 내리고 싶으면 같은 메뉴에서 <strong>Unpublish(게시 취소)</strong>.</span></div>
+        <div class="callout callout--info"><span>Team·Enterprise 요금제의 Share는 <strong>회사 구성원끼리만</strong> 볼 수 있는 경우가 있어요. 손님용 링크는 개인 Pro 계정에서 Publish가 확실합니다.</span></div>
+      </div>
+    </div>
+    <p class="asof">2026-10 기준 Free·Pro·Max에서 Publish 가능, 링크 형태 claude.ai/public/artifacts/… 버튼 이름·위치는 수업 전 확인.</p>
+  </div>
+  <aside class="notes">
+    수업 직전 강사 계정으로 Publish 버튼 위치를 반드시 재확인(화면 개편이 잦음).
+    링크를 받은 사람이 '수정해서 내 것으로 만들기(Remix/Customize)'를 할 수 있지만 원본은 바뀌지 않는다고 안내.
+    예상 질문: "돈이 드나요?" → 추가 비용 없음(2026-10 기준). "주소를 bomnal.com처럼 바꿀 수 있나요?" → 아티팩트로는 불가, 부록 A.
+  </aside>
+</section>
+
+<!-- 11. 모바일 확인 -->
+<section class="slide slide--alt">
+  <div class="slide-inner stack">
+    <h2>휴대폰으로 확인하기 <span class="timebox">5분</span></h2>
+    <p class="lead">손님 대부분은 <strong>휴대폰</strong>으로 링크를 엽니다.</p>
+    <div class="grid-3 reveal">
+      <div class="card card--sky"><h3>① 열어 보기</h3><p>카톡 '나에게 보내기'로 보낸 링크를 휴대폰에서 누르기</p></div>
+      <div class="card card--lavender"><h3>② 눌러 보기</h3><p>길찾기·주문·전화 버튼이 모두 제대로 열리는지</p></div>
+      <div class="card card--mint"><h3>③ 읽어 보기</h3><p>글자가 너무 작거나 옆으로 잘리는 곳이 없는지</p></div>
+    </div>
+    <div class="prompt reveal">휴대폰에서 보니 가격 표가 옆으로 잘려. 휴대폰에서는 표 대신 세로 카드로 보이게 바꿔줘.</div>
+  </div>
+  <aside class="notes">짝을 지어 서로의 링크를 열어 주면 "남이 보는 화면" 확인이 됨. 고친 뒤 다시 Publish해야 링크에 반영된다는 점을 다시 강조.</aside>
+</section>
+
+<!-- 12. 응용 실습 -->
+<section class="slide">
+  <div class="slide-inner stack">
+    <h2>응용 실습 · 우리 가게 사이트 완성하기 <span class="timebox">8분</span></h2>
+    <div class="grid-2">
+      <ol class="steps reveal">
+        <li>[확인 필요] 칸을 모두 진짜 정보로 채우기</li>
+        <li>말투 가이드에 맞게 문구 다듬기</li>
+        <li>다시 Publish → 휴대폰으로 최종 확인</li>
+        <li>링크를 인스타 프로필·LINE 공지·명함 QR에 쓸 수 있게 저장</li>
+      </ol>
+      <div class="stack reveal">
+        <div class="prompt">이 홈페이지를 처음 보는 손님 입장에서 검토해줘. 헷갈리는 부분, 빠진 정보, 틀린 정보가 있을 만한 곳 5가지를 알려줘.</div>
+        <div class="callout callout--tip"><span>QR 코드는 크롬에서 링크를 열고 <span class="path">공유 → QR 코드</span>로 만들 수 있어요.</span></div>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">"손님 입장 검토" 프롬프트로 AI에게 셀프 점검을 시키되, 최종 확인은 사람. 링크를 반 단톡방에 공유해 서로 피드백하면 좋음. QR 메뉴 위치는 브라우저 버전에 따라 다름.</aside>
+</section>
+
+<!-- 13. 자주 겪는 문제 -->
+<section class="slide slide--alt">
+  <div class="slide-inner stack">
+    <h2>자주 겪는 문제 <span class="timebox">4분</span></h2>
+    <div class="table-wrap reveal">
+      <table class="table">
+        <tr><th>이럴 때</th><th>이렇게</th></tr>
+        <tr><td>오른쪽 창이 안 뜨고 긴 글만 나온다</td><td>"아티팩트로 보여줘" / 설정에서 Artifacts 켜기</td></tr>
+        <tr><td>고쳤는데 링크에는 옛날 모습</td><td>수정 후 다시 Publish 누르기</td></tr>
+        <tr><td>버튼을 눌러도 아무 일이 없다</td><td>링크 주소 확인, 공개 링크에서 다시 눌러 보기</td></tr>
+        <tr><td>고치다가 망가졌다</td><td>버전 화살표로 이전 버전 → 그 버전에서 다시 요청</td></tr>
+        <tr><td>손님이 "로그인하라고 떠요"</td><td>Publish가 아닌 팀 Share 링크인지 확인</td></tr>
+      </table>
+    </div>
+  </div>
+  <aside class="notes">자세한 대응은 materials/troubleshooting.html. 화면 구성은 2026-10 기준.</aside>
+</section>
+
+<!-- 14. 더 나아가려면 -->
+<section class="slide">
+  <div class="slide-inner stack">
+    <h2>더 나아가려면 · 부록 A <span class="timebox">3분</span></h2>
+    <div class="grid-2">
+      <div class="card card--mint reveal">
+        <h3>✅ 아티팩트 공개 링크</h3>
+        <ul class="list">
+          <li>오늘 바로, 무료(Pro 포함)</li>
+          <li>주소가 길고 claude.ai로 시작</li>
+          <li>사진·내 도메인은 어려움</li>
+        </ul>
+      </div>
+      <div class="card card--lavender reveal">
+        <h3>🚀 부록 A: GitHub + Vercel</h3>
+        <ul class="list">
+          <li>bomnal.kr 같은 <strong>내 주소</strong></li>
+          <li>실제 사진, 여러 페이지</li>
+          <li>방문자 수 확인</li>
+        </ul>
+      </div>
+    </div>
+    <div class="callout callout--tip reveal"><span>오늘 만든 홈페이지가 그대로 부록 A의 재료가 됩니다. 지금은 공개 링크로 충분해요.</span></div>
+  </div>
+  <aside class="notes">부록 A는 원하는 사람만. 정식 도메인 구입 비용 질문은 부록 A에서 다룬다고 안내. 오늘은 욕심내지 않기.</aside>
+</section>
+
+<!-- 15. 체크리스트 -->
+<section class="slide slide--alt">
+  <div class="slide-inner stack">
+    <h2>오늘의 체크리스트 ✅ <span class="timebox">3분</span></h2>
+    <p class="small">한 일을 눌러서 체크하세요. (이 컴퓨터에 저장됩니다)</p>
+    <ul class="checklist reveal">
+      <li>아티팩트로 우리 가게 홈페이지를 만들었다</li>
+      <li>"한 번에 하나씩" 고쳐 달라고 해 봤다</li>
+      <li>지도·주문 링크를 내가 복사한 진짜 주소로 넣고 눌러 봤다</li>
+      <li>Publish로 공개 링크를 만들었다</li>
+      <li>휴대폰으로 열어서 버튼과 글자를 확인했다</li>
+    </ul>
+  </div>
+  <aside class="notes">체크 못 한 항목은 과제로. 다음 시간 시작 5분에 서로의 링크를 열어 봄.</aside>
+</section>
+
+<!-- 16. 과제와 다음 회차 -->
+<section class="slide slide--title slide--center">
+  <div class="slide-inner stack">
+    <h2>과제 & 다음 시간 예고 <span class="timebox">3분</span></h2>
+    <div class="grid-2" style="text-align:left">
+      <div class="card">
+        <h3>📝 과제</h3>
+        <ul class="list">
+          <li>홈페이지 링크를 가족·지인 2명에게 보내고 의견 받아 고치기</li>
+          <li>우리 가게 하루 일과(주문 접수 → 배송)를 종이에 순서대로 적어 오기 → 7회차에 씀</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>🔜 7회차: 연결의 원리 (파트 ③ 시작)</h3>
+        <p>프로그램끼리 어떻게 대화할까? API와 웹훅을 그림으로 이해하고, 우리 가게 업무 흐름도를 그립니다.</p>
+      </div>
+    </div>
+    <nav class="lesson-nav" data-auto aria-label="다음 강의"></nav>
+  </div>
+  <aside class="notes">파트 ② 마무리. "혼자 하는 일"에서 "팀과 프로그램을 잇는 일"로 넘어간다고 예고. 하루 일과 과제가 7회차 흐름도의 재료.</aside>
+</section>
+
+<script src="../assets/course.js"></script>
+<script src="../assets/deck.js"></script>
+</body>
+</html>

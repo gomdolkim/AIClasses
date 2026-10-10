@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>9회차 · Jira로 할 일 관리하기 | AI로 작은 회사 운영하기</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Ctext y=%22.9em%22 font-size=%2290%22%3E%F0%9F%8C%B7%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="../assets/deck.css">
+</head>
+<body data-lesson="9">
+
+<!-- 1. 표지 -->
+<section class="slide slide--title slide--center">
+  <div class="slide-inner">
+    <span class="eyebrow reveal">파트 ③ 팀 업무 자동화 (Slack · Jira) · 9회차</span>
+    <h1 class="reveal">Jira로 할 일 관리하기</h1>
+    <p class="lead reveal">주문 한 건 한 건이 어디쯤 왔는지, 보드 한 장으로 봅니다</p>
+    <p class="small reveal" style="margin-top:2rem">⌨️ 방향키·스페이스로 이동 · <kbd>N</kbd> 강사 노트 · <kbd>D</kbd> 어둡게</p>
+  </div>
+  <aside class="notes">
+    [0~2분] "지금 들어온 주문 중에 제작 중인 게 몇 개인지 바로 말할 수 있나요?"로 시작.
+    수업 전 강사 확인: Jira 가입 화면, '이슈/작업 항목', '프로젝트/스페이스' 등 화면 용어, Claude Atlassian 커넥터 연결 화면.
+  </aside>
+</section>
+
+<!-- 2. 오늘의 목표 -->
+<section class="slide">
+  <div class="slide-inner stack">
+    <h2>오늘의 목표 <span class="timebox">3분</span></h2>
+    <div class="goal reveal"><span class="goal-label">목표</span><span>Jira에 가입해 <strong>BOM 보드</strong>를 만들고, 주문을 이슈로 만들어 옮기고, Claude에게 이슈 만들기를 맡긴다</span></div>
+    <div class="goal reveal"><span class="goal-label">결과물</span><span>접수 → 제작 중 → 배송 중 → 완료 보드 + 이슈 유형 3개(주문·문의·클레임) + 주문 이슈 5개 이상</span></div>
+    <div class="grid-3 reveal">
+      <div class="card card--sky"><span class="icon">🧾</span><h3>주문서</h3><p>이슈 만들기</p></div>
+      <div class="card card--lavender"><span class="icon">📌</span><h3>주문 꽂이</h3><p>보드로 옮기기</p></div>
+      <div class="card card--mint"><span class="icon">🤖</span><h3>AI 비서</h3><p>Claude가 이슈 생성</p></div>
+    </div>
+  </div>
+  <aside class="notes">자동화 사다리 L1(보드) + L4 맛보기(Claude가 Jira에 쓰기). 다음 시간 Slack과 연결하므로 프로젝트 키 BOM을 꼭 맞추게 하기.</aside>
+</section>
+
+<!-- 3. 지난 시간 결과물 확인 -->
+<section class="slide slide--alt">
+  <div class="slide-inner stack">
+    <h2>지난 시간 결과물 확인 <span class="timebox">5분</span></h2>
+    <div class="grid-2 reveal">
+      <div class="card"><h3>☀️ 스탠드업 잘 돌았나요?</h3><ul class="list"><li>매일 09:30에 질문이 올라왔나요?</li><li>팀원이 스레드로 답했나요?</li></ul></div>
+      <div class="card card--peach"><h3>🤔 남은 고민</h3><p>Slack에서 대화는 정리됐는데, "그 주문 지금 <strong>어디까지</strong> 됐지?"는 여전히 스크롤해서 찾아야 합니다.</p></div>
+    </div>
+    <div class="callout callout--tip reveal"><span><strong>Slack = 대화하는 곳</strong>, <strong>Jira = 일의 상태를 보는 곳</strong>. 오늘은 두 번째를 만듭니다.</span></div>
+  </div>
+  <aside class="notes">워크플로가 안 돈 수강생은 시간대·요일 설정을 바로 봐 주기(1~2분 이내). 과제로 가져온 "최근 주문 5건" 메모를 꺼내게 하기.</aside>
+</section>
+
+<!-- 4. 비유와 용어 -->
+<section class="slide">
+  <div class="slide-inner stack">
+    <h2>Jira = 주방의 주문 꽂이 <span class="timebox">8분</span></h2>
+    <div class="analogy reveal">식당 주방을 떠올려 보세요. 주문서가 한 장씩 <strong>꽂이</strong>에 꽂히고, 요리가 진행되면 옆 칸으로 옮겨집니다. 누가 보든 <strong>어떤 주문이 어디쯤인지</strong> 한눈에 보이죠.</div>
+    <div class="grid-2 reveal">
+      <dl class="term"><dt>이슈 (Issue)</dt><dd>주문서 한 장. 해야 할 일 하나. 최근 화면에서는 <strong>작업 항목(Work item)</strong>으로 보일 수 있음</dd></dl>
+      <dl class="term"><dt>보드 (Board)</dt><dd>주문 꽂이 전체. 이슈 카드를 칸별로 늘어놓은 화면</dd></dl>
+      <dl class="term"><dt>상태 (Status)</dt><dd>꽂이의 칸. 접수 → 제작 중 → 배송 중 → 완료</dd></dl>
+      <dl class="term"><dt>담당자 (Assignee)</dt><dd>그 주문서를 지금 들고 있는 사람. 한 이슈에 한 명</dd></dl>
+    </div>
+  </div>
+  <aside class="notes">
+    새 용어 4개. Atlassian이 2025년부터 "이슈"를 "작업 항목(Work item)"으로 바꾸는 중이라 화면과 슬라이드 용어가 다를 수 있다고 미리 말하기. 수업에서는 짧은 "이슈"로 통일.
+    예상 질문: "엑셀로 하면 안 되나요?" → 4명이 동시에 고치고, 옮길 때마다 알림이 가고, 나중에 Slack·Claude와 연결되는 게 차이.
+  </aside>
+</section>
+
+<!-- 5. 실습 1: 가입 -->
+<section class="slide slide--alt">
+  <div class="slide-inner stack">
+    <h2>실습 1 · Jira Cloud 무료 가입 <span class="timebox">10분</span></h2>
+    <div class="grid-2">
+      <ol class="steps reveal">
+        <li>크롬에서 <span class="path">atlassian.com → Jira → 무료로 시작(Get it free)</span></li>
+        <li><strong>Slack과 같은 회사 메일</strong>로 가입 → 메일 인증</li>
+        <li>사이트 이름 입력: 예) <code>bomnal</code> → 주소가 <code>bomnal.atlassian.net</code>이 됨</li>
+        <li>직무·팀 질문은 대충 고르거나 <strong>건너뛰기(Skip)</strong></li>
+        <li>첫 화면(Jira 홈)이 보이면 성공 🎉 주소를 즐겨찾기</li>
+      </ol>
+      <div class="stack reveal">
+        <div class="callout callout--info"><span>Free 플랜: 최대 10명, 저장 공간 2GB, 자동화 월 150 steps(10회차에서 계산). 봄날의 꽃 4명이면 충분합니다.</span></div>
+        <div class="callout callout--warn"><span>사이트 이름은 나중에 바꾸기 어렵습니다. 회사 영문 이름으로 짧게 정하세요.</span></div>
+      </div>
+    </div>
+    <p class="asof">요금·한도·가입 화면은 2026-10 기준이며 바뀔 수 있습니다. 수업 전 강사가 최신 화면을 확인하세요.</p>
+  </div>
+  <aside class="notes">막히는 곳: 가입 중 "Confluence도 같이 쓰기" 같은 추가 제안 → 건너뛰기. 사이트 이름 중복 → 뒤에 숫자나 지역 붙이기(bomnal-mangwon).</aside>
+</section>
+
+<!-- 6. 실습 2: 프로젝트 만들기 -->
+<section class="slide">
+  <div class="slide-inner stack">
+    <h2>실습 2 · 프로젝트 "봄날의 꽃 운영" 만들기 <span class="timebox">8분</span></h2>
+    <div class="grid-2">
+      <ol class="steps reveal">
+        <li>왼쪽 메뉴 <span class="path">프로젝트(Projects) → 프로젝트 만들기(Create project)</span></li>
+        <li>템플릿에서 <strong>칸반(Kanban)</strong> 선택 → 템플릿 사용</li>
+        <li>유형은 <strong>팀 관리형(Team-managed)</strong> 선택 (설정이 쉬움)</li>
+        <li>이름: <strong>봄날의 꽃 운영</strong> / 키: <strong>BOM</strong></li>
+        <li>만들기 → 보드 화면이 열리면 성공</li>
+      </ol>
+      <div class="stack reveal">
+        <div class="callout callout--tip"><span><strong>키(BOM)</strong>는 주문서 번호의 앞글자입니다. 이슈가 BOM-1, BOM-2처럼 번호가 붙어요. 10·13회차 자동화가 이 키를 씁니다.</span></div>
+        <div class="callout callout--info"><span>최근 화면에서는 "프로젝트"가 <strong>스페이스(Space)</strong>로 보일 수 있습니다. 같은 것입니다.</span></div>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">키는 자동으로 제안되니 BOM으로 직접 고쳐야 함. "회사 관리형(Company-managed)"을 고른 경우 설정 메뉴가 달라짐 → 새로 만드는 게 빠름.</aside>
+</section>
+
+<!-- 7. 실습 3: 보드 열 -->
+<section class="slide slide--alt">
+  <div class="slide-inner stack">
+    <h2>실습 3 · 보드 칸을 우리 가게 순서로 바꾸기 <span class="timebox">7분</span></h2>
+    <div class="flow reveal">
+      <div class="flow-node"><span class="icon">📥</span>접수<small>To Do</small></div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-node"><span class="icon">💐</span>제작 중<small>In Progress</small></div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-node flow-node--accent"><span class="icon">🚚</span>배송 중<small>새로 추가</small></div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-node"><span class="icon">✅</span>완료<small>Done</small></div>
+    </div>
+    <ol class="steps reveal">
+      <li>보드에서 열 제목 <strong>To Do(할 일)</strong>에 마우스 → <strong>⋯ → 이름 바꾸기</strong> → "접수"</li>
+      <li>In Progress → "제작 중", Done → "완료"</li>
+      <li>열 오른쪽 끝 <strong>+</strong> 버튼 → "배송 중" 추가 → 끌어서 제작 중과 완료 사이로</li>
+    </ol>
+  </div>
+  <aside class="notes">"완료" 열은 자동화 기준이 되니 이름을 정확히. 열 이름은 나중에 바꿔도 되지만 10회차 규칙을 만든 뒤에 바꾸면 규칙도 고쳐야 함.</aside>
+</section>
+
+<!-- 8. 실습 4: 이슈 유형 -->
+<section class="slide">
+  <div class="slide-inner stack">
+    <h2>실습 4 · 이슈 유형 만들기: 주문 · 문의 · 클레임 <span class="timebox">8분</span></h2>
+    <div class="grid-2">
+      <ol class="steps reveal">
+        <li>왼쪽 아래 <span class="path">프로젝트 설정(Project settings) → 이슈 유형(Issue types)</span></li>
+        <li><strong>이슈 유형 추가(Add issue type)</strong> → 이름 "주문", 아이콘 고르기</li>
+        <li>같은 방법으로 "문의", "클레임"</li>
+        <li>"주문" 유형에 <strong>기한(Due date)</strong> 필드가 있는지 확인 → 없으면 오른쪽 필드 목록에서 끌어다 놓기</li>
+        <li>저장(Save changes)</li>
+      </ol>
+      <div class="table-wrap reveal">
+        <table class="table">
+          <tr><th>유형</th><th>예시</th><th>누가 주로</th></tr>
+          <tr><td><span class="pill pill--sky">주문</span></td><td>꽃다발 M, 10/14 배송</td><td>지수·유나·민호</td></tr>
+          <tr><td><span class="pill pill--lavender">문의</span></td><td>"당일 배송 되나요?"</td><td>대표</td></tr>
+          <tr><td><span class="pill pill--peach">클레임</span></td><td>배송 중 파손 → 사진 확인 후 재제작</td><td>대표</td></tr>
+        </table>
+      </div>
+    </div>
+    <p class="small">화면에 따라 "작업 유형(Work type)"으로 보일 수 있습니다.</p>
+  </div>
+  <aside class="notes">유형 이름은 13회차 봇(클레임/문의 이슈 자동 생성)과 같아야 하므로 정확히 "주문/문의/클레임". 기한(Due date) = 배송일로 쓰기로 약속.</aside>
+</section>
+
+<!-- 9. 강사 데모: 주문 하나의 일생 -->
+<section class="slide slide--alt">
+  <div class="slide-inner stack">
+    <h2>강사 데모 · 주문 한 건의 하루 <span class="timebox">4분</span></h2>
+    <div class="flow reveal">
+      <div class="flow-node flow-node--human"><span class="icon">👩‍💼</span>10:20 접수<small>대표가 BOM-12 만듦</small></div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-node flow-node--human"><span class="icon">💐</span>11:00 제작 중<small>담당: 지수</small></div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-node flow-node--human"><span class="icon">🚚</span>14:30 배송 중<small>담당: 민호</small></div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-node flow-node--human"><span class="icon">✅</span>16:10 완료<small>민호가 옮김</small></div>
+    </div>
+    <div class="callout callout--tip reveal"><span>칸을 옮길 때 <strong>담당자도 같이 바꾸는 것</strong>이 핵심입니다. "지금 이 주문서를 들고 있는 사람"이 늘 보이게요.</span></div>
+    <div class="callout callout--info reveal"><span>10회차에서는 "완료" 칸으로 옮기면 Slack #주문에 <strong>자동으로</strong> 알림이 가게 만듭니다.</span></div>
+  </div>
+  <aside class="notes">강사 보드에서 카드를 실제로 끌어 옮기며 시연. 카드를 클릭해 상세(설명·담당자·기한·댓글)도 보여 주기.</aside>
+</section>
+
+<!-- 10. 실습 5: 이슈 만들고 옮기기 -->
+<section class="slide">
+  <div class="slide-inner stack">
+    <h2>실습 5 · 주문 이슈 만들고 옮기기 <span class="timebox">10분</span></h2>
+    <div class="grid-2">
+      <ol class="steps reveal">
+        <li>위쪽 <strong>+ 만들기(Create)</strong> → 프로젝트 BOM, 유형 <strong>주문</strong></li>
+        <li>요약: <code>[주문] 꽃다발 M · 10/14 · 연남동</code></li>
+        <li>설명에 오른쪽 양식 붙여넣고 채우기</li>
+        <li>담당자: 지수 / 기한: 배송일 → <strong>만들기</strong></li>
+        <li>과제로 가져온 주문 5건도 같은 방법으로</li>
+        <li>보드에서 카드를 <strong>제작 중 → 배송 중 → 완료</strong>로 끌어 옮겨 보기</li>
+      </ol>
+      <div class="stack reveal">
+        <pre class="code" data-copy>상품: 꽃다발 M (55,000원)
+배송: 10/14 오후 / 서울 마포구 연남동 (배송비 무료)
+받는 분: 김○○ 님
+카드 문구: "생일 축하해"
+결제: 스마트스토어 / 주문번호 끝 4자리 1234</pre>
+        <div class="callout callout--danger"><span>전화번호·상세 주소·카드번호는 <strong>적지 마세요.</strong> 원본은 스마트스토어에 있습니다. 이 보드는 이후 Claude도 읽습니다.</span></div>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">주소는 "동"까지만, 받는 분은 성만. 배송 기사에게 필요한 상세 정보는 원래 채널(스마트스토어)에서 보도록 규칙화. 마포·서대문 무료, 그 외 5,000원(가게 설정) 확인.</aside>
+</section>
+
+<!-- 11. 실습 6: Claude Atlassian 커넥터 -->
+<section class="slide slide--alt">
+  <div class="slide-inner stack">
+    <h2>실습 6 · Claude에게 이슈 만들기 맡기기 <span class="timebox">10분</span></h2>
+    <div class="grid-2">
+      <ol class="steps reveal">
+        <li>claude.ai → <span class="path">설정(Settings) → 커넥터(Connectors)</span> → <strong>Atlassian</strong> → 연결(Connect)</li>
+        <li>Atlassian 로그인 → <code>bomnal</code> 사이트 선택 → <strong>허용(Accept)</strong></li>
+        <li>새 채팅에서 도구 메뉴에 Atlassian이 켜져 있는지 확인</li>
+        <li>오른쪽 프롬프트 실행 → Claude가 만들기 전에 묻는 내용 <strong>읽고 승인</strong></li>
+        <li>Jira 보드를 새로 고쳐서 5장이 생겼는지 확인</li>
+      </ol>
+      <div class="prompt reveal">Jira BOM 프로젝트에 내일 배송할 "주문" 유형 이슈 5개를 만들어줘.
+요약 형식: [주문] 상품 · 배송일 · 동네
+기한: 내일 날짜, 상태: 접수, 담당자는 비워 둬.
+1) 꽃다발 S · 망원동
+2) 꽃다발 L · 합정동
+3) 꽃바구니 · 서교동
+4) 개업 화환 · 상암동
+5) 꽃다발 M · 연희동
+만들기 전에 표로 먼저 보여주고, 내가 "좋아"라고 하면 만들어줘.</div>
+    </div>
+    <div class="callout callout--warn reveal"><span>AI가 만든 이슈는 <strong>한 장씩 확인</strong>하세요. 날짜·유형이 틀릴 수 있습니다. 지우는 일은 맡기지 마세요.</span></div>
+    <p class="asof">Atlassian 커넥터 이름·연결 화면은 2026-10 기준. 수업 전 확인.</p>
+  </div>
+  <aside class="notes">
+    "표로 먼저 보여 주고 승인 후 실행"은 AI에게 쓰기 권한을 줄 때의 기본 습관. 꼭 따라 하게 하기.
+    막히는 곳: 사이트를 고르는 단계에서 다른 Atlassian 사이트 선택, 이슈 유형 "주문"을 못 찾음(실습 4 미완료).
+  </aside>
+</section>
+
+<!-- 12. 응용 실습 -->
+<section class="slide">
+  <div class="slide-inner stack">
+    <h2>응용 실습 · 우리 회사 보드 설계하기 <span class="timebox">6분</span></h2>
+    <div class="prompt reveal">나는 ○○(업종)을 운영하고 직원은 ○명이야. Jira 칸반 보드를 설계해줘.
+1) 보드 칸(상태) 4~5개: 우리 일의 실제 순서대로
+2) 이슈 유형 3개와 각각의 예시
+3) 이슈 요약 작성 규칙 한 줄 (예: [유형] 내용 · 날짜 · 장소)
+개인정보를 이슈에 적지 않는 규칙도 한 줄 넣어줘.</div>
+    <div class="callout callout--tip reveal"><span>칸은 <strong>"누가 손에 들고 있나"가 바뀌는 지점</strong>에서 나누세요. 봄날의 꽃은 대표 → 플로리스트 → 배송 순서라 4칸입니다.</span></div>
+  </div>
+  <aside class="notes">자기 회사 보드는 지금 만들 필요 없음. 설계표만 저장. 꽃집이 아닌 수강생(카페·공방 등) 예시를 하나 같이 풀어 주면 좋음.</aside>
+</section>
+
+<!-- 13. 자주 겪는 문제 -->
+<section class="slide slide--alt">
+  <div class="slide-inner stack">
+    <h2>자주 겪는 문제 <span class="timebox">4분</span></h2>
+    <div class="table-wrap reveal">
+      <table class="table">
+        <tr><th>이럴 때</th><th>이렇게</th></tr>
+        <tr><td>메뉴 이름이 슬라이드와 다르다</td><td>이슈 = 작업 항목, 프로젝트 = 스페이스, 이슈 유형 = 작업 유형</td></tr>
+        <tr><td>"프로젝트 설정"에 이슈 유형 메뉴가 없다</td><td>회사 관리형으로 만든 것. 팀 관리형으로 새로 만들기</td></tr>
+        <tr><td>만든 이슈가 보드에 안 보인다</td><td>보드 위 필터 확인, 또는 이슈가 다른 프로젝트에 만들어졌는지 확인</td></tr>
+        <tr><td>Claude가 BOM 프로젝트를 못 찾는다</td><td>커넥터에서 연결한 사이트 확인 → "BOM 프로젝트 목록 보여줘"로 테스트</td></tr>
+        <tr><td>Claude가 날짜를 틀리게 넣었다</td><td>"오늘은 ○월 ○일이야"를 프롬프트에 함께 적기</td></tr>
+      </table>
+    </div>
+  </div>
+  <aside class="notes">자세한 대응은 materials/troubleshooting.html 참고.</aside>
+</section>
+
+<!-- 14. 체크리스트 -->
+<section class="slide">
+  <div class="slide-inner stack">
+    <h2>오늘의 체크리스트 ✅ <span class="timebox">3분</span></h2>
+    <p class="small">한 일을 눌러서 체크하세요. (이 컴퓨터에 저장됩니다)</p>
+    <ul class="checklist reveal">
+      <li>Jira Cloud 무료로 가입하고 사이트 주소를 즐겨찾기했다</li>
+      <li>"봄날의 꽃 운영"(키 BOM) 칸반 프로젝트를 만들었다</li>
+      <li>보드 칸을 접수 → 제작 중 → 배송 중 → 완료로 바꿨다</li>
+      <li>이슈 유형 주문·문의·클레임을 만들었다</li>
+      <li>주문 이슈를 직접 만들어 칸을 옮겨 봤다</li>
+      <li>Claude에게 주문 이슈 5개를 만들게 하고 확인했다</li>
+    </ul>
+  </div>
+  <aside class="notes">보드 설정을 못 끝낸 수강생은 다음 시간 전까지 꼭 완료 — 10회차 자동화가 "완료" 칸과 유형 이름을 기준으로 함.</aside>
+</section>
+
+<!-- 15. 과제와 다음 회차 -->
+<section class="slide slide--title slide--center">
+  <div class="slide-inner stack">
+    <h2>과제 & 다음 시간 예고 <span class="timebox">4분</span></h2>
+    <div class="grid-2" style="text-align:left">
+      <div class="card">
+        <h3>📝 과제</h3>
+        <ul class="list">
+          <li>팀원을 Jira에 초대하고 3일 동안 실제 주문을 보드로 관리</li>
+          <li>매일 마감 때 보드에서 "완료" 칸 확인하기</li>
+          <li>Slack 워크스페이스 관리자 권한이 내 계정에 있는지 확인</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>🔜 10회차: Slack과 Jira 자동으로 잇기</h3>
+        <p>#문의 메시지를 버튼 하나로 Jira 이슈로 만들고, 주문이 "완료"되면 Slack에 자동으로 알림이 가게 합니다.</p>
+      </div>
+    </div>
+    <nav class="lesson-nav" data-auto aria-label="다음 강의"></nav>
+  </div>
+  <aside class="notes">팀원 초대: Jira 왼쪽 위 <strong>⚙ 또는 사람 아이콘 → 사용자 초대</strong>. 무료는 10명까지. 다음 시간에 Slack 앱 설치를 하므로 관리자 권한 확인이 중요.</aside>
+</section>
+
+<script src="../assets/course.js"></script>
+<script src="../assets/deck.js"></script>
+</body>
+</html>

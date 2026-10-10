@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>누적 용어집 | AI로 작은 회사 운영하기</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Ctext y=%22.9em%22 font-size=%2290%22%3E%F0%9F%8C%B7%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="../assets/deck.css">
+<style>
+  html { scroll-snap-type: none; }
+  .doc-bar { position: sticky; top: 0; z-index: 20; display: flex; align-items: center; gap: 0.6rem; padding: 0.5rem 16px; background: color-mix(in srgb, var(--bg) 90%, transparent); backdrop-filter: blur(8px); border-bottom: 1px solid var(--border); font-size: 0.95rem; }
+  .doc-bar a, .doc-bar button { color: var(--text-mid); text-decoration: none; background: none; border: 0; font: inherit; cursor: pointer; padding: 0.3rem 0.6rem; border-radius: 8px; min-height: 40px; display: inline-flex; align-items: center; }
+  .doc-bar a:hover, .doc-bar button:hover { background: var(--surface); color: var(--text); }
+  .doc-bar .title { flex: 1; min-width: 0; font-weight: 600; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .doc { max-width: 1000px; margin: 0 auto; padding: 2rem 16px 4rem; }
+  .doc h1 { font-size: clamp(1.9rem, 4vw, 2.8rem); }
+  .group { margin-top: 2.2rem; }
+  .group h2 { font-size: clamp(1.25rem, 2.2vw, 1.6rem); margin-bottom: 0.8rem; }
+  .group h2 a { color: var(--text); text-decoration: none; }
+  .group h2 a:hover { text-decoration: underline; }
+  .term-card h3 { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; justify-content: space-between; }
+  .term-card .analog { margin-top: 0.6rem; background: var(--yellow-soft); border-radius: 10px; padding: 0.5rem 0.8rem; font-size: var(--fs-small); color: var(--text); }
+  .term-card .lbl { font-weight: 800; color: var(--yellow); margin-right: 0.5rem; }
+  .search { position: sticky; top: 3.1rem; z-index: 10; background: var(--bg); padding: 0.8rem 0; }
+  .search label { display: block; font-weight: 700; margin-bottom: 0.3rem; }
+  .search input { width: 100%; font: inherit; color: var(--text); background: var(--surface); border: 2px solid var(--border); border-radius: 12px; padding: 0.65rem 1rem; min-height: 48px; }
+  .search input:focus { border-color: var(--lavender); outline: none; }
+  .search .small { margin-top: 0.3rem; }
+  [hidden] { display: none !important; }
+  @media print { .doc-bar, .search { display: none; } .term-card { break-inside: avoid; } }
+</style>
+</head>
+<body data-root="../" data-material="glossary">
+<nav class="doc-bar" aria-label="자료 이동">
+  <a href="../index.html">☰ 목차</a>
+  <span class="title">누적 용어집</span>
+  <button type="button" id="themeBtn" aria-label="밝게/어둡게 전환">🌓</button>
+</nav>
+
+<main class="doc">
+  <header class="stack">
+    <span class="eyebrow">수강생 · 강사 공용</span>
+    <h1>누적 용어집</h1>
+    <p class="lead">수업에 나온 용어를 회차 순서대로 모았습니다. 각 용어마다 쉬운 설명과 비유가 있습니다.</p>
+  </header>
+
+  <div class="search" role="search">
+    <label for="q">용어 찾기</label>
+    <input id="q" type="search" placeholder="예: 웹훅, 비밀값, 스레드" autocomplete="off" aria-describedby="qstatus">
+    <p class="small" id="qstatus" aria-live="polite">전체 34개 용어</p>
+  </div>
+
+  <div id="terms">
+  <section class="group" aria-labelledby="g1">
+    <h2 id="g1"><a href="../lessons/01-ai-first-day.html">1회차 · AI 비서 첫 출근</a></h2>
+    <div class="grid-2">
+      <article class="card term-card"><h3>AI (인공지능) <span class="pill pill--pink">1회차</span></h3><p>사람처럼 글을 이해하고 만들어 내는 컴퓨터 프로그램</p><p class="analog"><span class="lbl">비유</span>책을 엄청나게 많이 읽은 신입 비서. 아는 건 많지만 우리 가게 사정은 모릅니다.</p></article>
+      <article class="card term-card"><h3>Claude (클로드) <span class="pill pill--pink">1회차</span></h3><p>Anthropic이 만든 AI 비서. 웹사이트·앱에서 대화로 사용합니다</p><p class="analog"><span class="lbl">비유</span>24시간 출근하는 비서 한 명을 채용한 것</p></article>
+      <article class="card term-card"><h3>프롬프트 <span class="pill pill--pink">1회차</span></h3><p>AI에게 하는 부탁(요청 문장). 상황·할 일·조건·형식 4요소로 쓰면 결과가 좋아집니다</p><p class="analog"><span class="lbl">비유</span>아르바이트생에게 건네는 작업 지시 메모</p></article>
+    </div>
+  </section>
+  <section class="group" aria-labelledby="g2">
+    <h2 id="g2"><a href="../lessons/02-ai-strengths-limits.html">2회차 · AI가 잘하는 일, 틀리는 일</a></h2>
+    <div class="grid-2">
+      <article class="card term-card"><h3>할루시네이션 <span class="pill pill--pink">2회차</span></h3><p>AI가 사실이 아닌 내용을 그럴듯하게 지어내는 현상</p><p class="analog"><span class="lbl">비유</span>모르는 질문에도 당당하게 대답하는 신입 — 그래서 숫자·사실은 꼭 확인</p></article>
+      <article class="card term-card"><h3>컨텍스트 <span class="pill pill--pink">2회차</span></h3><p>AI가 지금 대화에서 참고하는 내용 전체(앞선 대화, 올린 파일 등)</p><p class="analog"><span class="lbl">비유</span>비서 책상 위에 펼쳐 둔 서류. 책상이 어지러우면 새 채팅으로 정리</p></article>
+      <article class="card term-card"><h3>개인정보 마스킹 <span class="pill pill--pink">2회차</span></h3><p>전화번호·카드번호 같은 개인정보를 AI에 넣기 전에 ○○○로 가리는 것</p><p class="analog"><span class="lbl">비유</span>택배 송장의 이름을 가리고 버리는 습관</p></article>
+    </div>
+  </section>
+  <section class="group" aria-labelledby="g3">
+    <h2 id="g3"><a href="../lessons/03-company-ai-project.html">3회차 · 우리 회사 전용 AI: 프로젝트 &amp; 스킬</a></h2>
+    <div class="grid-2">
+      <article class="card term-card"><h3>프로젝트 <span class="pill pill--pink">3회차</span></h3><p>Claude에서 회사 자료와 지침을 넣어 두고 여러 대화가 함께 쓰는 작업 공간</p><p class="analog"><span class="lbl">비유</span>비서에게 준 &#x27;우리 회사 업무 파일철&#x27;</p></article>
+      <article class="card term-card"><h3>스킬 <span class="pill pill--pink">3회차</span></h3><p>Claude에게 특정 업무 방식을 가르쳐 두는 설명서 묶음. 필요할 때 Claude가 꺼내 씁니다</p><p class="analog"><span class="lbl">비유</span>가게에 붙여 둔 &#x27;포장하는 법&#x27; 매뉴얼</p></article>
+      <article class="card term-card"><h3>커넥터 <span class="pill pill--pink">3회차</span></h3><p>Claude를 Slack·Jira·구글 드라이브 같은 다른 서비스와 연결하는 기능</p><p class="analog"><span class="lbl">비유</span>비서에게 다른 사무실 출입증을 발급해 주는 것</p></article>
+    </div>
+  </section>
+  <section class="group" aria-labelledby="g4">
+    <h2 id="g4"><a href="../lessons/04-docs-and-sheets.html">4회차 · 문서·엑셀 업무 맡기기</a></h2>
+    <div class="grid-2">
+      <article class="card term-card"><h3>CSV 파일 <span class="pill pill--lavender">4회차</span></h3><p>쉼표로 칸을 나눈 표 파일. 엑셀로 열 수 있고 AI도 쉽게 읽습니다</p><p class="analog"><span class="lbl">비유</span>칸 대신 쉼표로 구분한 장부</p></article>
+    </div>
+  </section>
+  <section class="group" aria-labelledby="g5">
+    <h2 id="g5"><a href="../lessons/05-marketing-content.html">5회차 · 마케팅 콘텐츠 만들기</a></h2>
+    <div class="grid-2">
+      <article class="card term-card"><h3>브랜드 말투(톤) <span class="pill pill--lavender">5회차</span></h3><p>우리 가게만의 일관된 말씨와 표현 규칙</p><p class="analog"><span class="lbl">비유</span>매장 직원 모두가 같은 인사말을 쓰는 것</p></article>
+    </div>
+  </section>
+  <section class="group" aria-labelledby="g6">
+    <h2 id="g6"><a href="../lessons/06-shop-homepage.html">6회차 · 가게 홈페이지 만들기</a></h2>
+    <div class="grid-2">
+      <article class="card term-card"><h3>아티팩트 <span class="pill pill--lavender">6회차</span></h3><p>Claude가 대화 옆 화면에 만들어 주는 결과물(웹페이지, 문서, 표 등). 링크로 공유할 수 있습니다</p><p class="analog"><span class="lbl">비유</span>비서가 대화 중 바로 만들어 건네는 시안 한 장</p></article>
+    </div>
+  </section>
+  <section class="group" aria-labelledby="g7">
+    <h2 id="g7"><a href="../lessons/07-how-connections-work.html">7회차 · 연결의 원리: API와 웹훅</a></h2>
+    <div class="grid-2">
+      <article class="card term-card"><h3>API <span class="pill pill--sky">7회차</span></h3><p>프로그램끼리 정해진 방식으로 요청하고 답을 주고받는 창구</p><p class="analog"><span class="lbl">비유</span>식당 주문서 — 정해진 양식대로 적어 내면 주방이 음식을 내줍니다</p></article>
+      <article class="card term-card"><h3>웹훅 (Webhook) <span class="pill pill--sky">7회차</span></h3><p>어떤 일이 생기면 상대 프로그램이 &#x27;알아서 먼저&#x27; 알려 주는 방식</p><p class="analog"><span class="lbl">비유</span>초인종 — 손님이 오면 벨이 울리니 계속 문밖을 볼 필요가 없음</p></article>
+      <article class="card term-card"><h3>트리거 / 액션 <span class="pill pill--sky">7회차</span></h3><p>자동화에서 &#x27;이 일이 생기면&#x27;(트리거) &#x27;이것을 한다&#x27;(액션)의 두 부분</p><p class="analog"><span class="lbl">비유</span>&#x27;문이 열리면(트리거) 불이 켜진다(액션)&#x27; 센서등</p></article>
+      <article class="card term-card"><h3>토큰 (API 키) <span class="pill pill--sky">7회차</span></h3><p>프로그램이 서비스에 들어갈 때 쓰는 긴 비밀 문자열. 비밀번호와 똑같이 취급합니다</p><p class="analog"><span class="lbl">비유</span>가게 금고 열쇠 — 복사되면 바로 바꿔야 함</p></article>
+    </div>
+  </section>
+  <section class="group" aria-labelledby="g8">
+    <h2 id="g8"><a href="../lessons/08-slack-team.html">8회차 · Slack으로 팀 소통하기</a></h2>
+    <div class="grid-2">
+      <article class="card term-card"><h3>채널 <span class="pill pill--sky">8회차</span></h3><p>Slack에서 주제별로 나눈 대화방 (#주문, #문의 등)</p><p class="analog"><span class="lbl">비유</span>가게 안 주제별 게시판</p></article>
+      <article class="card term-card"><h3>스레드 <span class="pill pill--sky">8회차</span></h3><p>메시지 하나에 달리는 댓글 대화. 채널을 깔끔하게 유지합니다</p><p class="analog"><span class="lbl">비유</span>게시판 글 아래 댓글</p></article>
+      <article class="card term-card"><h3>워크플로 <span class="pill pill--sky">8회차</span></h3><p>정해진 순서대로 자동으로 진행되는 일. Slack의 Workflow Builder로 만듭니다</p><p class="analog"><span class="lbl">비유</span>매일 아침 정해진 시간에 울리는 체크리스트 알람</p></article>
+    </div>
+  </section>
+  <section class="group" aria-labelledby="g9">
+    <h2 id="g9"><a href="../lessons/09-jira-tasks.html">9회차 · Jira로 할 일 관리하기</a></h2>
+    <div class="grid-2">
+      <article class="card term-card"><h3>이슈 <span class="pill pill--sky">9회차</span></h3><p>Jira에서 할 일 하나를 적은 카드 (봄날의 꽃: 주문·문의·클레임)</p><p class="analog"><span class="lbl">비유</span>주방에 꽂는 주문서 한 장</p></article>
+      <article class="card term-card"><h3>보드 <span class="pill pill--sky">9회차</span></h3><p>이슈 카드를 단계별 열(접수→제작 중→배송 중→완료)로 보여 주는 화면</p><p class="analog"><span class="lbl">비유</span>주문서를 단계별로 옮겨 꽂는 벽면 게시판</p></article>
+    </div>
+  </section>
+  <section class="group" aria-labelledby="g10">
+    <h2 id="g10"><a href="../lessons/10-slack-jira-automation.html">10회차 · Slack과 Jira 자동으로 잇기</a></h2>
+    <div class="grid-2">
+      <article class="card term-card"><h3>자동화 규칙 <span class="pill pill--sky">10회차</span></h3><p>Jira Automation에서 트리거·조건·액션으로 만든 자동 처리 규칙. 실행마다 steps 한도를 씁니다</p><p class="analog"><span class="lbl">비유</span>&#x27;완료 칸으로 옮기면 사장님께 문자&#x27; 같은 가게 규칙</p></article>
+    </div>
+  </section>
+  <section class="group" aria-labelledby="g11">
+    <h2 id="g11"><a href="../lessons/11-ai-weekly-report.html">11회차 · AI가 주간 보고를 대신 쓴다</a></h2>
+    <div class="grid-2">
+      <article class="card term-card"><h3>MCP <span class="pill pill--sky">11회차</span></h3><p>AI가 외부 서비스의 데이터를 읽고 쓰도록 연결하는 표준 방식. 커넥터가 이 방식을 씁니다</p><p class="analog"><span class="lbl">비유</span>어느 콘센트에나 꽂히는 표준 플러그</p></article>
+    </div>
+  </section>
+  <section class="group" aria-labelledby="g12">
+    <h2 id="g12"><a href="../lessons/12-line-auto-reply.html">12회차 · 코딩 없이 LINE 자동응답</a></h2>
+    <div class="grid-2">
+      <article class="card term-card"><h3>공식계정 <span class="pill pill--mint">12회차</span></h3><p>LINE에서 가게·회사가 손님과 대화하는 비즈니스 계정</p><p class="analog"><span class="lbl">비유</span>가게 대표 전화번호</p></article>
+      <article class="card term-card"><h3>자동응답 (応答メッセージ) <span class="pill pill--mint">12회차</span></h3><p>정해 둔 키워드가 들어오면 정해 둔 답을 보내는 기능</p><p class="analog"><span class="lbl">비유</span>문 앞에 붙인 &#x27;자주 묻는 질문&#x27; 안내문</p></article>
+    </div>
+  </section>
+  <section class="group" aria-labelledby="g13">
+    <h2 id="g13"><a href="../lessons/13-nocode-ai-bot.html">13회차 · Make + Claude로 AI 상담봇</a></h2>
+    <div class="grid-2">
+      <article class="card term-card"><h3>노코드 <span class="pill pill--mint">13회차</span></h3><p>코드를 쓰지 않고 블록을 끌어다 놓아 자동화를 만드는 방식 (Make, Zapier 등)</p><p class="analog"><span class="lbl">비유</span>레고 블록 조립</p></article>
+      <article class="card term-card"><h3>시나리오 <span class="pill pill--mint">13회차</span></h3><p>Make에서 만든 자동화 하나. 모듈(블록)을 이어서 만듭니다</p><p class="analog"><span class="lbl">비유</span>도미노 줄 하나</p></article>
+      <article class="card term-card"><h3>시스템 프롬프트 <span class="pill pill--mint">13회차</span></h3><p>대화가 시작되기 전에 AI에게 주는 기본 지침(역할·규칙·FAQ). 손님에게는 보이지 않습니다</p><p class="analog"><span class="lbl">비유</span>신입 상담원에게 첫날 건네는 응대 매뉴얼</p></article>
+      <article class="card term-card"><h3>JSON <span class="pill pill--mint">13회차</span></h3><p>프로그램끼리 주고받는 정해진 모양의 데이터 {&quot;이름&quot;: &quot;값&quot;}</p><p class="analog"><span class="lbl">비유</span>칸이 정해진 주문서 양식</p></article>
+      <article class="card term-card"><h3>사람 연결 (에스컬레이션) <span class="pill pill--mint">13회차</span></h3><p>AI가 답하기 어려운 문의를 사람 담당자에게 넘기는 것. 봄날의 꽃은 Slack #cs-escalation으로 넘깁니다</p><p class="analog"><span class="lbl">비유</span>&#x27;점장님 불러 드릴게요&#x27;</p></article>
+    </div>
+  </section>
+  <section class="group" aria-labelledby="g14">
+    <h2 id="g14"><a href="../lessons/14-bot-server-graduation.html">14회차 · Claude가 짜준 봇 서버 &amp; 졸업</a></h2>
+    <div class="grid-2">
+      <article class="card term-card"><h3>서버 <span class="pill pill--mint">14회차</span></h3><p>요청을 받아 일을 처리하고 답을 돌려주는, 24시간 켜져 있는 컴퓨터(프로그램)</p><p class="analog"><span class="lbl">비유</span>가게 문을 닫아도 일하는 무인 접수 창구</p></article>
+      <article class="card term-card"><h3>배포 <span class="pill pill--mint">14회차</span></h3><p>만든 프로그램을 인터넷에 올려 누구나 쓸 수 있게 하는 것</p><p class="analog"><span class="lbl">비유</span>시제품을 매장 진열대에 올리는 일</p></article>
+      <article class="card term-card"><h3>환경변수 / 비밀값 <span class="pill pill--mint">14회차</span></h3><p>API 키 같은 비밀을 코드에 적지 않고 서버 설정에 따로 보관하는 값 (예: ANTHROPIC_API_KEY)</p><p class="analog"><span class="lbl">비유</span>열쇠를 문에 붙여 두지 않고 금고에 따로 보관</p></article>
+      <article class="card term-card"><h3>서명 검증 <span class="pill pill--mint">14회차</span></h3><p>들어온 요청이 정말 LINE에서 온 것인지 비밀값으로 확인하는 절차 (x-line-signature)</p><p class="analog"><span class="lbl">비유</span>택배 받을 때 보낸 사람 확인 도장</p></article>
+    </div>
+  </section>
+  </div>
+  <p class="callout callout--info" id="empty" hidden><span>찾는 용어가 없습니다. Claude에게 "○○를 꽃집 사장님도 알게 비유로 설명해줘"라고 물어보세요.</span></p>
+
+  <p class="asof">AI로 작은 회사 운영하기 · 누적 용어집 · 2026-10 기준 · <a href="../index.html">전체 목차로 돌아가기</a></p>
+</main>
+
+<script src="page.js"></script>
+<script>
+(function () {
+  'use strict';
+  var input = document.getElementById('q');
+  var status = document.getElementById('qstatus');
+  var empty = document.getElementById('empty');
+  var cards = Array.prototype.slice.call(document.querySelectorAll('.term-card'));
+  var groups = Array.prototype.slice.call(document.querySelectorAll('.group'));
+  var total = cards.length;
+  function norm(s) { return s.toLowerCase().replace(/\s+/g, ''); }
+  var index = cards.map(function (c) { return norm(c.textContent); });
+  input.addEventListener('input', function () {
+    var q = norm(input.value);
+    var shown = 0;
+    cards.forEach(function (c, i) {
+      var hit = !q || index[i].indexOf(q) !== -1;
+      c.hidden = !hit;
+      if (hit) shown++;
+    });
+    groups.forEach(function (g) { g.hidden = !g.querySelector('.term-card:not([hidden])'); });
+    empty.hidden = shown !== 0;
+    status.textContent = q ? total + '개 중 ' + shown + '개 찾음' : '전체 ' + total + '개 용어';
+  });
+})();
+</script>
+</body>
+</html>

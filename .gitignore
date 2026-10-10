@@ -1,0 +1,6 @@
+.playwright-mcp/
+node_modules/
+.env
+.dev.vars
+coverage/
+.wrangler/
